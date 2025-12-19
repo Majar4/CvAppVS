@@ -1,7 +1,19 @@
+using CvAppenVS.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+//i nyare versioner behövs inte startup-klassen.
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//Connection string:
+//builder.Services.AddDbContext<CvContext>(options => 
+//options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+
+// builder.Services.AddScoped<UserService>(); <-- tror den är bäst med ickestatisk data
+//Detta ska alltså ersätta IConfiguration-delen som hanif hade i sitt exempel.
+
 
 var app = builder.Build();
 
@@ -17,6 +29,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapStaticAssets();
 
