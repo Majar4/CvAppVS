@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CvAppenVS.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -60,8 +60,7 @@ namespace CvAppenVS.Migrations
                 name: "Projects",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -181,8 +180,7 @@ namespace CvAppenVS.Migrations
                 name: "CVs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Presentation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -203,8 +201,7 @@ namespace CvAppenVS.Migrations
                 name: "Messages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FromUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ToUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -256,8 +253,7 @@ namespace CvAppenVS.Migrations
                 name: "Competences",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CVId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -276,8 +272,7 @@ namespace CvAppenVS.Migrations
                 name: "EarlierExperiences",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Company = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -300,8 +295,7 @@ namespace CvAppenVS.Migrations
                 name: "Educations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     School = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     From = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -324,8 +318,8 @@ namespace CvAppenVS.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "Email", "EmailConfirmed", "Image", "IsPrivate", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "user-1", 0, "Stockholm", "c76ec9f2-e08e-4aae-bc52-024c3eb4e1fe", "anna@example.com", false, "anna.jpg", false, false, null, "Anna Andersson", "ANNA@EXAMPLE.COM", "ANNA@EXAMPLE.COM", "AQAAAAIAAYagAAAAENMumSeF9hZDhmKQBh5uZFIwX3+GA8R3FkzNAgHuuJ1ytHk7cXpxJfWQp8fAlo2UjA==", null, false, "7ad97f0f-237c-4f64-8cc2-7ba91c0089c3", false, "anna@example.com" },
-                    { "user-2", 0, "Göteborg", "757cd5c5-0e8e-4b13-8210-0558d609cdc1", "erik@example.com", false, "erik.jpg", true, false, null, "Erik Svensson", "ERIK@EXAMPLE.COM", "ERIK@EXAMPLE.COM", "AQAAAAIAAYagAAAAEKWJzmKUYlyTtjxpBkdpqq1Z5DJNxbJwDdgdDymfHlJOnoNdfNRnS5hD7Ryep2Y4vA==", null, false, "d44f5067-cd66-4116-9a06-224e4d992231", false, "erik@example.com" }
+                    { "5f8dedbb-0023-4225-90a3-fb982dde34e4", 0, "Stockholm", "87bcb1f3-09f1-4576-8951-e83121b0a196", "anna@example.com", false, "anna.jpg", false, false, null, "Anna Andersson", null, null, null, null, false, "6f25faac-7dbc-4f5a-a49d-2914674e8f8a", false, "anna@example.com" },
+                    { "70d91398-1e9f-4c6c-9464-31629296e124", 0, "Göteborg", "916798cd-3f1f-487c-a17b-6d7836afb4a1", "erik@example.com", false, "erik.jpg", true, false, null, "Erik Svensson", null, null, null, null, false, "7cfada84-72cc-4d5b-a47f-d556fc4ddc1e", false, "erik@example.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -333,28 +327,28 @@ namespace CvAppenVS.Migrations
                 columns: new[] { "Id", "Date", "Description", "Title" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Intern webbportal för företag", "Webbportal" },
-                    { 2, new DateTime(2021, 3, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "App för bokningssystem", "Mobilapp" }
+                    { 1, new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Intern webbportal för företag", "Webbportal" },
+                    { 2, new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "App för bokningssystem", "Mobilapp" }
                 });
 
             migrationBuilder.InsertData(
                 table: "CVs",
                 columns: new[] { "Id", "ImagePath", "PhoneNumber", "Presentation", "UserId" },
-                values: new object[] { 1, "cv-images/anna.jpg", "0701234567", "Systemutvecklare med stort intresse för webb och backend.", "user-1" });
+                values: new object[] { 1, "cv-images/anna.jpg", "0701234567", "Systemutvecklare med stort intresse för webb och backend.", "5f8dedbb-0023-4225-90a3-fb982dde34e4" });
 
             migrationBuilder.InsertData(
                 table: "Messages",
                 columns: new[] { "Id", "FromUserId", "IsRead", "SentAt", "Text", "ToUserId" },
-                values: new object[] { 1, "user-1", false, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Hej! Är du intresserad av projektet?", "user-2" });
+                values: new object[] { 1, "5f8dedbb-0023-4225-90a3-fb982dde34e4", false, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Hej! Är du intresserad av projektet?", "70d91398-1e9f-4c6c-9464-31629296e124" });
 
             migrationBuilder.InsertData(
                 table: "UserProjects",
                 columns: new[] { "ProjectId", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "user-1" },
-                    { 1, "user-2" },
-                    { 2, "user-2" }
+                    { 1, "5f8dedbb-0023-4225-90a3-fb982dde34e4" },
+                    { 1, "70d91398-1e9f-4c6c-9464-31629296e124" },
+                    { 2, "70d91398-1e9f-4c6c-9464-31629296e124" }
                 });
 
             migrationBuilder.InsertData(
@@ -372,8 +366,8 @@ namespace CvAppenVS.Migrations
                 columns: new[] { "Id", "CVId", "Company", "Description", "From", "Title", "To" },
                 values: new object[,]
                 {
-                    { 1, 1, "Tech AB", "Arbetade med backend i ASP.NET Core", new DateTime(2022, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Junior .NET-utvecklare", new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, 1, "Servicebolaget", "Användarsupport och felsökning", new DateTime(2019, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "IT-support", new DateTime(2020, 8, 31, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, 1, "Tech AB", "Arbetade med backend i ASP.NET Core", new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Junior .NET-utvecklare", new DateTime(2022, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, 1, "Servicebolaget", "Användarsupport och felsökning", new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "IT-support", new DateTime(2022, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -382,7 +376,7 @@ namespace CvAppenVS.Migrations
                 values: new object[,]
                 {
                     { 8, 1, new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Systemutveckling .NET", "Yrkeshögskolan Stockholm", new DateTime(2022, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 9, 1, new DateTime(2017, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Datavetenskap", "Stockholms Universitet", new DateTime(2020, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 9, 1, new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Datavetenskap", "Stockholms Universitet", new DateTime(2022, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.CreateIndex(

@@ -7,9 +7,9 @@ namespace CvAppenVS.Models
 {
     public class CvContext : IdentityDbContext<User>
     {
-        public CvContext() { }
+        //public CvContext() { }
         public CvContext(DbContextOptions<CvContext> options) : base(options) { }
-        //public DbSet<User> Users { get; set; } - får varning om denna för den ärvs tydl när man ärver från identity
+        //public DbSet<User> Users { get; set; } //- får varning om denna för den ärvs tydl när man ärver från identity
         public DbSet<Project> Projects { get; set; }
         public DbSet<CV> CVs { get; set; }
         public DbSet<Competence> Competences { get; set; }
@@ -50,14 +50,54 @@ namespace CvAppenVS.Models
 
         private void SeedData(ModelBuilder modelBuilder)
         {
+
+            var eduStart1 = new DateTime(2020, 8, 1);
+            var eduEnd1 = new DateTime(2022, 6, 1);
+
+            var eduStart2 = new DateTime(2017, 8, 1);
+            var eduEnd2 = new DateTime(2020, 6, 1);
+            
+            var otherDate = new DateTime(2025, 1, 1);
+
+            var user1Id = "5f8dedbb-0023-4225-90a3-fb982dde34e4";
+            var user2Id = "70d91398-1e9f-4c6c-9464-31629296e124";
+
+            var user1 = new User
+            {
+                Id = user1Id,
+                UserName = "anna@example.com",
+                Email = "anna@example.com",
+                Name = "Anna Andersson",
+                Address = "Stockholm",
+                IsPrivate = false,
+                Image = "anna.jpg"
+            };
+
+            var user2 = new User
+            {
+                Id = user2Id,
+                UserName = "erik@example.com",
+                Email = "erik@example.com",
+                Name = "Erik Svensson",
+                Address = "Göteborg",
+                IsPrivate = true,
+                Image = "erik.jpg"
+            };
+
+            modelBuilder.Entity<User>().HasData(
+                   user1, user2
+              );
+
+
             modelBuilder.Entity<CV>().HasData(
             new CV
             {
                 Id = 1,
-                UserId = "user-1",
+                UserId = user1.Id,
                 Presentation = "Systemutvecklare med stort intresse för webb och backend.",
                 PhoneNumber = "0701234567",
-                ImagePath = "cv-images/anna.jpg"
+                ImagePath = "cv-images/anna.jpg",
+                //User = user1
             });
 
             modelBuilder.Entity<Competence>().HasData(
@@ -86,8 +126,8 @@ namespace CvAppenVS.Models
                 Id = 8,
                 Name = "Systemutveckling .NET",
                 School = "Yrkeshögskolan Stockholm",
-                From = new DateTime(2020, 8, 1),
-                To = new DateTime(2022, 6, 1),
+                From = eduStart1,
+                To = eduEnd1,
                 CVId = 1
             },
             new Education
@@ -95,8 +135,8 @@ namespace CvAppenVS.Models
                 Id = 9,
                 Name = "Datavetenskap",
                 School = "Stockholms Universitet",
-                From = new DateTime(2017, 8, 1),
-                To = new DateTime(2020, 6, 1),
+                From = eduStart1,
+                To = eduEnd1,
                 CVId = 1
             });
 
@@ -107,8 +147,8 @@ namespace CvAppenVS.Models
                 Title = "Junior .NET-utvecklare",
                 Company = "Tech AB",
                 Description = "Arbetade med backend i ASP.NET Core",
-                From = new DateTime(2022, 9, 1),
-                To = new DateTime(2023, 12, 31),
+                From = eduStart1,
+                To = eduEnd1,
                 CVId = 1
             },
             new EarlierExperience
@@ -117,8 +157,8 @@ namespace CvAppenVS.Models
                 Title = "IT-support",
                 Company = "Servicebolaget",
                 Description = "Användarsupport och felsökning",
-                From = new DateTime(2019, 6, 1),
-                To = new DateTime(2020, 8, 31),
+                From = eduStart1,
+                To = eduEnd1,
                 CVId = 1
             });
 
@@ -128,30 +168,30 @@ namespace CvAppenVS.Models
                 Id = 1,
                 Title = "Webbportal",
                 Description = "Intern webbportal för företag",
-                Date = new DateTime(2025, 1, 1)
+                Date = eduStart1,
             },
             new Project
             {
                 Id = 2,
                 Title = "Mobilapp",
                 Description = "App för bokningssystem",
-                Date = new DateTime(2021, 03, 04)
+                Date = eduStart1
             });
 
             modelBuilder.Entity<UserProject>().HasData(
             new UserProject
             {
-                UserId = "user-1",
+                UserId = user1Id,
                 ProjectId = 1
             },
             new UserProject
             {
-                UserId = "user-2",
+                UserId = user2Id,
                 ProjectId = 1
             },
             new UserProject
             {
-                UserId = "user-2",
+                UserId = user2Id,
                 ProjectId = 2
             });
 
@@ -160,10 +200,10 @@ namespace CvAppenVS.Models
              {
                  Id = 1,
                  Text = "Hej! Är du intresserad av projektet?",
-                 FromUserId = "user-1",
-                 ToUserId = "user-2",
+                 FromUserId = user1Id,
+                 ToUserId = user2Id,
                  IsRead = false,
-                 SentAt = new DateTime(2025, 1, 1)
+                 SentAt = otherDate
              });
         }
     }
