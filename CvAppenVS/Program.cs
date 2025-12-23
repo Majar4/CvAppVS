@@ -5,22 +5,20 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//i nyare versioner behövs inte startup-klassen.
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-//options.ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning),
-
-//Connection string:
 builder.Services.AddDbContext<CvContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"))
         .ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning)));
 
 
+//builder.Services.AddDbContext<CvContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("BookStoreContext")));
 
-// builder.Services.AddScoped<UserService>(); <-- tror den är bäst med ickestatisk data
-//Detta ska alltså ersätta IConfiguration-delen som hanif hade i sitt exempel.
+//builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<BookStoreContext>().AddDefaultTokenProviders();
+
+
+//registerar Identity
 
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
@@ -33,7 +31,6 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 .AddEntityFrameworkStores<CvContext>()
 .AddDefaultTokenProviders();
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -43,7 +40,6 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 app.UseRouting();
 

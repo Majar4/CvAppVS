@@ -1,0 +1,42 @@
+﻿@model IEnumerable<CvAppenVS.Models.DTOs.MessageDto>
+
+@{
+    ViewBag.Title = "Mina meddelanden";
+}
+
+<h2>@ViewBag.Message</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Avsändare</th>
+            <th>Meddelande</th>
+            <th>Skickat</th>
+            <th>Status</th>
+            <th></th> 
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var message in Model)
+    {
+        <tr>
+            <td>@message.SenderName</td>
+            <td>@message.Text</td>
+            <td>@message.SentAt.ToString("yyyy-MM-dd HH:mm")</td>
+            <td>
+                @if (message.IsRead)
+                {
+                    <span>Läst</span>
+                }
+                else
+                {
+                    <span>Oläst</span>
+                }
+            </td>
+            <td>
+                <a asp-action="MarkAsRead" asp-route-id="@message.Id">Markera som läst</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
