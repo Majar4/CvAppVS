@@ -5,6 +5,7 @@ namespace CvAppenVS.Models
 {
     public class User : IdentityUser
     {
+
         public string Name { get; set; } = null!;
         public string Address { get; set; } = null!;
         public string? Image {  get; set; }

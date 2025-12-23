@@ -50,7 +50,7 @@ namespace CvAppenVS.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("CVs");
+                    b.ToTable("CVs", (string)null);
 
                     b.HasData(
                         new
@@ -82,7 +82,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasIndex("CVId");
 
-                    b.ToTable("Competences");
+                    b.ToTable("Competences", (string)null);
 
                     b.HasData(
                         new
@@ -137,7 +137,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasIndex("CVId");
 
-                    b.ToTable("EarlierExperiences");
+                    b.ToTable("EarlierExperiences", (string)null);
 
                     b.HasData(
                         new
@@ -191,7 +191,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasIndex("CVId");
 
-                    b.ToTable("Educations");
+                    b.ToTable("Educations", (string)null);
 
                     b.HasData(
                         new
@@ -249,7 +249,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasIndex("ToUserId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
 
                     b.HasData(
                         new
@@ -285,7 +285,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
 
                     b.HasData(
                         new
@@ -330,6 +330,9 @@ namespace CvAppenVS.Migrations
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("bit");
@@ -432,7 +435,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("UserProjects");
+                    b.ToTable("UserProjects", (string)null);
 
                     b.HasData(
                         new

@@ -12,14 +12,6 @@ builder.Services.AddDbContext<CvContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"))
         .ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning)));
 
-
-//builder.Services.AddDbContext<CvContext>(options => options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("BookStoreContext")));
-
-//builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<BookStoreContext>().AddDefaultTokenProviders();
-
-
-//registerar Identity
-
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
     options.Password.RequireDigit = true;
@@ -40,6 +32,11 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+var scope = app.Services.CreateScope();
+var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+
+
 app.UseHttpsRedirection();
 app.UseRouting();
 
