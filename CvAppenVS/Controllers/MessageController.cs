@@ -22,7 +22,8 @@ namespace CvAppenVS.Controllers
 
         [HttpGet]
         //[Authorize]
-        public async Task<IActionResult> Index()
+        [ActionName("Index")]
+        public async Task<IActionResult> ReadMessages()
         {
             var userId = _userManager.GetUserId(User);
 
@@ -50,7 +51,8 @@ namespace CvAppenVS.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(SendMessageDto dto)
+        [ActionName("Add")]
+        public async Task<IActionResult> SendMessage(SendMessageDto dto)
         {
             if (!ModelState.IsValid) return View(dto);
 
@@ -82,6 +84,8 @@ namespace CvAppenVS.Controllers
 
             return Ok();
         }
+
+
 
 
     }
