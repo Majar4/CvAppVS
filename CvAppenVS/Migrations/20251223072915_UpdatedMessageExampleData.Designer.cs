@@ -4,6 +4,7 @@ using CvAppenVS.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CvAppenVS.Migrations
 {
     [DbContext(typeof(CvContext))]
-    partial class CvContextModelSnapshot : ModelSnapshot
+    [Migration("20251223072915_UpdatedMessageExampleData")]
+    partial class UpdatedMessageExampleData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,7 +53,7 @@ namespace CvAppenVS.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("CVs", (string)null);
+                    b.ToTable("CVs");
 
                     b.HasData(
                         new
@@ -82,7 +85,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasIndex("CVId");
 
-                    b.ToTable("Competences", (string)null);
+                    b.ToTable("Competences");
 
                     b.HasData(
                         new
@@ -137,7 +140,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasIndex("CVId");
 
-                    b.ToTable("EarlierExperiences", (string)null);
+                    b.ToTable("EarlierExperiences");
 
                     b.HasData(
                         new
@@ -191,7 +194,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasIndex("CVId");
 
-                    b.ToTable("Educations", (string)null);
+                    b.ToTable("Educations");
 
                     b.HasData(
                         new
@@ -249,7 +252,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasIndex("ToUserId");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
 
                     b.HasData(
                         new
@@ -285,7 +288,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
 
                     b.HasData(
                         new
@@ -330,9 +333,6 @@ namespace CvAppenVS.Migrations
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("bit");
@@ -435,7 +435,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("UserProjects", (string)null);
+                    b.ToTable("UserProjects");
 
                     b.HasData(
                         new

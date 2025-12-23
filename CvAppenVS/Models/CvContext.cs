@@ -27,22 +27,14 @@ namespace CvAppenVS.Models
             SeedData(modelBuilder);
 
             modelBuilder.Entity<Message>()
-                .HasOne<User>()
-                .WithMany()
-                .HasForeignKey(u => u.FromUserId).OnDelete(DeleteBehavior.Restrict);
+                .HasOne(m => m.FromUser)
+                .WithMany(m => m.SentMessages)
+                .HasForeignKey(m => m.FromUserId).OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Message>()
-              .HasOne<User>()
-              .WithMany()
+              .HasOne(m => m.ToUser)
+              .WithMany(m => m.RecievedMessages)
               .HasForeignKey(u => u.ToUserId).OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<User>().Property(u => u.Id).ValueGeneratedNever();
-            modelBuilder.Entity<CV>().Property(c => c.Id).ValueGeneratedNever();
-            modelBuilder.Entity<Competence>().Property(c => c.Id).ValueGeneratedNever();
-            modelBuilder.Entity<Education>().Property(e => e.Id).ValueGeneratedNever();
-            modelBuilder.Entity<EarlierExperience>().Property(ee => ee.Id).ValueGeneratedNever();
-            modelBuilder.Entity<Project>().Property(p => p.Id).ValueGeneratedNever();
-            modelBuilder.Entity<Message>().Property(m => m.Id).ValueGeneratedNever();
 
             //behöver kolla på hur vi ska radera User också, fått för mig att kontot inte ska kunna raderas utan endast avaktiveras?
 
@@ -202,6 +194,7 @@ namespace CvAppenVS.Models
                  Text = "Hej! Är du intresserad av projektet?",
                  FromUserId = user1Id,
                  ToUserId = user2Id,
+                 SenderName = "Katten",
                  IsRead = false,
                  SentAt = otherDate
              });

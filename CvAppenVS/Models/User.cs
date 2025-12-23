@@ -5,12 +5,17 @@ namespace CvAppenVS.Models
 {
     public class User : IdentityUser
     {
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public string Image {  get; set; }
 
+        public string Name { get; set; } = null!;
+        public string Address { get; set; } = null!;
+        public string? Image {  get; set; }
         public bool IsPrivate { get; set; }
 
+        //public bool IsActive { get; set; } = true;
+
+        public ICollection<Message> RecievedMessages { get; set; } = new List<Message>();
+
+        public ICollection<Message> SentMessages {  get; set; } = new List<Message>();  
 
         public ICollection<UserProject> UserProjects { get; set; } = new List<UserProject>(); //Many to many till projekt
         public CV CV { get; set; } //skapar en foreign key (UserId) i CV-tabellen
