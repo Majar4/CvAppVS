@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CvAppenVS.Migrations
 {
     [DbContext(typeof(CvContext))]
-    [Migration("20251222094150_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20251222185611_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,10 +28,7 @@ namespace CvAppenVS.Migrations
             modelBuilder.Entity("CvAppenVS.Models.CV", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
@@ -62,17 +59,14 @@ namespace CvAppenVS.Migrations
                             ImagePath = "cv-images/anna.jpg",
                             PhoneNumber = "0701234567",
                             Presentation = "Systemutvecklare med stort intresse för webb och backend.",
-                            UserId = "user-1"
+                            UserId = "5f8dedbb-0023-4225-90a3-fb982dde34e4"
                         });
                 });
 
             modelBuilder.Entity("CvAppenVS.Models.Competence", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CVId")
                         .HasColumnType("int");
@@ -111,10 +105,7 @@ namespace CvAppenVS.Migrations
             modelBuilder.Entity("CvAppenVS.Models.EarlierExperience", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CVId")
                         .HasColumnType("int");
@@ -149,9 +140,9 @@ namespace CvAppenVS.Migrations
                             CVId = 1,
                             Company = "Tech AB",
                             Description = "Arbetade med backend i ASP.NET Core",
-                            From = new DateTime(2022, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            From = new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Junior .NET-utvecklare",
-                            To = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            To = new DateTime(2022, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -159,19 +150,16 @@ namespace CvAppenVS.Migrations
                             CVId = 1,
                             Company = "Servicebolaget",
                             Description = "Användarsupport och felsökning",
-                            From = new DateTime(2019, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            From = new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "IT-support",
-                            To = new DateTime(2020, 8, 31, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            To = new DateTime(2022, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
             modelBuilder.Entity("CvAppenVS.Models.Education", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CVId")
                         .HasColumnType("int");
@@ -210,20 +198,17 @@ namespace CvAppenVS.Migrations
                         {
                             Id = 9,
                             CVId = 1,
-                            From = new DateTime(2017, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            From = new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Datavetenskap",
                             School = "Stockholms Universitet",
-                            To = new DateTime(2020, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            To = new DateTime(2022, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
             modelBuilder.Entity("CvAppenVS.Models.Message", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("FromUserId")
                         .IsRequired()
@@ -255,21 +240,18 @@ namespace CvAppenVS.Migrations
                         new
                         {
                             Id = 1,
-                            FromUserId = "user-1",
+                            FromUserId = "5f8dedbb-0023-4225-90a3-fb982dde34e4",
                             IsRead = false,
                             SentAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Text = "Hej! Är du intresserad av projektet?",
-                            ToUserId = "user-2"
+                            ToUserId = "70d91398-1e9f-4c6c-9464-31629296e124"
                         });
                 });
 
             modelBuilder.Entity("CvAppenVS.Models.Project", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -290,14 +272,14 @@ namespace CvAppenVS.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Intern webbportal för företag",
                             Title = "Webbportal"
                         },
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2021, 3, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "App för bokningssystem",
                             Title = "Mobilapp"
                         });
@@ -385,41 +367,35 @@ namespace CvAppenVS.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "user-1",
+                            Id = "5f8dedbb-0023-4225-90a3-fb982dde34e4",
                             AccessFailedCount = 0,
                             Address = "Stockholm",
-                            ConcurrencyStamp = "c76ec9f2-e08e-4aae-bc52-024c3eb4e1fe",
+                            ConcurrencyStamp = "87bcb1f3-09f1-4576-8951-e83121b0a196",
                             Email = "anna@example.com",
                             EmailConfirmed = false,
                             Image = "anna.jpg",
                             IsPrivate = false,
                             LockoutEnabled = false,
                             Name = "Anna Andersson",
-                            NormalizedEmail = "ANNA@EXAMPLE.COM",
-                            NormalizedUserName = "ANNA@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENMumSeF9hZDhmKQBh5uZFIwX3+GA8R3FkzNAgHuuJ1ytHk7cXpxJfWQp8fAlo2UjA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7ad97f0f-237c-4f64-8cc2-7ba91c0089c3",
+                            SecurityStamp = "6f25faac-7dbc-4f5a-a49d-2914674e8f8a",
                             TwoFactorEnabled = false,
                             UserName = "anna@example.com"
                         },
                         new
                         {
-                            Id = "user-2",
+                            Id = "70d91398-1e9f-4c6c-9464-31629296e124",
                             AccessFailedCount = 0,
                             Address = "Göteborg",
-                            ConcurrencyStamp = "757cd5c5-0e8e-4b13-8210-0558d609cdc1",
+                            ConcurrencyStamp = "916798cd-3f1f-487c-a17b-6d7836afb4a1",
                             Email = "erik@example.com",
                             EmailConfirmed = false,
                             Image = "erik.jpg",
                             IsPrivate = true,
                             LockoutEnabled = false,
                             Name = "Erik Svensson",
-                            NormalizedEmail = "ERIK@EXAMPLE.COM",
-                            NormalizedUserName = "ERIK@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKWJzmKUYlyTtjxpBkdpqq1Z5DJNxbJwDdgdDymfHlJOnoNdfNRnS5hD7Ryep2Y4vA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d44f5067-cd66-4116-9a06-224e4d992231",
+                            SecurityStamp = "7cfada84-72cc-4d5b-a47f-d556fc4ddc1e",
                             TwoFactorEnabled = false,
                             UserName = "erik@example.com"
                         });
@@ -442,17 +418,17 @@ namespace CvAppenVS.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "user-1",
+                            UserId = "5f8dedbb-0023-4225-90a3-fb982dde34e4",
                             ProjectId = 1
                         },
                         new
                         {
-                            UserId = "user-2",
+                            UserId = "70d91398-1e9f-4c6c-9464-31629296e124",
                             ProjectId = 1
                         },
                         new
                         {
-                            UserId = "user-2",
+                            UserId = "70d91398-1e9f-4c6c-9464-31629296e124",
                             ProjectId = 2
                         });
                 });
