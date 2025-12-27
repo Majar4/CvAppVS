@@ -1,0 +1,25 @@
+﻿@model List<Project>
+
+@{
+    ViewBag.Title = "Projekt";
+}
+
+<h1>Projekt</h1>
+
+@foreach (var project in Model)
+{
+    <h2>@project.Title</h2>
+    <p>@project.Description</p>
+    <p><b>Datum:</b> @project.Date.ToShortDateString()</p>
+
+    <b>Deltagare:</b>
+    <ul>
+        @foreach (var up in project.UserProjects)
+        {
+            if (!up.User.IsPrivate || User.Identity.IsAuthenticated)
+            {
+                <li>@up.User.Name</li>
+            }
+        }
+    </ul>
+}
