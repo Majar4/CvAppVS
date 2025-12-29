@@ -28,8 +28,12 @@ namespace CvAppenVS.Controllers
                         UserId = u.Id,
                         Name = u.Name,
                         Presentation = u.CV != null ? u.CV.Presentation : "Ingen presentation tillgänglig"
+                        //Om vi ska ha in varje användares senste projekt på startsidan, fixa till och avkommentera nedan
+                        //LatestProjectTitle = u.UserProjects != null && u.UserProjects.Any()
+                        //? u.UserProjects.OrderByDescending(up => up.ProjectId).First().Project.Title
+                        //: "Inget projekt än"
                     })
-                    .Take(4)
+                    .Take(6)
                     .ToList();
                 var lastProject = _context.Projects
                     .OrderByDescending(p => p.Id)
