@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CvAppenVS.Migrations
 {
     [DbContext(typeof(CvContext))]
-    [Migration("20251222111005_AddMessagesAndRelations")]
+    [Migration("20251222191005_AddMessagesAndRelations")]
     partial class AddMessagesAndRelations
     {
         /// <inheritdoc />
