@@ -1,0 +1,17 @@
+﻿@model CvAppenVS.Models.Message
+
+@{
+	ViewData["Title"] = "Bekräfta borttagning";
+}
+
+<h2>Bekräfta borttagning</h2>
+
+<p>Är du säker på att du vill radera meddelandet?</p>
+
+</hr>
+<form asp-action="RemoveConfirmed"
+method="post">
+<input type="hidden" name="id" value="@Model.Id" />>
+<button type="submit" class="btn btn-sm btn-danger"> Ja </button>
+<a asp-action="index" class="btn btn-secondary"> Nej </a>
+</form>

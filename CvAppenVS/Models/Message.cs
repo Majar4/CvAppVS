@@ -15,6 +15,7 @@ namespace CvAppenVS.Models
         public string ToUserId { get; set; } = null!;
 
         public User ToUser { get; set; }
+
         public bool IsRead { get; set; }
         public DateTime SentAt {  get; set; }
     }
