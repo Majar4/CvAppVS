@@ -50,7 +50,7 @@ namespace CvAppenVS.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("CVs", (string)null);
+                    b.ToTable("CVs");
 
                     b.HasData(
                         new
@@ -82,7 +82,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasIndex("CVId");
 
-                    b.ToTable("Competences", (string)null);
+                    b.ToTable("Competences");
 
                     b.HasData(
                         new
@@ -137,7 +137,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasIndex("CVId");
 
-                    b.ToTable("EarlierExperiences", (string)null);
+                    b.ToTable("EarlierExperiences");
 
                     b.HasData(
                         new
@@ -191,7 +191,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasIndex("CVId");
 
-                    b.ToTable("Educations", (string)null);
+                    b.ToTable("Educations");
 
                     b.HasData(
                         new
@@ -249,7 +249,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasIndex("ToUserId");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
 
                     b.HasData(
                         new
@@ -285,7 +285,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects", (string)null);
+                    b.ToTable("Projects");
 
                     b.HasData(
                         new
@@ -328,11 +328,7 @@ namespace CvAppenVS.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("bit");
@@ -392,7 +388,7 @@ namespace CvAppenVS.Migrations
                             Id = "5f8dedbb-0023-4225-90a3-fb982dde34e4",
                             AccessFailedCount = 0,
                             Address = "Stockholm",
-                            ConcurrencyStamp = "893e1a65-e452-4e4b-838d-fa3c38eb3fc0",
+                            ConcurrencyStamp = "a12eb3be-e343-4544-885e-5944471f1ab4",
                             Email = "anna@example.com",
                             EmailConfirmed = false,
                             Image = "anna.jpg",
@@ -400,7 +396,7 @@ namespace CvAppenVS.Migrations
                             LockoutEnabled = false,
                             Name = "Anna Andersson",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "773a3513-0b3e-42ec-a59b-c26149dc1b27",
+                            SecurityStamp = "6ea63d78-95af-402a-b7e9-6c7ed4d3fd6c",
                             TwoFactorEnabled = false,
                             UserName = "anna@example.com"
                         },
@@ -409,7 +405,7 @@ namespace CvAppenVS.Migrations
                             Id = "70d91398-1e9f-4c6c-9464-31629296e124",
                             AccessFailedCount = 0,
                             Address = "Göteborg",
-                            ConcurrencyStamp = "33afd24e-5935-451d-8daf-8696174feec2",
+                            ConcurrencyStamp = "ef4d0feb-9bc8-4616-a4e4-82f24ce4d9dc",
                             Email = "erik@example.com",
                             EmailConfirmed = false,
                             Image = "erik.jpg",
@@ -417,7 +413,7 @@ namespace CvAppenVS.Migrations
                             LockoutEnabled = false,
                             Name = "Erik Svensson",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b273d417-ad44-4f27-b261-bd06dbe2b432",
+                            SecurityStamp = "f647e974-9197-4744-8ab0-feb36fb31116",
                             TwoFactorEnabled = false,
                             UserName = "erik@example.com"
                         });
@@ -435,7 +431,7 @@ namespace CvAppenVS.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("UserProjects", (string)null);
+                    b.ToTable("UserProjects");
 
                     b.HasData(
                         new
