@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace CvAppenVS.Models
+namespace CvAppen.Data
 {
     public class CvContext : IdentityDbContext<User>
     {

@@ -1,4 +1,4 @@
-﻿namespace CvAppenVS.Models.DTOs
+﻿namespace CvAppen.Web.DTOs
 {
     public class MessageDto
     {

@@ -1,7 +1,8 @@
 using System.Diagnostics;
-using CvAppenVS.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using CvAppen.Data;
+using CvAppen.Web.ViewModels;
 
 namespace CvAppenVS.Controllers
 {

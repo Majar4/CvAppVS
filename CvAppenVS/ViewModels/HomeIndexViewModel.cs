@@ -1,4 +1,4 @@
-﻿namespace CvAppenVS.Models
+﻿namespace CvAppen.Web.ViewModels
 {
     public class HomeIndexViewModel
     {
