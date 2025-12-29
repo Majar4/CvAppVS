@@ -86,7 +86,101 @@ namespace CvAppenVS.Controllers
         }
 
 
+        [HttpGet]
+        public async Task<IActionResult> SendTestMessage()
+        {
 
+            
+            var receiver = await _userManager.FindByEmailAsync("anna@example.com");
+            var message = new Message
+            {
+                Text = "Mjau mjau!",
+                FromUserId = null,
+                ToUserId = receiver.Id,
+                SenderName = "Gillis",
+                IsRead = false,
+                SentAt = DateTime.Now
+            };
+
+            _context.Messages.Add(message);
+            await _context.SaveChangesAsync();
+
+            return Ok("Testmeddelande skickat");
+        }
+
+        [HttpGet]
+        public async Task <IActionResult> Remove(int id)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var message = await _context.Messages
+
+               .FirstOrDefaultAsync(m => m.Id == id);
+            if(message == null)
+            {
+                return NotFound();
+            }
+
+            //if (message.ToUserId != userId)
+            //{
+            //    return Forbid();
+            //} <-- lägg till när inlogg funkar
+
+            return View(message);
+
+        }
+
+
+        [HttpPost]
+        //[Authorize] <-- lägg till när inlogg etc är fixat
+        public async Task <IActionResult> RemoveConfirmed(int id)
+        {
+
+            var userId = _userManager.GetUserId(User);
+
+            var message = await _context.Messages
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (message == null)
+            {
+                return NotFound();
+            }
+
+            //if (message.ToUserId != userId)
+            //{
+            //    return Forbid();
+            //} <-- lägg till när login funkar
+
+            _context.Messages.Remove(message);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task <IActionResult> MarkAsRead (int id)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var message = await _context.Messages
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (message == null)
+            {
+                return NotFound();
+            }
+
+            //if (message.ToUserId != userId)
+            //{
+            //    return Forbid();
+            //} <-- lägg till när login funkar
+
+            message.IsRead = true;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
 
     }
 

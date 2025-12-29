@@ -6,37 +6,51 @@
 
 <h2>@ViewBag.Message</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Avsändare</th>
-            <th>Meddelande</th>
-            <th>Skickat</th>
-            <th>Status</th>
-            <th></th> 
-        </tr>
-    </thead>
-    <tbody>
+<div class="chat-container">
     @foreach (var message in Model)
     {
-        <tr>
-            <td>@message.SenderName</td>
-            <td>@message.Text</td>
-            <td>@message.SentAt.ToString("yyyy-MM-dd HH:mm")</td>
+        <div class="chat-message @(message.IsRead ? "read" : "unread")">
+            <div class="chat-header">
+                <strong>@message.SenderName</strong>
+                <span class="chat-time">
+                    @message.SentAt.ToString("yyyy-MM-dd HH:mm")
+                </span>
+            </div>
+
+            <div class="chat-text">
+                @message.Text
+            </div>
             <td>
-                @if (message.IsRead)
-                {
-                    <span>Läst</span>
-                }
-                else
-                {
-                    <span>Oläst</span>
-                }
+                <form asp-action = "Remove"
+            asp-controller="Message"
+            asp-route-id = "@message.Id"
+            method = "get"
+            style="display:inline;">
+            <button type="submit" class="btn btn-sm btn-danger"> Radera </button>
+            </form>
             </td>
-            <td>
-                <a asp-action="MarkAsRead" asp-route-id="@message.Id">Markera som läst</a>
-            </td>
-        </tr>
+
+            @if (!message.IsRead)
+            {
+    <form asp-action="MarkAsRead"
+          asp-controller="Message"
+          method="post"
+          style="display:inline;">
+
+        <input type="hidden" name="id" value="@message.Id" />
+
+        <label>
+            <input type="checkbox"
+                   onchange="this.form.submit()" />
+            Markera som läst
+        </label>
+    </form>
+            }
+            else
+{
+    <span class="text-muted">Läst</span>
+}
+        </div>
     }
-    </tbody>
-</table>
+</div>
+
