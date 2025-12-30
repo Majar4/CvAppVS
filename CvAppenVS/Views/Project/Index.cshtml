@@ -10,8 +10,8 @@
 {
     <h2>@project.Title</h2>
     <p>@project.Description</p>
-    <p><b>Från:</b> @project.FromDate.ToShortDateString()</p>
-    <p><b>Till:</b> @project.ToDate.ToShortDateString()</p>
+  @*   <p><b>Från:</b>@project.FromDate.Value.ToShortDateString()</p> //säkra upp för ev. nullvärde på datum
+    <p><b>Till:</b>@project.ToDate.Value.ToShortDateString()</p> *@
 
     <b>Deltagare:</b>
     <ul>

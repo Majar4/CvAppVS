@@ -9,9 +9,10 @@ namespace CvAppen.Data
         public int Id { get; set; }
         [Required]
         public string Title { get; set; } = null!;
-        public string Description { get; set; }
-        public DateTime FromDate { get; set; }
-        public DateTime ToDate { get; set; }
+        [Required]
+        public string Description { get; set; } = null!;
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
 
         public ICollection<UserProject> UserProjects { get; set; } = new List<UserProject>();
     }
