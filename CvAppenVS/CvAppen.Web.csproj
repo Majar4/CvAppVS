@@ -17,4 +17,8 @@
     <ProjectReference Include="..\CVAppen.Data\CvAppen.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>
