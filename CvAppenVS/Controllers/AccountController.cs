@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using CvAppen.Data;
 using CvAppen.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CvAppenVS.Controllers
 {
@@ -30,8 +31,38 @@ namespace CvAppenVS.Controllers
         {
             return View();
         }
-        
 
+        [Authorize]
+        public async Task<IActionResult> Settings()
+        {
+            var user = await userManager.GetUserAsync(User);
+            var vm = new AccountSettingsViewModel
+            {
+                Name = user.Name,
+                Address = user.Address,
+                IsPrivate = user.IsPrivate
+            };
+
+            return View(vm);
+        }
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Settings(AccountSettingsViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
+            var user = await userManager.GetUserAsync(User);
+            user.Name = vm.Name;
+            user.Address = vm.Address;
+            user.IsPrivate = vm.IsPrivate;
+
+            await userManager.UpdateAsync(user);
+
+            return RedirectToAction("Index", "Home");
+        }
     }
     
        
