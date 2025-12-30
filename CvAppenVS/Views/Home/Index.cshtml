@@ -4,15 +4,15 @@
     ViewData["Title"] = "Startsida";
 }
 @*Header*@
-<div class="d-flex justify-content-between align-items-center mb-4 p-3 shadow-sm bg-light rounded">
-    <h1 class="h2 text-secondary">CV site</h1>
-    <div>
+@* <div class="d-flex justify-content-between align-items-center mb-4 p-3 shadow-sm bg-light rounded">
+    <h1 class="h2 text-secondary">CV site</h1> *@
+@*     <div>
         @if (!User.Identity.IsAuthenticated)
         {
             <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-outline-dark me-2">Logga in</a>
             <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-secondary">Registrera</a>
         }
-    </div>
+    </div> *@
 </div>
 
 @* Visa senast upplagda projektet *@

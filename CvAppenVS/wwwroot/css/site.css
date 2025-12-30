@@ -17,6 +17,34 @@ html {
   min-height: 100%;
 }
 
+.header {
+    background-color: #94BDC2;
+    padding: 1rem 0;
+}
+
+.nav-link, .navbar-brand {
+    color: #324B4E;
+}
+
+.navbar-brand {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-left: 1rem;
+}
+
+.icon {
+    width: 28px;
+    height: 28px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.icon-label {
+    color: #324B4E;
+    font-size: 1rem;
+    text-align: center;
+}
+
 body {
   margin-bottom: 60px;
 }
@@ -28,4 +56,9 @@ body {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
+}
+
+.footer {
+    padding: 2rem 0;
+    background-color: #94BDC2;
 }
