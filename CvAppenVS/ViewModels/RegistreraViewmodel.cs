@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CvAppenVS.Web.Models
+namespace CvAppen.Web.ViewModels
 {
     public class RegistreraViewmodel
     {

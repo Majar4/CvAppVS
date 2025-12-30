@@ -7,7 +7,8 @@ namespace CvAppen.Data
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage ="Meddelandet måste innehålla text.")]
+        [MaxLength(1000, ErrorMessage = "Meddelandet får inte överstiga 1000 tecken.")]
         public string Text {  get; set; }
         public string? FromUserId { get; set; }
 
