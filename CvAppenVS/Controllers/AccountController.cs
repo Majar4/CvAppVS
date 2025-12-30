@@ -23,6 +23,15 @@ namespace CvAppenVS.Controllers
             LoginViewModel loginViewModel = new LoginViewModel();
             return View(loginViewModel);
         }
+
+        [HttpGet]
+
+        public IActionResult Registrera()
+        {
+            return View();
+        }
+        
+
     }
     
        
