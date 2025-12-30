@@ -1,8 +1,7 @@
-﻿@using CvAppen.Web.ViewModels
-@model LoginViewModel
+﻿@model RegistreraViewmodel
 
 @{
-    ViewData["Title"] = "Logga in";
+    ViewData["Title"] = "Registrera";
 }
 
 <div class="container mt-5">
@@ -10,9 +9,9 @@
         <div class="col-md-5">
             <div class="card shadow">
                 <div class="card-body">
-                    <h3 class="card-title text-center mb-4">Logga in</h3>
+                    <h3 class="card-title text-center mb-4">Registrera konto</h3>
 
-                    <form asp-action="Login" method="post" novalidate>
+                    <form asp-action="Registrera" method="post" novalidate>
                         <div class="mb-3">
                             <label asp-for="UserName" class="form-label"></label>
                             <input asp-for="UserName" class="form-control" />
@@ -25,14 +24,15 @@
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
 
-                        <div class="form-check mb-3">
-                            <input asp-for="RememberMe" class="form-check-input" />
-                            <label asp-for="RememberMe" class="form-check-label"></label>
+                        <div class="mb-3">
+                            <label asp-for="BekraftaLosenord" class="form-label"></label>
+                            <input asp-for="BekraftaLosenord" class="form-control" />
+                            <span asp-validation-for="BekraftaLosenord" class="text-danger"></span>
                         </div>
 
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">
-                                Logga in
+                                Registrera
                             </button>
                         </div>
                     </form>

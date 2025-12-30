@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using CvAppenVS.Models;
+using CvAppen.Data;
+using CvAppen.Web.ViewModels;
 
 namespace CvAppenVS.Controllers
 {
@@ -22,6 +23,15 @@ namespace CvAppenVS.Controllers
             LoginViewModel loginViewModel = new LoginViewModel();
             return View(loginViewModel);
         }
+
+        [HttpGet]
+
+        public IActionResult Registrera()
+        {
+            return View();
+        }
+        
+
     }
     
        

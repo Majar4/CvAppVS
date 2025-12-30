@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9 d17.14
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11312.151 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CvAppenVS", "CvAppenVS.csproj", "{C54F8614-4451-40E5-AA44-151332478FD3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CvAppen.Web", "CvAppen.Web.csproj", "{C54F8614-4451-40E5-AA44-151332478FD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CvAppen.Data", "..\CVAppen.Data\CvAppen.Data.csproj", "{0372D950-FE51-49AA-951B-27F5E0D10E9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{C54F8614-4451-40E5-AA44-151332478FD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C54F8614-4451-40E5-AA44-151332478FD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C54F8614-4451-40E5-AA44-151332478FD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0372D950-FE51-49AA-951B-27F5E0D10E9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0372D950-FE51-49AA-951B-27F5E0D10E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0372D950-FE51-49AA-951B-27F5E0D10E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0372D950-FE51-49AA-951B-27F5E0D10E9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

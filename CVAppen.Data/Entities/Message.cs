@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CvAppenVS.Models
+namespace CvAppen.Data
 {
     public class Message
     {

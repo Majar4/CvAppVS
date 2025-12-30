@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 
-namespace CvAppenVS.Models
+namespace CvAppen.Data
 {
     public class User : IdentityUser
     {
