@@ -1,7 +1,11 @@
-﻿namespace CvAppen.Data
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CvAppen.Data
 {
     public class CV 
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Presentation { get; set; }
         public string PhoneNumber { get; set; }
@@ -14,7 +18,5 @@
         public ICollection<Competence> Competences { get; set; } = new List<Competence>();
         public ICollection<Education> Educations { get; set; } = new List<Education>();
         public ICollection<EarlierExperience> EarlierExperiences { get; set; } = new List<EarlierExperience>();
-
-        //Ingen adress här, får hämtas från User, annars duplicerad data
     }
 }

@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CvAppen.Data;
-using CvAppen.Web.ViewModels;
+using CvAppenVS.Web.Models;
+
 
 namespace CvAppenVS.Controllers
 {
@@ -45,7 +46,7 @@ namespace CvAppenVS.Controllers
             {
                 Title = model.Title,
                 Description = model.Description,
-                Date = DateTime.Now
+                //TODO : lägg till datum
             };
 
             //sparar
