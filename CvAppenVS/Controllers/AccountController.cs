@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using CvAppenVS.Models;
+using CvAppen.Data;
+using CvAppen.Web.ViewModels;
 
 namespace CvAppenVS.Controllers
 {

@@ -1,5 +1,6 @@
-﻿using CvAppenVS.Models;
-using CvAppenVS.Models.DTOs;
+﻿using CvAppen.Web.DTOs;
+using CvAppen.Data;
+using CvAppen.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

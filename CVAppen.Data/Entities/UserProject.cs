@@ -1,4 +1,4 @@
-﻿namespace CvAppenVS.Models
+﻿namespace CvAppen.Data
 {
     public class UserProject
     {
