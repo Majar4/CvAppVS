@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace CvAppenVS.Migrations
+namespace CvAppen.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -34,7 +34,7 @@ namespace CvAppenVS.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsPrivate = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -60,10 +60,12 @@ namespace CvAppenVS.Migrations
                 name: "Projects",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    FromDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ToDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -180,7 +182,8 @@ namespace CvAppenVS.Migrations
                 name: "CVs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Presentation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -201,9 +204,11 @@ namespace CvAppenVS.Migrations
                 name: "Messages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FromUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Text = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    FromUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    SenderName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ToUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IsRead = table.Column<bool>(type: "bit", nullable: false),
                     SentAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -253,7 +258,8 @@ namespace CvAppenVS.Migrations
                 name: "Competences",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CVId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -272,7 +278,8 @@ namespace CvAppenVS.Migrations
                 name: "EarlierExperiences",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Company = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -295,7 +302,8 @@ namespace CvAppenVS.Migrations
                 name: "Educations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     School = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     From = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -318,17 +326,17 @@ namespace CvAppenVS.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "Email", "EmailConfirmed", "Image", "IsPrivate", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "5f8dedbb-0023-4225-90a3-fb982dde34e4", 0, "Stockholm", "87bcb1f3-09f1-4576-8951-e83121b0a196", "anna@example.com", false, "anna.jpg", false, false, null, "Anna Andersson", null, null, null, null, false, "6f25faac-7dbc-4f5a-a49d-2914674e8f8a", false, "anna@example.com" },
-                    { "70d91398-1e9f-4c6c-9464-31629296e124", 0, "Göteborg", "916798cd-3f1f-487c-a17b-6d7836afb4a1", "erik@example.com", false, "erik.jpg", true, false, null, "Erik Svensson", null, null, null, null, false, "7cfada84-72cc-4d5b-a47f-d556fc4ddc1e", false, "erik@example.com" }
+                    { "5f8dedbb-0023-4225-90a3-fb982dde34e4", 0, "Stockholm", "81b9b94a-0571-4f84-9909-e4766303a40c", "anna@example.com", false, "anna.jpg", false, false, null, "Anna Andersson", null, null, null, null, false, "54815b6a-2a13-4c39-861d-ffe80a2f0f25", false, "anna@example.com" },
+                    { "70d91398-1e9f-4c6c-9464-31629296e124", 0, "Göteborg", "f5e80f5e-bdac-4ae7-b07f-c90f5fabcee4", "erik@example.com", false, "erik.jpg", true, false, null, "Erik Svensson", null, null, null, null, false, "5d2817a4-1db3-438e-b56f-125c8569c84f", false, "erik@example.com" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Projects",
-                columns: new[] { "Id", "Date", "Description", "Title" },
+                columns: new[] { "Id", "Description", "FromDate", "Title", "ToDate" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Intern webbportal för företag", "Webbportal" },
-                    { 2, new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "App för bokningssystem", "Mobilapp" }
+                    { 1, "Intern webbportal för företag", new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Webbportal", new DateTime(2022, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, "App för bokningssystem", new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mobilapp", new DateTime(2022, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -338,8 +346,8 @@ namespace CvAppenVS.Migrations
 
             migrationBuilder.InsertData(
                 table: "Messages",
-                columns: new[] { "Id", "FromUserId", "IsRead", "SentAt", "Text", "ToUserId" },
-                values: new object[] { 1, "5f8dedbb-0023-4225-90a3-fb982dde34e4", false, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Hej! Är du intresserad av projektet?", "70d91398-1e9f-4c6c-9464-31629296e124" });
+                columns: new[] { "Id", "FromUserId", "IsRead", "SenderName", "SentAt", "Text", "ToUserId" },
+                values: new object[] { 1, "5f8dedbb-0023-4225-90a3-fb982dde34e4", false, "Katten", new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Hej! Är du intresserad av projektet?", "70d91398-1e9f-4c6c-9464-31629296e124" });
 
             migrationBuilder.InsertData(
                 table: "UserProjects",

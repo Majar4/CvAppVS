@@ -1,7 +1,11 @@
-﻿namespace CvAppen.Data
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CvAppen.Data
 {
     public class Education
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
         public string School { get; set; }
