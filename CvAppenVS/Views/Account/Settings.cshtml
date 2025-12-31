@@ -1,0 +1,24 @@
+﻿@model CvAppen.Web.ViewModels.AccountSettingsViewModel
+
+<h2>Inställningar</h2>
+<form asp-action="Settings" method="post">
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+
+    <div>
+        <label asp-for="Address"></label>
+        <input asp-for="Address" />
+    </div>
+
+    <div>
+        <label>
+            <input asp-for="IsPrivate" />
+            Privat profil
+        </label>
+    </div>
+
+    <button type="submit">Spara</button>
+</form>
