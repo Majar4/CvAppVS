@@ -11,17 +11,13 @@ namespace CvAppen.Data
         public string? Image {  get; set; }
         public bool IsPrivate { get; set; }
 
-        //public bool IsActive { get; set; } = true;
 
         public ICollection<Message> RecievedMessages { get; set; } = new List<Message>();
 
         public ICollection<Message> SentMessages {  get; set; } = new List<Message>();  
 
-        public ICollection<UserProject> UserProjects { get; set; } = new List<UserProject>(); //Many to many till projekt
-        public CV CV { get; set; } //skapar en foreign key (UserId) i CV-tabellen
-
-        //Password och email ingår i IdentityUser
-        //HasAccessTo
+        public ICollection<UserProject> UserProjects { get; set; } = new List<UserProject>(); 
+        public CV CV { get; set; } 
 
     }
 }

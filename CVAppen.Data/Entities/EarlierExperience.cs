@@ -1,7 +1,11 @@
-﻿namespace CvAppen.Data
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CvAppen.Data
 {
     public class EarlierExperience
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Title { get; set; }
         public string? Description { get; set; }

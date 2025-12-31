@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CvAppenVS.Migrations
+namespace CvAppen.Data.Migrations
 {
     [DbContext(typeof(CvContext))]
-    [Migration("20251223072915_UpdatedMessageExampleData")]
-    partial class UpdatedMessageExampleData
+    [Migration("20251230133441_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace CvAppenVS.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CvAppenVS.Models.CV", b =>
+            modelBuilder.Entity("CvAppen.Data.CV", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -66,7 +66,7 @@ namespace CvAppenVS.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CvAppenVS.Models.Competence", b =>
+            modelBuilder.Entity("CvAppen.Data.Competence", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -108,7 +108,7 @@ namespace CvAppenVS.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CvAppenVS.Models.EarlierExperience", b =>
+            modelBuilder.Entity("CvAppen.Data.EarlierExperience", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -165,7 +165,7 @@ namespace CvAppenVS.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CvAppenVS.Models.Education", b =>
+            modelBuilder.Entity("CvAppen.Data.Education", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -217,7 +217,7 @@ namespace CvAppenVS.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CvAppenVS.Models.Message", b =>
+            modelBuilder.Entity("CvAppen.Data.Message", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -240,7 +240,8 @@ namespace CvAppenVS.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("ToUserId")
                         .IsRequired()
@@ -267,7 +268,7 @@ namespace CvAppenVS.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CvAppenVS.Models.Project", b =>
+            modelBuilder.Entity("CvAppen.Data.Project", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -275,16 +276,19 @@ namespace CvAppenVS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("FromDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ToDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -294,20 +298,22 @@ namespace CvAppenVS.Migrations
                         new
                         {
                             Id = 1,
-                            Date = new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Intern webbportal för företag",
-                            Title = "Webbportal"
+                            FromDate = new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Webbportal",
+                            ToDate = new DateTime(2022, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 2,
-                            Date = new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "App för bokningssystem",
-                            Title = "Mobilapp"
+                            FromDate = new DateTime(2020, 8, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Mobilapp",
+                            ToDate = new DateTime(2022, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
-            modelBuilder.Entity("CvAppenVS.Models.User", b =>
+            modelBuilder.Entity("CvAppen.Data.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -331,7 +337,6 @@ namespace CvAppenVS.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsPrivate")
@@ -392,7 +397,7 @@ namespace CvAppenVS.Migrations
                             Id = "5f8dedbb-0023-4225-90a3-fb982dde34e4",
                             AccessFailedCount = 0,
                             Address = "Stockholm",
-                            ConcurrencyStamp = "893e1a65-e452-4e4b-838d-fa3c38eb3fc0",
+                            ConcurrencyStamp = "81b9b94a-0571-4f84-9909-e4766303a40c",
                             Email = "anna@example.com",
                             EmailConfirmed = false,
                             Image = "anna.jpg",
@@ -400,7 +405,7 @@ namespace CvAppenVS.Migrations
                             LockoutEnabled = false,
                             Name = "Anna Andersson",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "773a3513-0b3e-42ec-a59b-c26149dc1b27",
+                            SecurityStamp = "54815b6a-2a13-4c39-861d-ffe80a2f0f25",
                             TwoFactorEnabled = false,
                             UserName = "anna@example.com"
                         },
@@ -409,7 +414,7 @@ namespace CvAppenVS.Migrations
                             Id = "70d91398-1e9f-4c6c-9464-31629296e124",
                             AccessFailedCount = 0,
                             Address = "Göteborg",
-                            ConcurrencyStamp = "33afd24e-5935-451d-8daf-8696174feec2",
+                            ConcurrencyStamp = "f5e80f5e-bdac-4ae7-b07f-c90f5fabcee4",
                             Email = "erik@example.com",
                             EmailConfirmed = false,
                             Image = "erik.jpg",
@@ -417,13 +422,13 @@ namespace CvAppenVS.Migrations
                             LockoutEnabled = false,
                             Name = "Erik Svensson",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b273d417-ad44-4f27-b261-bd06dbe2b432",
+                            SecurityStamp = "5d2817a4-1db3-438e-b56f-125c8569c84f",
                             TwoFactorEnabled = false,
                             UserName = "erik@example.com"
                         });
                 });
 
-            modelBuilder.Entity("CvAppenVS.Models.UserProject", b =>
+            modelBuilder.Entity("CvAppen.Data.UserProject", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -588,20 +593,20 @@ namespace CvAppenVS.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CvAppenVS.Models.CV", b =>
+            modelBuilder.Entity("CvAppen.Data.CV", b =>
                 {
-                    b.HasOne("CvAppenVS.Models.User", "User")
+                    b.HasOne("CvAppen.Data.User", "User")
                         .WithOne("CV")
-                        .HasForeignKey("CvAppenVS.Models.CV", "UserId")
+                        .HasForeignKey("CvAppen.Data.CV", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CvAppenVS.Models.Competence", b =>
+            modelBuilder.Entity("CvAppen.Data.Competence", b =>
                 {
-                    b.HasOne("CvAppenVS.Models.CV", "CV")
+                    b.HasOne("CvAppen.Data.CV", "CV")
                         .WithMany("Competences")
                         .HasForeignKey("CVId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -610,9 +615,9 @@ namespace CvAppenVS.Migrations
                     b.Navigation("CV");
                 });
 
-            modelBuilder.Entity("CvAppenVS.Models.EarlierExperience", b =>
+            modelBuilder.Entity("CvAppen.Data.EarlierExperience", b =>
                 {
-                    b.HasOne("CvAppenVS.Models.CV", "CV")
+                    b.HasOne("CvAppen.Data.CV", "CV")
                         .WithMany("EarlierExperiences")
                         .HasForeignKey("CVId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -621,9 +626,9 @@ namespace CvAppenVS.Migrations
                     b.Navigation("CV");
                 });
 
-            modelBuilder.Entity("CvAppenVS.Models.Education", b =>
+            modelBuilder.Entity("CvAppen.Data.Education", b =>
                 {
-                    b.HasOne("CvAppenVS.Models.CV", "CV")
+                    b.HasOne("CvAppen.Data.CV", "CV")
                         .WithMany("Educations")
                         .HasForeignKey("CVId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -632,14 +637,14 @@ namespace CvAppenVS.Migrations
                     b.Navigation("CV");
                 });
 
-            modelBuilder.Entity("CvAppenVS.Models.Message", b =>
+            modelBuilder.Entity("CvAppen.Data.Message", b =>
                 {
-                    b.HasOne("CvAppenVS.Models.User", "FromUser")
+                    b.HasOne("CvAppen.Data.User", "FromUser")
                         .WithMany("SentMessages")
                         .HasForeignKey("FromUserId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("CvAppenVS.Models.User", "ToUser")
+                    b.HasOne("CvAppen.Data.User", "ToUser")
                         .WithMany("RecievedMessages")
                         .HasForeignKey("ToUserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -650,15 +655,15 @@ namespace CvAppenVS.Migrations
                     b.Navigation("ToUser");
                 });
 
-            modelBuilder.Entity("CvAppenVS.Models.UserProject", b =>
+            modelBuilder.Entity("CvAppen.Data.UserProject", b =>
                 {
-                    b.HasOne("CvAppenVS.Models.Project", "Project")
+                    b.HasOne("CvAppen.Data.Project", "Project")
                         .WithMany("UserProjects")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CvAppenVS.Models.User", "User")
+                    b.HasOne("CvAppen.Data.User", "User")
                         .WithMany("UserProjects")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -680,7 +685,7 @@ namespace CvAppenVS.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("CvAppenVS.Models.User", null)
+                    b.HasOne("CvAppen.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -689,7 +694,7 @@ namespace CvAppenVS.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("CvAppenVS.Models.User", null)
+                    b.HasOne("CvAppen.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -704,7 +709,7 @@ namespace CvAppenVS.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CvAppenVS.Models.User", null)
+                    b.HasOne("CvAppen.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -713,14 +718,14 @@ namespace CvAppenVS.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("CvAppenVS.Models.User", null)
+                    b.HasOne("CvAppen.Data.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CvAppenVS.Models.CV", b =>
+            modelBuilder.Entity("CvAppen.Data.CV", b =>
                 {
                     b.Navigation("Competences");
 
@@ -729,12 +734,12 @@ namespace CvAppenVS.Migrations
                     b.Navigation("Educations");
                 });
 
-            modelBuilder.Entity("CvAppenVS.Models.Project", b =>
+            modelBuilder.Entity("CvAppen.Data.Project", b =>
                 {
                     b.Navigation("UserProjects");
                 });
 
-            modelBuilder.Entity("CvAppenVS.Models.User", b =>
+            modelBuilder.Entity("CvAppen.Data.User", b =>
                 {
                     b.Navigation("CV")
                         .IsRequired();
