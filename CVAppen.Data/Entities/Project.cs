@@ -1,11 +1,18 @@
-﻿namespace CvAppen.Data
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CvAppen.Data
 {
     public class Project
     {
-        public int Id { get; set; } 
-        public string Title { get; set; }    
-        public string Description { get; set; }
-        public DateTime Date { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        [Required]
+        public string Title { get; set; } = null!;
+        [Required]
+        public string Description { get; set; } = null!;
+        public DateTime? FromDate { get; set; }
+        public DateTime? ToDate { get; set; }
 
         public ICollection<UserProject> UserProjects { get; set; } = new List<UserProject>();
     }

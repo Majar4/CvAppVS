@@ -160,14 +160,16 @@ namespace CvAppen.Data
                 Id = 1,
                 Title = "Webbportal",
                 Description = "Intern webbportal för företag",
-                Date = eduStart1,
+                FromDate = eduStart1,
+                ToDate = eduEnd1,
             },
             new Project
             {
                 Id = 2,
                 Title = "Mobilapp",
                 Description = "App för bokningssystem",
-                Date = eduStart1
+                FromDate = eduStart1,
+                ToDate = eduEnd1,
             });
 
             modelBuilder.Entity<UserProject>().HasData(
