@@ -3,6 +3,8 @@
     public class MyProfileViewModel
     {
         public string Name { get; set; }
+        public bool isPublic { get; set; }
+        public string Email { get; set; }
         public string ProfilePictureUrl { get; set; }
         public int UnReadMessagesCount { get; set; }
         public List<MessageSummaryViewModel> RecentMessages { get; set; } = new List<MessageSummaryViewModel>();

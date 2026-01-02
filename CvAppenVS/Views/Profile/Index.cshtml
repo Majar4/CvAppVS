@@ -1,5 +1,7 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using CvAppen.Web.ViewModels
+@model MyProfileViewModel
 @{
+    ViewData["Title"] = "MinProfilSida";
 }
+<h2>Välkommen, @Model.Name!</h2>
+<p>Här kan du hantera ditt CV och se dina @Model.UnReadMessagesCount olästa meddelanden.</p>
