@@ -1,7 +1,72 @@
 ﻿@using CvAppen.Web.ViewModels
+@using Microsoft.AspNetCore.Identity
 @model MyProfileViewModel
 @{
     ViewData["Title"] = "MinProfilSida";
 }
-<h2>Välkommen, @Model.Name!</h2>
-<p>Här kan du hantera ditt CV och se dina @Model.UnReadMessagesCount olästa meddelanden.</p>
+@*<h2>Välkommen, @Model.Name!</h2>*@
+@*<p>Här kan du hantera ditt CV och se dina @Model.UnReadMessagesCount olästa meddelanden.</p>*@
+
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <div class="container-fluid">
+       
+        <a class="navbar-brand" 
+        asp-area="" 
+        asp-controller="Home" 
+        asp-action="Index">CvAppenVS
+        </a>
+        
+        <button class="navbar-toggler" type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target=".navbar-collapse" 
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false" 
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" 
+                    asp-area="" 
+                    asp-controller="Home" 
+                    asp-action="Index">Hem
+                    </a>
+                </li>
+
+                @* Här är länken till profil-sidan *@
+                <li class="nav-item">
+                    <a class="nav-link text-dark" 
+                    asp-area="" 
+                    asp-controller="Profile" 
+                    asp-action="Index">Mina sidor
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-dark" 
+                    asp-area="" 
+                    asp-controller="Project" 
+                    asp-action="Index">Projekt
+                    </a>
+                </li>
+            </ul>
+
+            @* Högerjusterad del för användarnamn och logga ut *@
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <span class="nav-link text-dark">Hej, @User.Identity.Name!</span>
+                </li>
+                <li class="nav-item">
+                    <form class="form-inline" 
+                    asp-area="Identity" 
+                    asp-page="/Account/Logout" 
+                    asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="nav-link btn btn-link text-dark border-0">Logga ut</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
