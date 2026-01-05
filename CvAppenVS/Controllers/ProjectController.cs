@@ -3,6 +3,7 @@ using CvAppenVS.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -102,7 +103,46 @@ namespace CvAppenVS.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //Redigera projekt om man har skapat projektet
-       
+        //Redigera projekt - för den som skapat projektet GET
+
+        [Authorize]
+        public async Task<IActionResult> EditProject(int id)
+        {
+            var project = await _context.Projects.FindAsync(id);
+
+            if (project == null)
+                return NotFound();
+
+            var userId = _userManager.GetUserId(User);
+
+            //Endast skaparen får redigera
+            if (project.CreatedByUserId != userId)
+                return Forbid();
+
+            return View(project);
+        }
+
+        //Redigera POST
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> EditProject(Project editedProject)
+        {
+            var userId = _userManager.GetUserId(User);
+            //Hämtar originalprojekt från DB
+            var project = await _context.Projects.FindAsync(editedProject.Id);
+
+            if (project == null)
+                return NotFound();
+
+            if (project.CreatedByUserId != userId)
+                return Forbid();
+
+            project.Title = editedProject.Title;
+            project.Description = editedProject.Description;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+        }
     }
 }

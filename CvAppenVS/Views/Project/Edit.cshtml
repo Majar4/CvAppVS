@@ -1,0 +1,19 @@
+﻿@model CvAppen.Data.Project
+
+<h2>Redigera projekt</h2>
+
+<form asp-action="EditProject" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label>Titel</label>
+        <input asp-for="Title" />
+    </div>
+
+    <div>
+        <label>Beskrivning</label>
+        <textarea asp-for="Description"></textarea>
+    </div>
+
+    <button type="submit">Spara</button>
+</form>

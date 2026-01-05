@@ -1,4 +1,6 @@
-﻿@model List<Project>
+﻿@using System.Security.Claims @*Behövs för att kunna hämta inloggad användares ID i vyn*@
+
+@model List<Project>
 
 @{
     ViewBag.Title = "Projekt";
@@ -25,8 +27,17 @@
     </ul>
     @if (User.Identity.IsAuthenticated) @* Knapp för att gå med, inloggade användare *@
     {
-        <a asp-action="JoinProjekt" asp-route-projectId="@project.Id">
+        <a asp-action="JoinProject" asp-route-projectId="@project.Id" class="btn btn-dark btn-sm">
             Gå med i projektet
+        </a>
+    }
+
+    @* Knapp för att redigera *@
+
+    @if (User.Identity.IsAuthenticated && project.CreatedByUserId == User.FindFirstValue(ClaimTypes.NameIdentifier)) @* Måste vara inloggad + den som skapade projektet = visar knappen*@
+    {
+        <a asp-action="EditProject" asp-route-id="@project.Id" class="btn btn-dark btn-sm">
+            Redigera
         </a>
     }
 
