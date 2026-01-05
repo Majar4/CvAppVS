@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using CvAppen.Data;
 using CvAppenVS.Web.Models;
+using Microsoft.AspNetCore.Identity;
+
 
 
 namespace CvAppenVS.Controllers
@@ -9,10 +11,12 @@ namespace CvAppenVS.Controllers
     public class ProjectController : Controller
     {
         private readonly CvContext _context;
+        private readonly UserManager<User> _userManager; //Hämtar inloggad användare
 
-        public ProjectController(CvContext context)
+        public ProjectController(CvContext context, UserManager<User> userManager)
         {
-            _context = context; 
+            _context = context;
+            _userManager = userManager;
         }
 
         //Lista alla projekt
@@ -51,6 +55,18 @@ namespace CvAppenVS.Controllers
 
             //sparar
             _context.Projects.Add(project);
+            await _context.SaveChangesAsync();
+
+            // Koppling mellan användaren/skaparen och projektet
+            var user = await _userManager.GetUserAsync(User);
+
+            var link = new UserProject
+            {
+                UserId = user.Id,
+                ProjectId = project.Id,
+            };
+
+            _context.UserProjects.Add(link);
             await _context.SaveChangesAsync();
 
             //skikcas tillbaks till projektlistan
