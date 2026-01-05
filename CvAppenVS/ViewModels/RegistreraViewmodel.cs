@@ -6,19 +6,18 @@ namespace CvAppen.Web.ViewModels
     {
         [Required(ErrorMessage = "Ange användarnamn.")]
         [StringLength(30, ErrorMessage = "Användarnamnet får max vara 30 tecken.")]
-        public string UserName { get; set; }
+        public required string UserName { get; set; }
 
         [Required(ErrorMessage = "Skriv in lösenord.")]
         [DataType(DataType.Password)]
-        
-
-        public string Password { get; set; }
+        [MinLength(6, ErrorMessage = "Password must be at least 6 characters.")]
+        [RegularExpression(@"^(?=.*[A-Z])(?=.*\d).+$", ErrorMessage = "Password must contain at least one uppercase letter and one number.")]
+        public required string Password { get; set; }
 
         [Required(ErrorMessage = "Bekräfta lösenord.")]
-        [DataType (DataType.Password)]
-        [Display(Name  = "Bekräfta lösenord")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Bekräfta lösenord")]
         [Compare("Password", ErrorMessage = "Lösenorden matchar inte.")]
-
-        public string BekraftaLosenord { get; set; }
+        public required string BekraftaLosenord { get; set; }
     }
 }
