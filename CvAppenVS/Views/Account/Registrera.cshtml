@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <h3 class="card-title text-center mb-4">Registrera konto</h3>
 
-                    <form asp-action="RegistreraSubmit" method="post" novalidate>
+                    <form asp-action="Registrera" asp-controller="Account" method="post" novalidate>
                         <div class="mb-3">
                             <label asp-for="UserName" class="form-label"></label>
                             <input asp-for="UserName" class="form-control" />
