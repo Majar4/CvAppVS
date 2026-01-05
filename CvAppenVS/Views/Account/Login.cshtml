@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <h3 class="card-title text-center mb-4">Logga in</h3>
 
-                    <form asp-action="Login" method="post" novalidate>
+                    <form asp-action="Login" asp-controller="Account" method="post" novalidate>
                         <div class="mb-3">
                             <label asp-for="UserName" class="form-label"></label>
                             <input asp-for="UserName" class="form-control" />
