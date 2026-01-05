@@ -24,6 +24,28 @@ namespace CvAppenVS.Controllers
             return View(loginViewModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel vm)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
+            var result = await signInManager.PasswordSignInAsync(
+                vm.UserName,
+                vm.Password,
+                vm.RememberMe,
+                lockoutOnFailure: false);
+
+            if(!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Gick ej att logga in");
+                return View(vm);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpGet]
         public IActionResult Registrera()
         {
