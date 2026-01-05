@@ -43,6 +43,7 @@ namespace CvAppenVS.Controllers
 
             return View(vm);
         }
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Settings(AccountSettingsViewModel vm)
@@ -60,13 +61,11 @@ namespace CvAppenVS.Controllers
             await userManager.UpdateAsync(user);
 
             return RedirectToAction("Index", "Home");
-        }
-    }
-    
+        }  
        
 
         [HttpPost]
-        public async Task<IActionResult> RegistreraSubmit(RegistreraViewmodel request)
+        public async Task<IActionResult> Registrera(RegistreraViewmodel request)
         {
             if(!ModelState.IsValid)
             {
@@ -84,6 +83,7 @@ namespace CvAppenVS.Controllers
             };
 
             var result = await userManager.CreateAsync(user, request.Password);
+
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
