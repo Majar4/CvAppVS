@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using CvAppen.Data;
 using CvAppen.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CvAppenVS.Controllers
 {
@@ -29,9 +30,42 @@ namespace CvAppenVS.Controllers
             return View();
         }
 
+        [Authorize]
+        public async Task<IActionResult> Settings()
+        {
+            var user = await userManager.GetUserAsync(User);
+            var vm = new AccountSettingsViewModel
+            {
+                Name = user.Name,
+                Address = user.Address,
+                IsPrivate = user.IsPrivate
+            };
+
+            return View(vm);
+        }
 
         [HttpPost]
-        public async Task<IActionResult> RegistreraSubmit(RegistreraViewmodel request)
+        [Authorize]
+        public async Task<IActionResult> Settings(AccountSettingsViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
+            var user = await userManager.GetUserAsync(User);
+            user.Name = vm.Name;
+            user.Address = vm.Address;
+            user.IsPrivate = vm.IsPrivate;
+
+            await userManager.UpdateAsync(user);
+
+            return RedirectToAction("Index", "Home");
+        }  
+       
+
+        [HttpPost]
+        public async Task<IActionResult> Registrera(RegistreraViewmodel request)
         {
             if(!ModelState.IsValid)
             {
@@ -49,6 +83,7 @@ namespace CvAppenVS.Controllers
             };
 
             var result = await userManager.CreateAsync(user, request.Password);
+
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
