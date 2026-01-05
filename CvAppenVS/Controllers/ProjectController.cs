@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using CvAppen.Data;
+﻿using CvAppen.Data;
 using CvAppenVS.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 
 
@@ -36,6 +37,7 @@ namespace CvAppenVS.Controllers
         }
 
         // Tar emot formuläret och sparar projektet i databasen
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateProjectViewModel model)
         {
@@ -44,12 +46,14 @@ namespace CvAppenVS.Controllers
             {
                 return View(model);
             }
-
+            // Hämta inloggad användare
+            var user = await _userManager.GetUserAsync(User);
             // Skapar ett nytt projektobjekt från formulärets data
             var project = new Project
             {
                 Title = model.Title,
                 Description = model.Description,
+                CreatedByUserId = user.Id
                 //TODO : lägg till datum
             };
 
@@ -58,8 +62,6 @@ namespace CvAppenVS.Controllers
             await _context.SaveChangesAsync();
 
             // Koppling mellan användaren/skaparen och projektet
-            var user = await _userManager.GetUserAsync(User);
-
             var link = new UserProject
             {
                 UserId = user.Id,
@@ -73,5 +75,34 @@ namespace CvAppenVS.Controllers
             return RedirectToAction(nameof(Index));
 
         }
+
+        //Gå med i projekt
+        [Authorize]
+        public async Task<IActionResult> JoinProject(int projectId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            bool alreadyJoined = await _context.UserProjects
+                .AnyAsync(up => up.ProjectId == projectId && up.UserId == user.Id);
+
+
+            if (!alreadyJoined)
+            {
+                // Skapar kopplingen mellan användare och projekt
+                var userProject = new UserProject
+                {
+                    ProjectId = projectId,
+                    UserId = user.Id
+                };
+
+                _context.UserProjects.Add(userProject);
+                await _context.SaveChangesAsync();  
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        //Redigera projekt om man har skapat projektet
+       
     }
 }

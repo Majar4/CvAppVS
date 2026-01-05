@@ -13,6 +13,9 @@ namespace CvAppen.Data
         public string Description { get; set; } = null!;
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
+        public string CreatedByUserId { get; set; } = null!;
+        public User CreatedByUser { get; set; } = null!;
+
 
         public ICollection<UserProject> UserProjects { get; set; } = new List<UserProject>();
     }

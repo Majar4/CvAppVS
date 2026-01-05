@@ -23,4 +23,11 @@
             }
         }
     </ul>
+    @if (User.Identity.IsAuthenticated) @* Knapp för att gå med, inloggade användare *@
+    {
+        <a asp-action="JoinProjekt" asp-route-projectId="@project.Id">
+            Gå med i projektet
+        </a>
+    }
+
 }
