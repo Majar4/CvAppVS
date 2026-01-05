@@ -26,5 +26,44 @@ namespace CvAppen.Web.Controllers
             };
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult Search(string searchString) 
+        {
+            var users = _context.Users.AsQueryable();
+            if (!string.IsNullOrEmpty(searchString))
+            {         
+                users = users.Where(u => u.Name.Contains(searchString) || u.Email.Contains(searchString));
+            }
+            return View(users);
+        }
+        [HttpGet]
+        public IActionResult Details(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var model = new MyProfileViewModel
+            {
+                Name = user.Name,
+            };
+
+            var projects = _context.UserProjects
+            .Where(up => up.UserId == id)
+            .Select(up => up.Project)
+            .ToList();
+            ViewBag.Projects = projects;
+
+            return View(model);
+        }
     }
 }
