@@ -1,8 +1,10 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using CvAppen.Data;
 using CvAppen.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace CvAppenVS.Controllers
 {
@@ -10,11 +12,13 @@ namespace CvAppenVS.Controllers
     {
         private UserManager<User> userManager;
         private SignInManager<User> signInManager;
+        private IWebHostEnvironment environment;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IWebHostEnvironment environment)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.environment = environment;
         }
 
         [HttpGet]
@@ -27,7 +31,7 @@ namespace CvAppenVS.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel vm)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(vm);
             }
@@ -38,7 +42,7 @@ namespace CvAppenVS.Controllers
                 vm.RememberMe,
                 lockoutOnFailure: false);
 
-            if(!result.Succeeded)
+            if (!result.Succeeded)
             {
                 ModelState.AddModelError("", "Gick ej att logga in");
                 return View(vm);
@@ -83,25 +87,36 @@ namespace CvAppenVS.Controllers
             await userManager.UpdateAsync(user);
 
             return RedirectToAction("Index", "Home");
-        }  
-       
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Registrera(RegistreraViewmodel request)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(request);
             }
 
-            //var userExists = await userManager.FindByIdAsync(request.UserName);
+            string fileName = Guid.NewGuid() + Path.GetExtension(request.Image.FileName);
+
+            string imagePath = Path.Combine(
+                environment.WebRootPath,
+                "images",
+                fileName
+                );
+
+            using (var stream = new FileStream(imagePath, FileMode.Create))
+            {
+                await request.Image.CopyToAsync(stream);
+            }
             var user = new User
             {
                 UserName = request.UserName,
                 Email = request.UserName,
-                Name = "Fredrik",
-                Address = "Orebro",
-                Image = "fredrik.jpg"
+                Name = request.Name,
+                Address = request.Address,
+                Image = fileName
             };
 
             var result = await userManager.CreateAsync(user, request.Password);
@@ -111,11 +126,15 @@ namespace CvAppenVS.Controllers
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
+                    Console.WriteLine(error.Description);
                 }
                 return View(request);
             }
 
             return View(request);
+
         }
+        
+    
     }   
 }
