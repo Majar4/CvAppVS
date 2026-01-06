@@ -5,6 +5,20 @@
 				Cv-siten
 			</a>
 			<div class="ms-auto d-flex gap-3">
+				@* Sök-funktion *@
+				<form asp-controller="Profile" asp-action="Search" method="get" class="d-flex align-items-center">
+					<input type="text" name="searchString" class="form-control form-control-sm" placeholder="Sök..." style="width: 150px; height: 30px;">
+					<div class="d-flex flex-column align-items-center me-2">
+						<button type="submit" class="btn btn-link p-0 d-flex flex-column align-items-center text-decoration-none" style="color: inherit;">
+							<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#324B4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<circle cx="11" cy="11" r="8"></circle>
+								<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+							</svg>
+							<span class="icon-label mt-1" style="font-size: 0.8rem; color: #324B4E;">Sök</span>
+						</button>
+					</div>
+				</form>
+
 				@* Meddelande-ikon *@
 				<a class ="nav-link d-flex flex-column align-items-center" asp-controller="Message" asp-action="Index">
 				<svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#324B4E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

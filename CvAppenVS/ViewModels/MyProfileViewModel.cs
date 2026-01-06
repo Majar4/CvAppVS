@@ -6,6 +6,7 @@
         public bool isPublic { get; set; }
         public string Email { get; set; }
         public string ProfilePictureUrl { get; set; }
+        public int CVId { get; set; }
         public int UnReadMessagesCount { get; set; }
         public List<MessageSummaryViewModel> RecentMessages { get; set; } = new List<MessageSummaryViewModel>();
         public List<ProjectSummaryViewModel> MyProjects { get; set; } = new List<ProjectSummaryViewModel>();
