@@ -79,7 +79,7 @@ namespace CvAppenVS.Controllers
 
         //Gå med i projekt
         [Authorize]
-        public async Task<IActionResult> JoinProject(int projectId)
+        public async Task<IActionResult> Join(int projectId)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -106,7 +106,7 @@ namespace CvAppenVS.Controllers
         //Redigera projekt - för den som skapat projektet GET
 
         [Authorize]
-        public async Task<IActionResult> EditProject(int id)
+        public async Task<IActionResult> Edit(int id)
         {
             var project = await _context.Projects.FindAsync(id);
 
@@ -125,7 +125,7 @@ namespace CvAppenVS.Controllers
         //Redigera POST
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> EditProject(Project editedProject)
+        public async Task<IActionResult> Edit(Project editedProject)
         {
             var userId = _userManager.GetUserId(User);
             //Hämtar originalprojekt från DB
