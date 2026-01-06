@@ -22,14 +22,14 @@ namespace CvAppenVS.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         [ActionName("Index")]
         public async Task<IActionResult> ReadMessages()
         {
             var userId = _userManager.GetUserId(User);
 
             var message = await _context.Messages
-                //.Where(m => m.ToUserId == userId) <-- LÄGG TILL NÄR INLOGG FINNS
+                .Where(m => m.ToUserId == userId) 
                 .Select(m => new MessageDto
                 {
                     Id = m.Id,
@@ -40,7 +40,7 @@ namespace CvAppenVS.Controllers
                 }).OrderBy(m => m.SentAt)
                 .ToListAsync<MessageDto>();
 
-            ViewBag.Message = "Mina meddelanden:";
+            ViewBag.Message = "Inkorg:";
 
             return View(message);
         }
@@ -92,10 +92,10 @@ namespace CvAppenVS.Controllers
         {
 
             
-            var receiver = await _userManager.FindByEmailAsync("anna@example.com");
+            var receiver = await _userManager.FindByEmailAsync("Tomten@hotmail.com");
             var message = new Message
             {
-                Text = "Mjau mjau!",
+                Text = "En kaffe?",
                 FromUserId = null,
                 ToUserId = receiver.Id,
                 SenderName = "Gillis",
@@ -122,10 +122,10 @@ namespace CvAppenVS.Controllers
                 return NotFound();
             }
 
-            //if (message.ToUserId != userId)
-            //{
-            //    return Forbid();
-            //} <-- lägg till när inlogg funkar
+            if (message.ToUserId != userId)
+            {
+                return Forbid();
+            } 
 
             return View(message);
 
@@ -133,7 +133,7 @@ namespace CvAppenVS.Controllers
 
 
         [HttpPost]
-        //[Authorize] <-- lägg till när inlogg etc är fixat
+        [Authorize]
         public async Task <IActionResult> RemoveConfirmed(int id)
         {
 
@@ -147,10 +147,10 @@ namespace CvAppenVS.Controllers
                 return NotFound();
             }
 
-            //if (message.ToUserId != userId)
-            //{
-            //    return Forbid();
-            //} <-- lägg till när login funkar
+            if (message.ToUserId != userId)
+            {
+                return Forbid();
+            }
 
             _context.Messages.Remove(message);
             await _context.SaveChangesAsync();
@@ -171,10 +171,10 @@ namespace CvAppenVS.Controllers
                 return NotFound();
             }
 
-            //if (message.ToUserId != userId)
-            //{
-            //    return Forbid();
-            //} <-- lägg till när login funkar
+            if (message.ToUserId != userId)
+            {
+                return Forbid();
+            }
 
             message.IsRead = true;
 

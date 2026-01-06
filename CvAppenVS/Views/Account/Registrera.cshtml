@@ -12,19 +12,44 @@
                 <div class="card-body">
                     <h3 class="card-title text-center mb-4">Registrera konto</h3>
 
-                    <form asp-action="Registrera" asp-controller="Account" method="post" novalidate>
+                    <form asp-action="Registrera" asp-controller="Account" method="post" enctype="multipart/form-data" novalidate>
+
+                        <!-- Användarnamn -->
                         <div class="mb-3">
                             <label asp-for="UserName" class="form-label"></label>
                             <input asp-for="UserName" class="form-control" />
                             <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
 
+                        <!-- Namn -->
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <!-- Adress -->
+                        <div class="mb-3">
+                            <label asp-for="Address" class="form-label"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+
+                        <!-- Bild -->
+                        <div class="mb-3">
+                            <label asp-for="Image" class="form-label"></label>
+                            <input asp-for="Image" type="file" class="form-control" />
+                            <span asp-validation-for="Image" class="text-danger"></span>
+                        </div>
+
+                        <!-- Lösenord -->
                         <div class="mb-3">
                             <label asp-for="Password" class="form-label"></label>
                             <input asp-for="Password" class="form-control" />
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
 
+                        <!-- Bekräfta lösenord -->
                         <div class="mb-3">
                             <label asp-for="BekraftaLosenord" class="form-label"></label>
                             <input asp-for="BekraftaLosenord" class="form-control" />
@@ -36,6 +61,7 @@
                                 Registrera
                             </button>
                         </div>
+
                     </form>
                 </div>
             </div>
