@@ -1,20 +1,23 @@
 ﻿@model CvAppenVS.Web.Models.CreateProjectViewModel
 
-<h2>Nytt Projekt</h2>
+<h2 class="mb-4">Nytt Projekt</h2>
 
-<form asp-action="Create" method="post">
-    <div> 
-        <label>Titel</label>
-        <input asp-for="Title" />
+<form asp-action="Create" method="post" class="col-md-6">
+
+    <div class="mb-3">
+        <label class="form-label">Titel</label>
+        <input asp-for="Title" class="form-control" />
         <span asp-validation-for="Title"></span>
     </div>
 
-    <div>
-        <label>Beskrivning</label>
-        <textarea asp-for="Description"></textarea>
-        <span asp-validation-for="Description"></span>
+    <div class="mb-3">
+        <label class="form-label">Beskrivning</label>
+        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
     </div>
 
-    <button type="submit">Skapa</button>
+    <button type="submit" class="btn btn-dark btn-sm">Skapa</button>
+
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm ms-2">Tillbaka</a>
 
 </form>
