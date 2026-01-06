@@ -24,4 +24,9 @@
     <ProjectReference Include="..\CVAppen.Data\CvAppen.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\NewFolder\" />
+  </ItemGroup>
+
 </Project>

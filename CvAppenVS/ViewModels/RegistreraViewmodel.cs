@@ -8,6 +8,15 @@ namespace CvAppen.Web.ViewModels
         [StringLength(30, ErrorMessage = "Användarnamnet får max vara 30 tecken.")]
         public required string UserName { get; set; }
 
+        [Required(ErrorMessage = "Ange namn.")]
+        public required string Name { get; set; }
+
+        [Required(ErrorMessage = "Ange adress.")]
+        public required string Address { get; set; }
+
+        [Required(ErrorMessage = "Ladda upp en bild.")]
+        public required IFormFile Image { get; set; }
+
         [Required(ErrorMessage = "Skriv in lösenord.")]
         [DataType(DataType.Password)]
         [MinLength(6, ErrorMessage = "Password must be at least 6 characters.")]
