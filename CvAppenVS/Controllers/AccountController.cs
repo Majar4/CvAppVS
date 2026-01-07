@@ -44,7 +44,7 @@ namespace CvAppenVS.Controllers
 
             if (!result.Succeeded)
             {
-                ModelState.AddModelError("", "Gick ej att logga in");
+                ModelState.AddModelError("", "Fel användarnamn eller lösenord");
                 return View(vm);
             }
             return RedirectToAction("Index", "Home");
