@@ -9,36 +9,35 @@
             <div class="card-shadow">
                 <div class="card-body">
                     <h3 class="card-title text-center mb-4">@ViewData["Title"]</h3>
+                    <form asp-action="Settings" method="post" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Address" class="form-label"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input asp-for="IsPrivate" class="form-check-input" />
+                            <label asp-for="IsPrivate" class="form-check-lebel"></label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 mb-3">Spara</button>
+
+                        <div class="text-center">
+                            <a asp-controller="Account" asp-action="ChangePassword" class="link-secondary">
+                                Ändra lösenord
+                            </a>
+                        </div>
+
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<form asp-action="Settings" method="post" class="needs-validation" novalidate>
-    <div class="mb-3">
-        <label asp-for="Name" class="form-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Address" class="form-label"></label>
-        <input asp-for="Address" class="form-control"/>
-        <span asp-validation-for="Address" class="text-danger"></span>
-    </div>
-
-    <div class="form-check mb-3">
-        <input asp-for="IsPrivate" class="form-check-input" />
-        <label asp-for="IsPrivate" class="form-check-lebel"></label>
-    </div>
-
-    <button type="submit" class="btn btn-primary w-100 mb-3">Spara</button>
-
-    <div class="text-center">
-        <a asp-controller="Account" asp-action="ChangePassword" class="link-secondary">
-            Ändra lösenord
-        </a>
-    </div>
-
-</form>

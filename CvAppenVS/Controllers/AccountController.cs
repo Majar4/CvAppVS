@@ -103,7 +103,7 @@ namespace CvAppenVS.Controllers
                 return View(vm);
             }
             TempData["Success"] = "Inställningarna har uppdaterats";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Settings");
         }
 
         [Authorize]
