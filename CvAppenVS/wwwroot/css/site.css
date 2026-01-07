@@ -62,3 +62,44 @@ body {
     padding: 2rem 0;
     background-color: #94BDC2;
 }
+
+.hamburger-container {
+    position: relative;
+}
+
+.hamburger-menu {
+    background: #60888c;
+    display: none;
+    list-style: none;
+    position: absolute;
+    z-index: 1000;
+    top: 100%;
+    right: 0;
+    min-width: 140px;
+    padding: 0;
+    margin: 0;
+}
+
+.hamburger-menu li {
+    padding: 0;
+}
+
+.menu-item {
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    text-align: left;
+}
+
+.menu-item:hover {
+    background-color: #94BDC2;
+}
+
+#menu-toggle {
+    display: none;
+}
+
+#menu-toggle:checked ~ .hamburger-menu {
+    display: block;
+}

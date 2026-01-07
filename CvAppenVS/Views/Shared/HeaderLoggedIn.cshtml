@@ -38,10 +38,25 @@
 					<span class="icon-label mt-1">Profil</span>
 				</a>
 
-					<button class="btn accordion" style="color: #324B4E; font-size: 1.5rem;">
+@* 					<button class="btn accordion" style="color: #324B4E; font-size: 1.5rem;">
 						☰
-					</button>
+					</button> *@
 				
+					<div class="hamburger-container">
+						<input type="checkbox" id="menu-toggle" />
+						<label for="menu-toggle" id="menu-icon">&#9776;</label>
+
+						<ul class="hamburger-menu">
+							<li>
+								<form asp-controller="Account" asp-action="Logout" method="post">
+									<button type="submit" class="menu-item">
+										Logga ut
+									</button>
+								</form>
+							</li>
+						</ul>
+					</div>
+
 			</div>
 		</div>
 	</nav>
