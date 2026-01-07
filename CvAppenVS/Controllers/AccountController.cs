@@ -130,9 +130,15 @@ namespace CvAppenVS.Controllers
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+
+                    if(error.Code == "PasswordMismatch")
+                    {
+                        ModelState.AddModelError(string.Empty, "Nuvarande lösenord är felaktigt.");
+                    }
+                    else 
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
 
                 return View(vm);
             }
