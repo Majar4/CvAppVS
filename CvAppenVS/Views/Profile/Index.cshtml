@@ -35,15 +35,6 @@
                     </a>
                 </li>
 
-                @* Här är länken till profil-sidan, ligger på headern inloggad 
-                <li class="nav-item">
-                    <a class="nav-link text-dark" 
-                    asp-area="" 
-                    asp-controller="Profile" 
-                    asp-action="Index">Mina sidor
-                    </a>
-                </li>*@
-
                 <li class="nav-item">
                     <a class="nav-link text-dark" 
                     asp-area="" 
@@ -52,12 +43,6 @@
                     </a>
                 </li>
             </ul>
-
-            @* Sökformulär, ska flyttas till headern inloggad *@
-            <form asp-controller="Profile" asp-action="Search" method="get" class="form-inline">
-                <input type="text" name="searchString" class="form-control" placeholder="Sök på namn..." />
-                <button type="submit" class="btn btn-primary">Sök</button>
-            </form>
 
             @* Högerjusterad del för användarnamn och logga ut, flyttas till headern inloggad *@
             <ul class="navbar-nav">
