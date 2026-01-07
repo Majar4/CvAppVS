@@ -1,11 +1,5 @@
 ﻿@using CvAppen.Web.ViewModels
 @model LoginViewModel
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
 
 @{
     ViewData["Title"] = "Logga in";
@@ -18,6 +12,7 @@
                 <div class="card-body">
                     <h3 class="card-title text-center mb-4">Logga in</h3>
 
+                    <div asp-validation-summary="All" class="text-danger"></div>
                     <form asp-action="Login" asp-controller="Account" method="post" novalidate>
                         <div class="mb-3">
                             <label asp-for="UserName" class="form-label"></label>
