@@ -85,11 +85,14 @@ body {
 }
 
 .menu-item {
+    display: block;
     background: none;
     border: none;
     padding: 0.5rem 1rem;
     width: 100%;
     text-align: left;
+    text-decoration: none;
+    color: black;
 }
 
 .menu-item:hover {
