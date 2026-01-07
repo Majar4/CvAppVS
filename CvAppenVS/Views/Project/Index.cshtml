@@ -6,47 +6,68 @@
     ViewBag.Title = "Projekt";
 }
 
-<h1>Projekt</h1>
+<h1 class="mb-4">Projekt</h1>
 
 <div class="mb-3">
     @if (User.Identity.IsAuthenticated)
     {
-        <a asp-action="Create" class="btn btn-dark btn-sm">Skapa nytt projekt</a>
+        <a asp-action="Create" class="btn btn-secondary">Skapa nytt projekt</a>
     }
 
     <a asp-controller="Profile" asp-action="Index" class="btn btn-outline-secondary btn-sm ms-2">Tillbaka till Profil</a>
 </div>
 
 
-
+<div class="row">
 @foreach (var project in Model)
 {
-    <h2>@project.Title</h2>
-    <p>@project.Description</p>
-  @*   <p><b>Från:</b>@project.FromDate.Value.ToShortDateString()</p> //säkra upp för ev. nullvärde på datum
-    <p><b>Till:</b>@project.ToDate.Value.ToShortDateString()</p> *@
+    <div class=" = "col-md-6 col-lg-4 mb-4>
+        <div class="card shadow-sm h-100">
 
-    <b>Deltagare:</b>
-    <ul>
-        @foreach (var up in project.UserProjects)
-        {
-            if (!up.User.IsPrivate || User.Identity.IsAuthenticated)
-            {
-                <li>@up.User.Name</li>
-            }
-        }
-    </ul>
 
-    @if (User.Identity.IsAuthenticated && !project.UserProjects.Any(up => up.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))) @* Knapp för att gå med i projekt, inloggade användare och om inte redan med *@
-    {
-        <a asp-action="Join" asp-route-projectId="@project.Id" class="btn btn-dark btn-sm">Gå med i projektet</a>
-    }
+                <div class="card-body">
 
-    @* Knapp för att redigera *@
+                    <div class="row">
 
-    @if (User.Identity.IsAuthenticated && project.CreatedByUserId == User.FindFirstValue(ClaimTypes.NameIdentifier)) @* Måste vara inloggad + den som skapade projektet = visar knappen*@
-    {
-        <a asp-action="Edit" asp-route-id="@project.Id" class="btn btn-dark btn-sm">Redigera</a>
-    }
+                        @* Vänster kolumn*@
+                        <div class="col-7">
+                            <h5 class="card-title">@project.Title</h5>
+                            <p class="card-text">@project.Description</p>
+                            @*  <p><b>Från:</b>@project.FromDate.Value.ToShortDateString()</p> //säkra upp för ev. nullvärde på datum
+                            <p><b>Till:</b>@project.ToDate.Value.ToShortDateString()</p> *@
 
+                            @* Knapp för att redigera. Måste vara inloggad + den som skapade projektet = visar knappen*@
+                            @if (User.Identity.IsAuthenticated && project.CreatedByUserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                            {
+                                <a asp-action="Edit" asp-route-id="@project.Id" class="btn btn-outline-secondary btn-sm mt-2">Redigera</a>
+                            }
+                        </div>
+
+                        @* Höger kolumn *@
+                        <div class="col-5">
+                            <strong>Deltagare:</strong>
+                            <ul class="small list-unstyled mt-2">
+                                @foreach (var up in project.UserProjects)
+                                {
+                                    if (!up.User.IsPrivate || User.Identity.IsAuthenticated)
+                                    {
+                                        <li>@up.User.Name</li>
+                                    }
+                                }
+                            </ul>
+
+                            @* Knapp för att gå med i projekt, inloggade användare och om inte redan med *@
+                            @if (User.Identity.IsAuthenticated && !project.UserProjects.Any(up => up.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                            {
+                                <a asp-action="Join" asp-route-projectId="@project.Id" class="btn btn-outline-secondary btn-sm mt-2">Gå med i Projekt</a>
+                            }
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+    </div>
 }
+</div>
