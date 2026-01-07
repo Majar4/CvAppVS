@@ -97,6 +97,42 @@ namespace CvAppenVS.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize]
+        public IActionResult ChangePassword()
+        {
+            return View(); 
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel vm)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(vm); 
+            }
+
+            var user = await userManager.GetUserAsync(User);
+            var result = await userManager.ChangePasswordAsync(
+                user,
+                vm.CurrentPassword,
+                vm.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                return View(vm);
+            }
+
+            await signInManager.RefreshSignInAsync(user);
+            TempData["Success"] = "Lösenordet har ändrats";
+            return RedirectToAction("Settings");
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Registrera(RegistreraViewmodel request)
@@ -141,7 +177,7 @@ namespace CvAppenVS.Controllers
 
             
 
-            TempData["SuccessMessage"] = "Registreringen lyckades! Du kan nu logga in.";
+            TempData["Success"] = "Registreringen lyckades! Du kan nu logga in.";
 
             return RedirectToAction("LogIn");
 
