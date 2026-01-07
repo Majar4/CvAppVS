@@ -139,10 +139,15 @@ namespace CvAppenVS.Controllers
                 return View(request);
             }
 
-            return View(request);
+            
+
+            TempData["SuccessMessage"] = "Registreringen lyckades! Du kan nu logga in.";
+
+            return RedirectToAction("LogIn");
 
         }
         
-    
+
+
     }   
 }
