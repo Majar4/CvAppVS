@@ -13,7 +13,7 @@
         public bool CanSendMessage { get; set; }
         public CvViewModel CV { get; set; }
         public List<MessageSummaryViewModel> RecentMessages { get; set; } = new List<MessageSummaryViewModel>();
-        public List<ProjectSummaryViewModel> MyProjects { get; set; } = new List<ProjectSummaryViewModel>();
+        public List<ProfileProjectsViewModel> MyProjects { get; set; } = new List<ProfileProjectsViewModel>();
     }
     public class MessageSummaryViewModel
     {
