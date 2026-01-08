@@ -1,5 +1,8 @@
 ﻿@model CvAppen.Web.ViewModels.MyProfileViewModel
 
+@* 
+lägg in User-info som inte är kopplat till CV*@
+
 <div class="container mt-5">
     <div class="card shadow">
         <div class="card-header bg-primary text-white">
@@ -12,22 +15,27 @@
                     <p>Här kan du se @Model.Name's profil och projekt.</p>
 
                     <div class="mt-4">
-                        @if (Model.CVId != null)
+
+                        @if (Model.CV == null)
                         {
-                            <a asp-controller="Cv" 
-                            asp-action="ViewCv" 
-                            asp-route-id="@Model.CVId" class="btn btn-success">
-                                Se fullständigt CV
-                            </a>
+                            <div class="alert alert-info">
+                                Inget CV publicerat ännu.
+                            </div>
+
                         }
+
                         else
                         {
-                            <span class="badge bg-secondary">Inget CV publicerat</span>
+                            <div class="profile-cv">
+                                <h2>CV</h2>
+                                @Html.PartialAsync("_CvPartial", Model.CV)
+                            </div>
+
                         }
 
                         @* Knapp för att skicka meddelande *@
                         <a asp-controller="Message" 
-                        asp-action="Send" 
+                        asp-action="Add" 
                         asp-route-receiverId="@Context.Request.RouteValues["id"]" class="btn btn-outline-primary ms-2">
                             Skicka ett meddelande
                         </a>
