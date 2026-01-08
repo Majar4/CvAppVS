@@ -25,15 +25,15 @@ namespace CvAppen.Web.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             var currentUserId = currentUser?.Id;
 
-            // Bestäm vilken profil som ska visas
+      
             User profileUser;
             if (string.IsNullOrEmpty(id))
             {
                 if (currentUser == null)
                 {
-                    return RedirectToAction("Login", "Account"); // ej inloggad och ingen id → redirect
+                    return RedirectToAction("Login", "Account"); 
                 }
-                profileUser = currentUser; // min egen profil
+                profileUser = currentUser; // 
             }
             else
             {
@@ -44,7 +44,6 @@ namespace CvAppen.Web.Controllers
                 }
             }
 
-            // Hämta CV för den profilen
             var cvEntity = await _context.CVs
                 .Include(c => c.Competences)
                 .Include(c => c.Educations)
@@ -63,7 +62,11 @@ namespace CvAppen.Web.Controllers
                     ImagePath = cvEntity.ImagePath,
                     UserId = cvEntity.UserId,
                     UserName = profileUser.UserName,
-                    Competences = cvEntity.Competences.Select(c => c.Title).ToList(),
+                    Competences = cvEntity.Competences.Select(c => new CompetenceViewModel
+                    {
+                        Id = c.Id,
+                        Title = c.Title
+                    }).ToList(),
                     Educations = cvEntity.Educations.Select(e => new EducationViewModel
                     {
                         Id = e.Id,

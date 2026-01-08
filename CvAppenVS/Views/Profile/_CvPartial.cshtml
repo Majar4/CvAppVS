@@ -36,10 +36,12 @@
         {
             <div class="mb-3">
                 <h5>Kompetenser</h5>
-                <ul class="list-inline">
+                <ul class="list-group list-group-flush">
                     @foreach (var competence in Model.Competences)
                     {
-                        <li class="list-inline-item badge bg-primary me-1">@competence</li>
+                        <li class="list-group-item">
+                            <strong>@competence.Title</strong>
+                        </li>
                     }
                 </ul>
             </div>

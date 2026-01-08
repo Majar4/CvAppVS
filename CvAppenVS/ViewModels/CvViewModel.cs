@@ -13,9 +13,16 @@ namespace CvAppen.Web.ViewModels
         [HiddenInput]
         public string? UserId { get; set; }
 
-        public List<string> Competences { get; set; } = new List<string>();
+        public List<CompetenceViewModel> Competences { get; set; } = new List<CompetenceViewModel>();
         public List<EducationViewModel> Educations { get; set; } = new List<EducationViewModel>();
         public List<EarlierExperienceViewModel> EarlierExperiences { get; set; } = new List<EarlierExperienceViewModel>();
+       
+        public class CompetenceViewModel
+        {
+            public int Id { get; set; }
+            public string Title { get; set; }
+        }
+
         public class EducationViewModel
         {
             public int Id { get; set; }
