@@ -16,10 +16,6 @@ lägg in User-info som inte är kopplat till CV*@
         <a asp-controller="Cv" asp-action="Create" class="btn btn-primary">
             Skapa CV
         </a>
-
-    <a asp-controller="Cv" asp-action="Edit"  class="btn btn-primary">
-        Redigera CV
-    </a>
 }
 
 else 
@@ -29,6 +25,9 @@ else
         @await Html.PartialAsync("_CvPartial", Model.CV)
     </div>       
    
+    <a asp-controller="Cv" asp-action="Edit" asp-route-id="@Model.CV.Id" class="btn btn-primary">
+        Redigera CV
+    </a>
 }
 
 
