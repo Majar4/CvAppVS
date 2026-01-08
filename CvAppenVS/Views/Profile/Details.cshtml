@@ -28,7 +28,7 @@ lägg in User-info som inte är kopplat till CV*@
                         {
                             <div class="profile-cv">
                                 <h2>CV</h2>
-                                @Html.PartialAsync("_CvPartial", Model.CV)
+                                @await Html.PartialAsync("_CvPartial", Model.CV)
                             </div>
 
                         }

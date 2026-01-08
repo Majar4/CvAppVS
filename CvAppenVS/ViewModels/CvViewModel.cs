@@ -1,13 +1,17 @@
-﻿namespace CvAppen.Web.ViewModels
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace CvAppen.Web.ViewModels
 {
     public class CvViewModel
     {
         public int Id { get; set; }
         public string Presentation { get; set; }
         public string PhoneNumber { get; set; }
-        public string ImagePath { get; set; }
-        public string UserName { get; set; }
-        public string UserId { get; set; }
+        public string? ImagePath { get; set; }
+        [HiddenInput]
+        public string? UserName { get; set; }
+        [HiddenInput]
+        public string? UserId { get; set; }
 
         public List<string> Competences { get; set; } = new List<string>();
         public List<EducationViewModel> Educations { get; set; } = new List<EducationViewModel>();
