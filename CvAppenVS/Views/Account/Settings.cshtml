@@ -1,29 +1,43 @@
 ﻿@model CvAppen.Web.ViewModels.AccountSettingsViewModel
+@{
+    ViewData["Title"] = "Inställningar";
+}
 
-<h2>Inställningar</h2>
-<form asp-action="Settings" method="post">
-    <div>
-        <label asp-for="Name"></label>
-        <input asp-for="Name" />
-        <span asp-validation-for="Name"></span>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card-shadow">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">@ViewData["Title"]</h3>
+                    <form asp-action="Settings" method="post">
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Address" class="form-label"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input asp-for="IsPrivate" class="form-check-input" />
+                            <label asp-for="IsPrivate" class="form-check-lebel"></label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 mb-3">Spara</button>
+
+                        <div class="text-center">
+                            <a asp-controller="Account" asp-action="ChangePassword" class="link-secondary">
+                                Ändra lösenord
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div>
-        <label asp-for="Address"></label>
-        <input asp-for="Address" />
-    </div>
-
-    <div>
-        <label>
-            <input asp-for="IsPrivate" />
-            Privat profil
-        </label>
-    </div>
-
-    <button type="submit">Spara</button>
-
-    <a asp-controller="Account" asp-action="ChangePassword">
-        Ändra lösenord
-    </a>
-
-</form>
+</div>

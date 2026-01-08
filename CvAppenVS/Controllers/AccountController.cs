@@ -44,7 +44,7 @@ namespace CvAppenVS.Controllers
 
             if (!result.Succeeded)
             {
-                ModelState.AddModelError("", "Fel användarnamn eller lösenord");
+                ModelState.AddModelError(string.Empty, "Fel användarnamn eller lösenord");
                 return View(vm);
             }
             return RedirectToAction("Index", "Home");
@@ -92,9 +92,18 @@ namespace CvAppenVS.Controllers
             user.Address = vm.Address;
             user.IsPrivate = vm.IsPrivate;
 
-            await userManager.UpdateAsync(user);
+            var result = await userManager.UpdateAsync(user);
 
-            return RedirectToAction("Index", "Home");
+            if(!result.Succeeded)
+            {
+                foreach(var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(vm);
+            }
+            TempData["Success"] = "Inställningarna har uppdaterats";
+            return RedirectToAction("Settings");
         }
 
         [Authorize]
@@ -121,9 +130,15 @@ namespace CvAppenVS.Controllers
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+
+                    if(error.Code == "PasswordMismatch")
+                    {
+                        ModelState.AddModelError(string.Empty, "Nuvarande lösenord är felaktigt.");
+                    }
+                    else 
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
 
                 return View(vm);
             }
