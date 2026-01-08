@@ -87,11 +87,21 @@ namespace CvAppen.Web.Controllers
                 };
             }
 
+            var projects = _context.UserProjects
+                .Where(up => up.UserId == profileUser.Id)
+                .Select(up => new ProfileProjectsViewModel
+                {
+                    Id = up.Project.Id,
+                    Title = up.Project.Title
+                })
+                .ToList();
+
             // Bygg ViewModel
             var model = new MyProfileViewModel
             {
                 UserId = profileUser.Id,
                 Name = profileUser.Name,
+                MyProjects = projects,
                 CV = cvViewModel,
                 CanEditCv = currentUserId != null && currentUserId == profileUser.Id,   
                 UnReadMessagesCount = currentUserId != null
@@ -113,33 +123,33 @@ namespace CvAppen.Web.Controllers
             }
             return View(users);
         }
-        [HttpGet]
-        public IActionResult Details(string id)
-        {
-            if (string.IsNullOrEmpty(id))
-            {
-                return NotFound();
-            }
+        //[HttpGet]
+        //public IActionResult Details(string id)
+        //{
+        //    if (string.IsNullOrEmpty(id))
+        //    {
+        //        return NotFound();
+        //    }
 
-            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+        //    var user = _context.Users.FirstOrDefault(u => u.Id == id);
 
-            if (user == null)
-            {
-                return NotFound();
-            }
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var model = new MyProfileViewModel
-            {
-                Name = user.Name,
-            };
+        //    var model = new MyProfileViewModel
+        //    {
+        //        Name = user.Name,
+        //    };
 
-            var projects = _context.UserProjects
-            .Where(up => up.UserId == id)
-            .Select(up => up.Project)
-            .ToList();
-            ViewBag.Projects = projects;
+        //    var projects = _context.UserProjects
+        //    .Where(up => up.UserId == id)
+        //    .Select(up => up.Project)
+        //    .ToList();
+        //    ViewBag.Projects = projects;
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
     }
 }
