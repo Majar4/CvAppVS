@@ -60,6 +60,11 @@ namespace CvAppenVS.Controllers
             string senderName;
             string userId = null;
 
+            if (dto.ToUserId == userId)
+            {
+                return BadRequest();
+            }
+
             if (User.Identity.IsAuthenticated)
             {
                 userId = _userManager.GetUserId(User);
@@ -72,6 +77,8 @@ namespace CvAppenVS.Controllers
             }
             var message = new Message
             {
+
+
                 Text = dto.Text,
                 FromUserId = userId,
                 ToUserId = dto.ToUserId,
@@ -83,7 +90,9 @@ namespace CvAppenVS.Controllers
             _context.Messages.Add(message);
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return RedirectToAction("Profile", new { id = dto.ToUserId });
+
+            //return Ok();
         }
 
 

@@ -1,0 +1,86 @@
+﻿@using CvAppen.Web.ViewModels
+
+@model CvAppen.Web.ViewModels.CvViewModel
+
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center mb-3">
+            @* Profilbild *@
+            @if (!string.IsNullOrEmpty(Model.ImagePath))
+            {
+                <img src="@Model.ImagePath" alt="Profilbild" class="rounded-_CvPartial me-3" style="width:100px; height:100px; object-fit:cover;">
+            }
+            else
+            {
+                <img src="/images/default-profile.png"
+                     alt="Standardprofilbild"
+                     class="rounded-circle me-3"
+                     style="width:100px; height:100px; object-fit:cover;">
+            }
+            <div>
+                <h3 class="card-title mb-0">@Model.UserName</h3>
+                <p class="text-muted mb-0">@Model.PhoneNumber</p>
+            </div>
+        </div>
+
+        @* Presentation *@
+        <div class="mb-3">
+            <h5>Presentation</h5>
+            <p>@Model.Presentation</p>
+        </div>
+
+
+        @* Kompetenser *@
+        @if (Model.Competences.Any())
+        {
+            <div class="mb-3">
+                <h5>Kompetenser</h5>
+                <ul class="list-inline">
+                    @foreach (var competence in Model.Competences)
+                    {
+                        <li class="list-inline-item badge bg-primary me-1">@competence</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        @* Utbildning *@
+        @if (Model.Educations.Any())
+        {
+            <div class="mb-3">
+                <h5>Utbildning</h5>
+                <ul class="list-group list-group-flush">
+                    @foreach (var edu in Model.Educations)
+                    {
+                        <li class="list-group-item">
+                            <strong>@edu.Name</strong> - @edu.School <br />
+                            <small class="text-muted">@edu.From.ToString("yyyy") - @edu.To.ToString("yyyy")</small>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+
+        @* Tidigare erfarenheter *@
+        @if (Model.EarlierExperiences.Any())
+        {
+            <div class="mb-3">
+                <h5>Erfarenheter</h5>
+                <ul class="list-group list-group-flush">
+                    @foreach (var exp in Model.EarlierExperiences)
+                    {
+                        <li class="list-group-item">
+                            <strong>@exp.Title</strong> - @exp.Company <br />
+                            <small class="text-muted">@exp.From.ToString("yyyy") - @exp.To.ToString("yyyy")</small>
+                            @if (!string.IsNullOrEmpty(exp.Description))
+                            {
+                                <p class="mb-0">@exp.Description</p>
+                            }
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+
+    </div>
+</div>

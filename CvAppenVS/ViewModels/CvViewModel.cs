@@ -1,0 +1,34 @@
+﻿namespace CvAppen.Web.ViewModels
+{
+    public class CvViewModel
+    {
+        public int Id { get; set; }
+        public string Presentation { get; set; }
+        public string PhoneNumber { get; set; }
+        public string ImagePath { get; set; }
+        public string UserName { get; set; }
+        public string UserId { get; set; }
+
+        public List<string> Competences { get; set; } = new List<string>();
+        public List<EducationViewModel> Educations { get; set; } = new List<EducationViewModel>();
+        public List<EarlierExperienceViewModel> EarlierExperiences { get; set; } = new List<EarlierExperienceViewModel>();
+        public class EducationViewModel
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string School { get; set; }
+            public DateTime From { get; set; }
+            public DateTime To { get; set; }
+        }
+        public class EarlierExperienceViewModel
+        {
+            public int Id { get; set; }
+            public string Title { get; set; }
+
+            public string Company { get; set; }
+            public string? Description { get; set; }
+            public DateTime From { get; set; }
+            public DateTime To { get; set; }
+        }
+    }
+}

@@ -1,6 +1,7 @@
 ﻿@using CvAppen.Web.DTOs
 @model SendMessageDto
 
+<a class="nav-link d-flex flex-column align-items-center">
 <form asp-for="add" method="post">
     <input asp-for="ToUserId" type="Hidden" />
     <div>
@@ -15,3 +16,4 @@
             }
        <button type="submit">Skicka</button>
     </form>
+    </a>

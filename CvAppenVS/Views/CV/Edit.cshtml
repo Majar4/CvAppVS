@@ -1,0 +1,25 @@
+﻿@using CvAppen.Web.ViewModels
+
+@model CvAppen.Web.ViewModels.CvViewModel
+
+<h2 class="mb-4">Redigera CV</h2>
+
+<form asp-action="Edit" method="post" class="col-md-6">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label class="form-label">Titel</label>
+        <input asp-for="Presentation" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Phonenumber</label>
+        <textarea asp-for="PhoneNumber" class="form-control" rows="4"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-dark btn-sm">Spara</button>
+
+    <a asp-action="Index" class="btn btn-outline-secondary btn-sm ms-2">Tillbaka</a>
+
+</form>
