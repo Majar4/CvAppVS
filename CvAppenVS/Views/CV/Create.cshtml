@@ -1,0 +1,155 @@
+﻿@using CvAppen.Web.ViewModels
+@model CvAppen.Web.ViewModels.CvViewModel
+
+<h2 class="mb-4">Fyll i ditt CV</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+	<div class="alert alert-danger">
+		@foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+		{
+			<p>@error.ErrorMessage</p>
+		}
+	</div>
+}
+
+<form asp-action="Create" method="post" class="col-md-6" enctype="multipart/form-data">
+
+	<div class="mb-3">
+		<label asp-for="ImagePath" class="form-label"></label>
+		<input asp-for="ImagePath" type="file" class="form-control" />
+		<span asp-validation-for="ImagePath" class="text-danger"></span>
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label">Presentation</label>
+		<input asp-for="Presentation" class="form-control" />
+		<span asp-validation-for="Presentation"></span>
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label">Telefonnummer</label>
+		<textarea asp-for="PhoneNumber" class="form-control" rows="4"></textarea>
+		<span asp-validation-for="PhoneNumber" class="text-danger"></span>
+	</div>
+
+	@* För kompetenslistan *@
+	<div class="mb-3" id="competences-container">
+		<label class="form-label">Kompetenser</label>
+		@if (Model.Competences.Count == 0)
+		{
+			<textarea name="Competences[0]" class="form-control mb-1" rows="2"></textarea>
+		}
+		@for (int i = 0; i < Model.Competences.Count; i++)
+		{
+			<textarea asp-for="Competences[i]" class="form-control mb-1" rows="2"></textarea>
+			<span asp-validation-for="Competences[i]" class="text-danger"></span>
+		}
+
+		<button type="button" class="btn btn-sm btn-outline-primary" onclick="addCompetence()" > Lägg till kompetens</button>
+	</div>
+
+	<script>
+		function addCompetence() {
+			const container = document.getElementById('competences-container');
+			const index = container.querySelectorAll('textarea').length;
+			const textarea = document.createElement('textarea');
+			textarea.name = `Competences[${index}]`;
+			textarea.className = 'form-control mb-1';
+			textarea.rows = 2;
+			container.insertBefore(textarea, container.querySelector('button'));
+		}
+	</script>
+
+	@* 	För utbildnings-listan *@
+	<div class="mb-3" id="educations-container">
+		<label class="form-label">Utbildningar</label>
+		@if (Model.Educations.Count == 0)
+		{
+			<div class="border p-2 mb-2">
+				<input name="Educations[0].Name" placeholder="Utbildning" class="form-control mb-1" />
+				<input name="Educations[0].School" placeholder="Skola" class="form-control mb-1" />
+				<input type="date" name="Educations[0].From" class="form-control mb-1" />
+				<input type="date" name="Educations[0].To" class="form-control mb-1" />
+			</div>
+		}
+		else
+		{
+			@for (int i = 0; i < Model.Educations.Count; i++)
+			{
+				<div class="border p-2 mb-2">
+					<input asp-for="Educations[i].Name" class="form-control mb-1" />
+					<input asp-for="Educations[i].School" class="form-control mb-1" />
+					<input asp-for="Educations[i].From" type="date" class="form-control mb-1" />
+					<input asp-for="Educations[i].To" type="date" class="form-control mb-1" />
+				</div>
+			}
+		}
+
+		<button type="button" class="btn btn-sm btn-outline-primary" onclick="addEducation()"> Lägg till utbildning</button>
+	</div>
+
+	<script>
+		function addEducation() {
+			const container = document.getElementById('educations-container');
+				const index = container.querySelectorAll('.border').length;
+		const html = `
+		<div class="border p-2 mb-2">
+			<input name="Educations[${index}].Name" placeholder="Utbildning" class="form-control mb-1" />
+			<input name="Educations[${index}].School" placeholder="Skola" class="form-control mb-1" />
+			<input type="date" name="Educations[${index}].From" class="form-control mb-1" />
+			<input type="date" name="Educations[${index}].To" class="form-control mb-1" />
+		</div>`;
+		container.insertAdjacentHTML('beforeend', html);
+		}
+	</script>
+
+	@* 	För tidigare erfarenhets-listan *@
+	<div class="mb-3" id="earlierexperiences-container">
+		<label class="form-label">Erfarenheter</label>
+		@if (Model.EarlierExperiences.Count == 0)
+		{
+			<div class="border p-2 mb-2">
+				<input name="EarlierExperiences[0].Title" placeholder="Titel" class="form-control mb-1" />
+				<input name="EarlierExperiences[0].Company" placeholder="Företag" class="form-control mb-1" />
+				<input type="date" name="EarlierExperiences[0].From" class="form-control mb-1" />
+				<input type="date" name="EarlierExperiences[0].To" class="form-control mb-1" />
+			</div>
+		}
+		else
+		{
+			@for (int i = 0; i < Model.EarlierExperiences.Count; i++)
+			{
+				<div class="border p-2 mb-2">
+					<input asp-for="EarlierExperiences[i].Title" class="form-control mb-1" />
+					<input asp-for="EarlierExperiences[i].Company" class="form-control mb-1" />
+					<input asp-for="EarlierExperiences[i].From" type="date" class="form-control mb-1" />
+					<input asp-for="EarlierExperiences[i].To" type="date" class="form-control mb-1" />
+				</div>
+			}
+		}
+
+		<button type="button" class="btn btn-sm btn-outline-primary" onclick="addEarlierExperience()"> Lägg till erfarenhet</button>
+	</div>
+
+	<script>
+		function addEarlierExperience() {
+			const container = document.getElementById('earlierexperiences-container');
+				const index = container.querySelectorAll('.border').length;
+		const html = `
+		<div class="border p-2 mb-2">
+			<input name="EarlierExperiences[${index}].Title" placeholder="Titel" class="form-control mb-1" />
+			<input name="EarlierExperiences[${index}].Company" placeholder="Företag" class="form-control mb-1" />
+			<input type="date" name="EarlierExperiences[${index}].From" class="form-control mb-1" />
+			<input type="date" name="EarlierExperiences[${index}].To" class="form-control mb-1" />
+		</div>`;
+		container.insertAdjacentHTML('beforeend', html);
+		}
+	</script>
+
+
+	<button type="submit" class="btn btn-dark btn-sm">Skapa</button>
+
+	<a asp-action="Index" class="btn btn-outline-secondary btn-sm ms-2">Tillbaka</a>
+
+</form>

@@ -22,7 +22,6 @@ namespace CvAppen.Web.Controllers
 
         public async Task<IActionResult> Index(string? id)
         {
-            // Inloggad användare (kan vara null om ej inloggad)
             var currentUser = await _userManager.GetUserAsync(User);
             var currentUserId = currentUser?.Id;
 
@@ -92,7 +91,6 @@ namespace CvAppen.Web.Controllers
                 Name = profileUser.Name,
                 CV = cvViewModel,
                 CanEditCv = currentUserId != null && currentUserId == profileUser.Id,   
-                CanSendMessage = currentUserId == null || currentUserId != profileUser.Id,
                 UnReadMessagesCount = currentUserId != null
                     ? _context.Messages.Count(m => m.ToUserId == currentUserId && !m.IsRead)
                     : 0
