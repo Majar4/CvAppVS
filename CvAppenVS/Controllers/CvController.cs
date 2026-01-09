@@ -93,7 +93,7 @@ namespace CvAppen.Web.Controllers
 
                 Competences = cv.Competences
                     .Where(c => !string.IsNullOrWhiteSpace(c.Title))
-                    .Select(c => new Competence 
+                    .Select(c => new Competence
                     {
                         Id = c.Id,
                         Title = c.Title
@@ -124,9 +124,17 @@ namespace CvAppen.Web.Controllers
                     }).ToList()
             };
 
-            _context.CVs.Add(cvt);
-            await _context.SaveChangesAsync();
-            //return RedirectToAction("Index", "Profile", new { id = cvt.Id });
+            try
+            {
+                _context.CVs.Add(cvt);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. CV:t kunde inte sparas.";
+                return View(cv);
+            }
+
             return RedirectToAction("Index", "Profile");
         }
 
@@ -255,8 +263,16 @@ namespace CvAppen.Web.Controllers
                 });
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Profile");
+            try
+            {
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Profile");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Ändringarna kunde inte sparas. Försök igen.";
+                return View(model);
+            }
         }
 
 
@@ -281,8 +297,15 @@ namespace CvAppen.Web.Controllers
                 return Forbid();
             }
 
-            _context.Competences.Remove(competence);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Competences.Remove(competence);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Anslutning till databasen misslyckades. Kompetensen kunde inte tas bort.";
+            }
 
             return RedirectToAction("Edit", new { id = competence.CVId });
         }
@@ -308,8 +331,15 @@ namespace CvAppen.Web.Controllers
                 return Forbid();
             }
 
-            _context.Educations.Remove(education);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Educations.Remove(education);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Anslutning till databasen misslyckades. Utbildningen kunde inte tas bort.";
+            }
 
             return RedirectToAction("Edit", new { id = education.CVId });
         }
@@ -335,8 +365,15 @@ namespace CvAppen.Web.Controllers
                 return Forbid();
             }
 
-            _context.EarlierExperiences.Remove(earlierExp);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.EarlierExperiences.Remove(earlierExp);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Anslutning till databasen misslyckades. Erfarenheten kunde inte tas bort.";
+            }
 
             return RedirectToAction("Edit", new { id = earlierExp.CVId });
         }

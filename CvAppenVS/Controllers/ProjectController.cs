@@ -58,20 +58,28 @@ namespace CvAppenVS.Controllers
                 //TODO : lägg till datum
             };
 
-            //sparar
-            _context.Projects.Add(project);
-            await _context.SaveChangesAsync();
-
-            // Koppling mellan användaren/skaparen och projektet
-            var link = new UserProject
+            try
             {
-                UserId = user.Id,
-                ProjectId = project.Id,
-            };
+                //sparar
+                _context.Projects.Add(project);
+                await _context.SaveChangesAsync();
 
-            _context.UserProjects.Add(link);
-            await _context.SaveChangesAsync();
+                // Koppling mellan användaren/skaparen och projektet
+                var link = new UserProject
+                {
+                    UserId = user.Id,
+                    ProjectId = project.Id,
+                };
 
+                _context.UserProjects.Add(link);
+                await _context.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Projektet kunde inte skapas.";
+                return View(model);
+            }
             //skikcas tillbaks till projektlistan
             return RedirectToAction(nameof(Index));
 
@@ -89,15 +97,23 @@ namespace CvAppenVS.Controllers
 
             if (!alreadyJoined)
             {
-                // Skapar kopplingen mellan användare och projekt
-                var userProject = new UserProject
+                
+                try
                 {
-                    ProjectId = projectId,
-                    UserId = user.Id
-                };
+                    // Skapar kopplingen mellan användare och projekt
+                    var userProject = new UserProject
+                    {
+                        ProjectId = projectId,
+                        UserId = user.Id
+                    };
 
-                _context.UserProjects.Add(userProject);
-                await _context.SaveChangesAsync();  
+                    _context.UserProjects.Add(userProject);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    TempData["Error"] = "Anslutning till databasen misslyckades. Du kunde inte gå med i projektet.";
+                }
             }
 
             return RedirectToAction(nameof(Index));
@@ -140,8 +156,18 @@ namespace CvAppenVS.Controllers
             project.Title = editedProject.Title;
             project.Description = editedProject.Description;
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Projektet kunde inte uppdateras.";
+                return View(project);
+            }
+
             return RedirectToAction(nameof(Index));
+
 
         }
     }
