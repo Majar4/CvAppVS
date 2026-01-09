@@ -156,19 +156,23 @@ namespace CvAppenVS.Controllers
             {
                 return View(request);
             }
+            string fileName = "default-profile.png";
 
-            string fileName = Guid.NewGuid() + Path.GetExtension(request.Image.FileName);
+            if (request.Image != null && request.Image.Length > 0) {
 
-            string imagePath = Path.Combine(
+                fileName = Guid.NewGuid() + Path.GetExtension(request.Image.FileName);
+                string imagePath = Path.Combine(
                 environment.WebRootPath,
                 "images",
                 fileName
                 );
 
-            using (var stream = new FileStream(imagePath, FileMode.Create))
-            {
-                await request.Image.CopyToAsync(stream);
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    await request.Image.CopyToAsync(stream);
+                }
             }
+
             var user = new User
             {
                 UserName = request.UserName,
