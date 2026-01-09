@@ -1,0 +1,15 @@
+﻿@model CvAppen.Web.ViewModels.CvViewModel
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+        <div>
+            <h1 class="display-4">CV: @Model.UserName</h1>
+            <p class="lead text-muted">@Model.PhoneNumber</p>
+        </div>
+        <a href="javascript:window.print()" class="btn btn-outline-secondary">
+            <i class="bi bi-printer"></i> Skriv ut CV
+        </a>
+    </div>
+
+    @await Html.PartialAsync("~/Views/Profile/_CvPartial.cshtml", Model)
+</div>

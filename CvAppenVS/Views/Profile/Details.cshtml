@@ -13,7 +13,7 @@
                class="btn btn-dark rounded-pill px-4 shadow-sm">Meddelande</a>
             
             @if (Model.CV != null) {
-                <a asp-controller="Profile" asp-action="Details" asp-route-id="@Model.CV.Id" 
+                <a asp-controller="Cv" asp-action="Show" asp-route-id="@Model.CV.Id" 
                    class="btn btn-outline-dark rounded-pill px-4 shadow-sm">Visa fullständigt CV</a>
             }
         </div>
