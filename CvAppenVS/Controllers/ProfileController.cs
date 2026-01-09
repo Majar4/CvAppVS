@@ -20,6 +20,8 @@ namespace CvAppen.Web.Controllers
             _userManager = userManager;
         }
 
+        [AllowAnonymous]
+
         public async Task<IActionResult> Index(string? id)
         {
             var currentUser = await _userManager.GetUserAsync(User);
@@ -31,7 +33,7 @@ namespace CvAppen.Web.Controllers
             {
                 if (currentUser == null)
                 {
-                    return RedirectToAction("Login", "Account"); 
+                    return RedirectToAction("Login", "Account");
                 }
                 profileUser = currentUser; // 
             }
