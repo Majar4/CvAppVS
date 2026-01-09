@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static CvAppen.Web.ViewModels.CvViewModel;
 
 namespace CvAppen.Web.Controllers
 {
@@ -338,6 +339,51 @@ namespace CvAppen.Web.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Edit", new { id = earlierExp.CVId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Show(int id)
+        {
+            var cvEntity = await _context.CVs
+                .Include(c => c.Competences)
+                .Include(c => c.Educations)
+                .Include(c => c.EarlierExperiences)
+                .Include(c => c.User) 
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (cvEntity == null) return NotFound();
+
+            var model = new CvViewModel
+            {
+                Id = cvEntity.Id,
+                UserName = cvEntity.User?.Name,
+                Presentation = cvEntity.Presentation,
+                PhoneNumber = cvEntity.PhoneNumber,
+                Educations = cvEntity.Educations.Select(e => new EducationViewModel
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    School = e.School,
+                    From = e.From,
+                    To = e.To
+                }).ToList(),
+                EarlierExperiences = cvEntity.EarlierExperiences.Select(ex => new EarlierExperienceViewModel
+                {
+                    Id = ex.Id,
+                    Title = ex.Title,
+                    Company = ex.Company,
+                    Description = ex.Description,
+                    From = ex.From,
+                    To = ex.To
+                }).ToList(),
+                Competences = cvEntity.Competences.Select(c => new CompetenceViewModel
+                {
+                    Id = c.Id,
+                    Title = c.Title
+                }).ToList()
+            };
+
+            return View("Details", model);
         }
 
     }
