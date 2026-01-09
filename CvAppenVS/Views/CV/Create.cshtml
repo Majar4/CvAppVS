@@ -112,6 +112,8 @@
 			<div class="border p-2 mb-2">
 				<input name="EarlierExperiences[0].Title" placeholder="Titel" class="form-control mb-1" />
 				<input name="EarlierExperiences[0].Company" placeholder="Företag" class="form-control mb-1" />
+				<input name="EarlierExperiences[0].Description" placeholder="Beskrivning" class="form-control mb-1" />
+
 				<input type="date" name="EarlierExperiences[0].From" class="form-control mb-1" />
 				<input type="date" name="EarlierExperiences[0].To" class="form-control mb-1" />
 			</div>
@@ -123,6 +125,8 @@
 				<div class="border p-2 mb-2">
 					<input asp-for="EarlierExperiences[i].Title" class="form-control mb-1" />
 					<input asp-for="EarlierExperiences[i].Company" class="form-control mb-1" />
+					<input asp-for="EarlierExperiences[i].Description" class="form-control mb-1" />
+
 					<input asp-for="EarlierExperiences[i].From" type="date" class="form-control mb-1" />
 					<input asp-for="EarlierExperiences[i].To" type="date" class="form-control mb-1" />
 				</div>
@@ -140,6 +144,8 @@
 		<div class="border p-2 mb-2">
 			<input name="EarlierExperiences[${index}].Title" placeholder="Titel" class="form-control mb-1" />
 			<input name="EarlierExperiences[${index}].Company" placeholder="Företag" class="form-control mb-1" />
+						<input name="EarlierExperiences[${index}].Description" placeholder="Beskrivning" class="form-control mb-1" />
+
 			<input type="date" name="EarlierExperiences[${index}].From" class="form-control mb-1" />
 			<input type="date" name="EarlierExperiences[${index}].To" class="form-control mb-1" />
 		</div>`;

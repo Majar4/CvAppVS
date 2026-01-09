@@ -40,15 +40,20 @@ namespace CvAppenVS.Controllers
                 }).OrderBy(m => m.SentAt)
                 .ToListAsync<MessageDto>();
 
-            ViewBag.Message = "Inkorg:";
+            ViewBag.Message = "Inkorg";
 
             return View(message);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Add()
+        public async Task<IActionResult> Add(string toUserId)
         {
-            return View();
+            var dto = new SendMessageDto
+            {
+                ToUserId = toUserId
+            };
+
+            return View(dto);
         }
 
         [HttpPost]
@@ -60,21 +65,25 @@ namespace CvAppenVS.Controllers
             string senderName;
             string userId = null;
 
-            if (dto.ToUserId == userId)
-            {
-                return BadRequest();
-            }
-
             if (User.Identity.IsAuthenticated)
             {
                 userId = _userManager.GetUserId(User);
                 var user = await _userManager.FindByIdAsync(userId);
                 senderName = user.Name;
             }
+
             else
             {
                 senderName = dto.SenderName;
             }
+
+
+            if (dto.ToUserId == userId)
+            {
+                return BadRequest();
+            }
+
+
             var message = new Message
             {
 
@@ -82,7 +91,7 @@ namespace CvAppenVS.Controllers
                 Text = dto.Text,
                 FromUserId = userId,
                 ToUserId = dto.ToUserId,
-                SenderName = dto.SenderName,
+                SenderName = senderName,
                 IsRead = false,
                 SentAt = DateTime.Now
             };
@@ -90,9 +99,7 @@ namespace CvAppenVS.Controllers
             _context.Messages.Add(message);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Profile", new { id = dto.ToUserId });
-
-            //return Ok();
+            return RedirectToAction("Details", "Profile", new { id = dto.ToUserId });
         }
 
 

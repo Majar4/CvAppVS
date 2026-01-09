@@ -19,11 +19,20 @@ namespace CvAppenVS.Controllers
 
         public IActionResult Index()
         {
+
+            string? currentUserId = null;
+
+            if(User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                currentUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            }
+
             var model = new HomeIndexViewModel();
             try
             {
                 model.FeaturedCvs = _context.Users
                     .Where(u => u.IsPrivate == false)
+                    .Where(u => currentUserId == null|| u.Id != currentUserId)
                     .Select(u => new CvSummaryViewModel
                     {
                         UserId = u.Id,
