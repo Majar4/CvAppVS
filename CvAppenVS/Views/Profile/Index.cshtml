@@ -7,15 +7,17 @@
 @* 
 lägg in User-info som inte är kopplat till CV*@
 
-@if (Model.CV == null && Model.CanEditCv)
+@if (Model.CV == null) //&& Model.CanEditCv)
 {
     <div class="alert alert-info">
-        Har inget CV ännu.
+        @(Model.CanEditCv ? "Har inget CV ännu." : "Inget CV publicerat ännu")
     </div>
-  
+    @if (Model.CanEditCv)
+    {
         <a asp-controller="Cv" asp-action="Create" class="btn btn-primary">
             Skapa CV
         </a>
+    }
 }
 
 else 
@@ -25,9 +27,27 @@ else
         @await Html.PartialAsync("_CvPartial", Model.CV)
     </div>       
    
-    <a asp-controller="Cv" asp-action="Edit" asp-route-id="@Model.CV.Id" class="btn btn-primary">
-        Redigera CV
-    </a>
+    @if (Model.CanEditCv)
+    {
+        <a asp-controller="Cv" asp-action="Edit" asp-route-id="@Model.CV.Id" class="btn btn-primary">
+            Redigera CV
+        </a>
+    }
+}
+
+<h3>Projekt</h3>
+@if (Model.MyProjects != null && Model.MyProjects.Any())
+{
+    <ul>
+        @foreach(var project in Model.MyProjects)
+        {
+            <li>@project.Title</li>
+        }
+    </ul>
+} 
+else
+{
+    <div>Inga projekt ännu.</div>
 }
 
 

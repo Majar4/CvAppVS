@@ -44,7 +44,7 @@ namespace CvAppenVS.Controllers
 
             if (!result.Succeeded)
             {
-                ModelState.AddModelError("", "Gick ej att logga in");
+                ModelState.AddModelError(string.Empty, "Fel användarnamn eller lösenord");
                 return View(vm);
             }
             return RedirectToAction("Index", "Home");
@@ -92,9 +92,60 @@ namespace CvAppenVS.Controllers
             user.Address = vm.Address;
             user.IsPrivate = vm.IsPrivate;
 
-            await userManager.UpdateAsync(user);
+            var result = await userManager.UpdateAsync(user);
 
-            return RedirectToAction("Index", "Home");
+            if(!result.Succeeded)
+            {
+                foreach(var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(vm);
+            }
+            TempData["Success"] = "Inställningarna har uppdaterats";
+            return RedirectToAction("Settings");
+        }
+
+        [Authorize]
+        public IActionResult ChangePassword()
+        {
+            return View(); 
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel vm)
+        {
+            if(!ModelState.IsValid)
+            {
+                return View(vm); 
+            }
+
+            var user = await userManager.GetUserAsync(User);
+            var result = await userManager.ChangePasswordAsync(
+                user,
+                vm.CurrentPassword,
+                vm.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+
+                    if(error.Code == "PasswordMismatch")
+                    {
+                        ModelState.AddModelError(string.Empty, "Nuvarande lösenord är felaktigt.");
+                    }
+                    else 
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+
+                return View(vm);
+            }
+
+            await signInManager.RefreshSignInAsync(user);
+            TempData["Success"] = "Lösenordet har ändrats";
+            return RedirectToAction("Settings");
         }
 
 
@@ -105,19 +156,23 @@ namespace CvAppenVS.Controllers
             {
                 return View(request);
             }
+            string fileName = "default-profile.png";
 
-            string fileName = Guid.NewGuid() + Path.GetExtension(request.Image.FileName);
+            if (request.Image != null && request.Image.Length > 0) {
 
-            string imagePath = Path.Combine(
+                fileName = Guid.NewGuid() + Path.GetExtension(request.Image.FileName);
+                string imagePath = Path.Combine(
                 environment.WebRootPath,
                 "images",
                 fileName
                 );
 
-            using (var stream = new FileStream(imagePath, FileMode.Create))
-            {
-                await request.Image.CopyToAsync(stream);
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    await request.Image.CopyToAsync(stream);
+                }
             }
+
             var user = new User
             {
                 UserName = request.UserName,
@@ -141,7 +196,7 @@ namespace CvAppenVS.Controllers
 
             
 
-            TempData["SuccessMessage"] = "Registreringen lyckades! Du kan nu logga in.";
+            TempData["Success"] = "Registreringen lyckades! Du kan nu logga in.";
 
             return RedirectToAction("LogIn");
 

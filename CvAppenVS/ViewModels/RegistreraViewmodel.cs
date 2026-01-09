@@ -14,13 +14,13 @@ namespace CvAppen.Web.ViewModels
         [Required(ErrorMessage = "Ange adress.")]
         public required string Address { get; set; }
 
-        [Required(ErrorMessage = "Ladda upp en bild.")]
-        public required IFormFile Image { get; set; }
+        //[Required(ErrorMessage = "Ladda upp en bild.")]
+        public  IFormFile? Image { get; set; }
 
         [Required(ErrorMessage = "Skriv in lösenord.")]
         [DataType(DataType.Password)]
-        [MinLength(6, ErrorMessage = "Password must be at least 6 characters.")]
-        [RegularExpression(@"^(?=.*[A-Z])(?=.*\d).+$", ErrorMessage = "Password must contain at least one uppercase letter and one number.")]
+        [MinLength(6, ErrorMessage = "Lösenordet måste innehålla minst 6 tecken.")]
+        [RegularExpression(@"^(?=.*[A-Z])(?=.*\d).+$", ErrorMessage = "Lösenordet måste innehålla minst en stor bokstav och en siffra.")]
         public required string Password { get; set; }
 
         [Required(ErrorMessage = "Bekräfta lösenord.")]

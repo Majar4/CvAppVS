@@ -15,6 +15,8 @@
             {
                 <h4 class="card-title">@Model.LatestProject.Title</h4>
                 <p class="card-text">@Model.LatestProject.Description</p>
+
+                <a asp-controller="Project" asp-action="Index" class="btn btn-outline-secondary btn-sm ms-2">Se alla projekt</a>
             }
             else
             {
@@ -51,7 +53,9 @@
                             </p>
 
                             @* Knapp för att gå till personens profil *@
-                            <a asp-controller="Profile" asp-action="Details" asp-route-id="@cv.UserId"
+@*                             <a asp-controller="Profile" asp-action="Details" asp-route-id="@cv.UserId"
+                               class="btn btn-dark w-100">Visa Profil</a> *@
+                            <a asp-controller="Profile" asp-action="Index" asp-route-id="@cv.UserId"
                                class="btn btn-dark w-100">Visa Profil</a>
                         </div>
                     </div>
