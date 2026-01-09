@@ -125,7 +125,8 @@ namespace CvAppen.Web.Controllers
 
             _context.CVs.Add(cvt);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Profile", new { id = cvt.Id });
+            //return RedirectToAction("Index", "Profile", new { id = cvt.Id });
+            return RedirectToAction("Index", "Profile");
         }
 
         [HttpGet]

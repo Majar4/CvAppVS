@@ -53,7 +53,9 @@
                             </p>
 
                             @* Knapp för att gå till personens profil *@
-                            <a asp-controller="Profile" asp-action="Details" asp-route-id="@cv.UserId"
+@*                             <a asp-controller="Profile" asp-action="Details" asp-route-id="@cv.UserId"
+                               class="btn btn-dark w-100">Visa Profil</a> *@
+                            <a asp-controller="Profile" asp-action="Index" asp-route-id="@cv.UserId"
                                class="btn btn-dark w-100">Visa Profil</a>
                         </div>
                     </div>

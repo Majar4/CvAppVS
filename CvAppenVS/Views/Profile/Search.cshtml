@@ -18,7 +18,10 @@ else
     <div class="list-group">
        @foreach (var user in Model)
         {
-            <a asp-action="Details" asp-route-id="@user.Id" class="list-group-item list-group-item-action">
+@*             <a asp-action="Details" asp-route-id="@user.Id" class="list-group-item list-group-item-action">
+                @user.UserName
+            </a> *@
+            <a asp-action="Index" asp-route-id="@user.Id" class="list-group-item list-group-item-action">
                 @user.UserName
             </a>
         }
