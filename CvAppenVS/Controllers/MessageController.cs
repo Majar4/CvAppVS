@@ -99,7 +99,7 @@ namespace CvAppenVS.Controllers
             _context.Messages.Add(message);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Details", "Profile", new { id = dto.ToUserId });
+            return RedirectToAction("Index", "Profile", new { id = dto.ToUserId });
         }
 
 
