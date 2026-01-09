@@ -96,7 +96,6 @@ namespace CvAppen.Web.Controllers
                 })
                 .ToList();
 
-            // Bygg ViewModel
             var model = new MyProfileViewModel
             {
                 UserId = profileUser.Id,
@@ -123,33 +122,66 @@ namespace CvAppen.Web.Controllers
             }
             return View(users);
         }
-        //[HttpGet]
-        //public IActionResult Details(string id)
-        //{
-        //    if (string.IsNullOrEmpty(id))
-        //    {
-        //        return NotFound();
-        //    }
 
-        //    var user = _context.Users.FirstOrDefault(u => u.Id == id);
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
 
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
+            // Hämta ID på den som är inloggad just nu
+            var currentUserId = _userManager.GetUserId(User);
 
-        //    var model = new MyProfileViewModel
-        //    {
-        //        Name = user.Name,
-        //    };
+            // OM man klickar på sig själv i sökresultatet -> skicka till Index-vyn istället!
+            if (id == currentUserId)
+            {
+                return RedirectToAction("Index");
+            }
+            if (string.IsNullOrEmpty(id)) return NotFound();
 
-        //    var projects = _context.UserProjects
-        //    .Where(up => up.UserId == id)
-        //    .Select(up => up.Project)
-        //    .ToList();
-        //    ViewBag.Projects = projects;
+            var profileUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (profileUser == null) return NotFound();
 
-        //    return View(model);
-        //}
+            var cvEntity = await _context.CVs
+                .Include(c => c.Competences)
+                .Include(c => c.Educations)
+                .Include(c => c.EarlierExperiences)
+                .FirstOrDefaultAsync(c => c.UserId == profileUser.Id);
+
+            CvViewModel? cvViewModel = null;
+            if (cvEntity != null)
+            {
+                cvViewModel = new CvViewModel
+                {
+                    Id = cvEntity.Id,
+                    Presentation = cvEntity.Presentation,
+                    PhoneNumber = cvEntity.PhoneNumber,
+                    UserId = cvEntity.UserId,
+                    Competences = cvEntity.Competences.Select(c => new CompetenceViewModel { Id = c.Id, Title = c.Title }).ToList(),
+                    Educations = cvEntity.Educations.Select(e => new EducationViewModel { Id = e.Id, Name = e.Name, School = e.School, From = e.From, To = e.To }).ToList(),
+                    EarlierExperiences = cvEntity.EarlierExperiences.Select(ex => new EarlierExperienceViewModel { Id = ex.Id, Title = ex.Title, Company = ex.Company, Description = ex.Description, From = ex.From, To = ex.To }).ToList()
+                };
+            }
+
+            var projects = await _context.UserProjects
+                .Where(up => up.UserId == profileUser.Id)
+                .Select(up => new ProfileProjectsViewModel
+                {
+                    Id = up.Project.Id,
+                    Title = up.Project.Title
+                })
+                .ToListAsync();
+
+            var model = new MyProfileViewModel
+            {
+                UserId = profileUser.Id,
+                Name = profileUser.Name,
+                ProfilePictureUrl = profileUser.Image,
+                CV = cvViewModel,
+                MyProjects = projects,
+                CanEditCv = false
+            };
+
+            return View(model);
+        }
     }
 }

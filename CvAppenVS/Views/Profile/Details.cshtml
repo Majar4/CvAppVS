@@ -1,53 +1,23 @@
-﻿@model CvAppen.Web.ViewModels.MyProfileViewModel
+﻿@model MyProfileViewModel
+@using CvAppen.Web.ViewModels
 
-@* 
-lägg in User-info som inte är kopplat till CV*@
+@{ ViewData["Title"] = @Model.Name; }
 
-<div class="container mt-5">
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            <h2 class="mb-0">Profil: @Model.Name</h2>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-8">
-                    <h4>Om @Model.Name</h4>
-                    <p>Här kan du se @Model.Name's profil och projekt.</p>
-
-                    <div class="mt-4">
-
-                        @if (Model.CV == null)
-                        {
-                            <div class="alert alert-info">
-                                Inget CV publicerat ännu.
-                            </div>
-
-                        }
-
-                        else
-                        {
-                            <div class="profile-cv">
-                                <h2>CV</h2>
-                                @await Html.PartialAsync("_CvPartial", Model.CV)
-                            </div>
-
-                        }
-
-                        @* Knapp för att skicka meddelande *@
-                        <a asp-controller="Message" 
-                        asp-action="Add" 
-                        asp-route-toUserId="@Context.Request.RouteValues["id"]" class="btn btn-outline-primary ms-2">
-                            Skicka ett meddelande
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-footer text-muted">
-            <a asp-action="Search" 
-            asp-route-searchString="@Context.Request.Query["searchString"]" class="btn btn-link">
-                &larr; Tillbaka till sökresultat
-            </a>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-5 fw-normal">@Model.Name</h1>
+        
+        <div class="d-flex gap-2">
+            @* Meddelandeknapp *@
+            <a asp-controller="Message" asp-action="Add" asp-route-toUserId="@Model.UserId" 
+               class="btn btn-dark rounded-pill px-4 shadow-sm">Meddelande</a>
+            
+            @if (Model.CV != null) {
+                <a asp-controller="Profile" asp-action="Details" asp-route-id="@Model.CV.Id" 
+                   class="btn btn-outline-dark rounded-pill px-4 shadow-sm">Visa fullständigt CV</a>
+            }
         </div>
     </div>
+
+    @await Html.PartialAsync("_profilePartial", Model)
 </div>

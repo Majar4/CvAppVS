@@ -1,0 +1,42 @@
+﻿@using CvAppen.Web.ViewModels;
+@model MyProfileViewModel
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="bg-light border d-flex align-items-center justify-content-center shadow-sm"
+             style="height: 350px; width: 100%; font-size: 2.5rem; color: #aaa;">
+            @if (!string.IsNullOrEmpty(Model.ProfilePictureUrl))
+            {
+                <img src="~/images/@Model.ProfilePictureUrl" class="img-fluid h-100 w-100" style="object-fit: cover;" alt="Profilbild">
+            }
+            else
+            {
+                <span>Bild</span>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="mb-4">
+            <p class="fs-5">
+                @(Model.CV?.Presentation ?? "Ingen presentation tillgänglig.")
+            </p>
+        </div>
+
+        @if (Model.CV != null)
+        {
+            @await Html.PartialAsync("_cvPartial", Model.CV)
+        }
+    </div>
+</div>
+
+<div class="mt-5">
+    <h4 class="fw-bold pb-2 border-bottom">Projekt</h4>
+    @if (Model.MyProjects != null && Model.MyProjects.Any())
+    {
+        @foreach (var project in Model.MyProjects)
+        {
+            <div class="mb-2"><strong>@project.Title</strong></div>
+        }
+    }
+</div>

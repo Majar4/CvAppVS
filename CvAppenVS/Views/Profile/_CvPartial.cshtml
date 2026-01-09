@@ -2,11 +2,49 @@
 
 @model CvAppen.Web.ViewModels.CvViewModel
 
+@* Utbildning *@
+<div class="mt-5">
+    <h4 class="fw-bold pb-2 border-bottom">Utbildningar</h4>
+    @if (Model.Educations.Any())
+    {
+        @foreach (var edu in Model.Educations)
+        {
+            <div class="mb-3">
+                <span class="fw-bold">@edu.School:</span> @edu.Name
+                <span class="text-muted small">(@edu.From.ToString("yyyy") - @edu.To.ToString("yyyy"))</span>
+            </div>
+        }
+    }
+</div>
 
-<div class="card mb-4">
+@* Erfarenheter *@
+<div class="mt-4">
+    <h4 class="fw-bold pb-2 border-bottom">Tidigare erfarenheter</h4>
+    @if (Model.EarlierExperiences.Any())
+    {
+        @foreach (var exp in Model.EarlierExperiences)
+        {
+            <div class="mb-3">
+                <span class="fw-bold">@exp.Company:</span> @exp.Title
+                <div class="small text-muted">@exp.From.ToString("yyyy") - @exp.To.ToString("yyyy")</div>
+                @if (!string.IsNullOrEmpty(exp.Description))
+                {
+                    <p class="mb-1">@exp.Description</p>
+                }
+            </div>
+        }
+    }
+</div>
+
+<div class="mb-4">
+    <h4 class="fw-bold pb-2 border-bottom">Kontaktuppgifter</h4>
+    <p class="mb-0">@Model.PhoneNumber</p>
+</div>
+
+@*<div class="card mb-4">
     <div class="card-body">
         <div class="d-flex align-items-center mb-3">
-            @* Profilbild *@
+            @* Profilbild
             @if (!string.IsNullOrEmpty(Model.ImagePath))
             {
                 <img src="@Model.ImagePath" alt="Profilbild" class="rounded-_CvPartial me-3" style="width:100px; height:100px; object-fit:cover;">
@@ -24,20 +62,20 @@
             </div>
         </div>
 
-        @* Presentation *@
+        @* Presentation
         <div class="mb-3">
             <h5>Presentation</h5>
             <p>@Model.Presentation</p>
         </div>
 
-                @* Telefonnummer *@
+                @* Telefonnummer
         <div class="mb-3">
             <h5>Telefonnummer</h5>
             <p>@Model.PhoneNumber</p>
         </div>
 
 
-        @* Kompetenser *@
+        @* Kompetenser
         @if (Model.Competences.Any())
         {
             <div class="mb-3">
@@ -53,7 +91,7 @@
             </div>
         }
 
-        @* Utbildning *@
+        @* Utbildning
         @if (Model.Educations.Any())
         {
             <div class="mb-3">
@@ -70,7 +108,7 @@
             </div>
         }
 
-        @* Tidigare erfarenheter *@
+        @* Tidigare erfarenheter 
         @if (Model.EarlierExperiences.Any())
         {
             <div class="mb-3">
@@ -93,4 +131,4 @@
         }
 
     </div>
-</div>
+</div>*@

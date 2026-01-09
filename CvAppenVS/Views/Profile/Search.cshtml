@@ -18,12 +18,18 @@ else
     <div class="list-group">
        @foreach (var user in Model)
         {
-@*             <a asp-action="Details" asp-route-id="@user.Id" class="list-group-item list-group-item-action">
-                @user.UserName
-            </a> *@
-            <a asp-action="Index" asp-route-id="@user.Id" class="list-group-item list-group-item-action">
-                @user.UserName
-            </a>
+            <div class="card h-100 shadow-sm">
+                <div class="card-body d-flex align-items-center">
+                   
+                    <div class="flex-grow-1 ms-3">
+                        <h5 class="card-title mb-1">@user.Name</h5>
+                        
+                        <a asp-controller="Profile" asp-action="Details" asp-route-id="@user.Id" class="btn btn-sm btn-outline-primary">
+                            Visa profil
+                        </a>
+                    </div>
+                </div>
+            </div>
         }
     </div>
 }
