@@ -6,7 +6,7 @@
 
 <form asp-action="Edit" method="post" class="col-md-6">
 
-    <input type="hidden" asp-for="Id" />
+	<input type="hidden" asp-for="Id" />
 
 	<div class="mb-3">
 		<label class="form-label">Presentation</label>
@@ -25,171 +25,114 @@
 		<label class="form-label">Kompetenser</label>
 		@for (int i = 0; i < Model.Competences.Count; i++)
 		{
-			<input type="hidden" asp-for="Competences[i].Id" />
-            <input name="Competences[0].Title" placeholder="Kompetens" class="form-control mb-1" />
-			<span asp-validation-for="Competences[i]" class="text-danger"></span>
-
-		}
-
-		<button type="button" class="btn btn-sm btn-outline-primary" onclick="addCompetence()" > Lägg till kompetens</button>
-
-		<ul class="list-inline">
-			@foreach (var competence in Model.Competences)
-			{
-				<li class="list-inline-item badge bg-primary me-1">
-					@competence.Title
-
-					<form method="post"
-						  asp-action="RemoveCompetence"
-						  class="d-inline">
-						<input type="hidden" name="id" value="@competence.Id" />
-						<button type="submit" class="btn btn-sm btn-danger ms-1">&times;</button>
-					</form>
-				</li>
-			}
-		</ul>
-
-	<script>
-		function addCompetence() {
-			const container = document.getElementById('competences-container');
-			const index = container.querySelectorAll('textarea').length;
-			const textarea = document.createElement('textarea');
-			textarea.name = `Competences[${index}].Title`;
-			textarea.className = 'form-control mb-1';
-			textarea.rows = 2;
-			container.insertBefore(textarea, container.querySelector('button'));
-		}
-	</script>
-
-	@* 	För utbildnings-listan *@
-	<div class="mb-3" id="educations-container">
-		<label class="form-label">Utbildningar</label>
-		@if (Model.Educations.Count == 0)
-		{
 			<div class="border p-2 mb-2">
-				<input name="Educations[0].Name" placeholder="Utbildning" class="form-control mb-1" />
-				<input name="Educations[0].School" placeholder="Skola" class="form-control mb-1" />
-				<input type="date" name="Educations[0].From" class="form-control mb-1" />
-				<input type="date" name="Educations[0].To" class="form-control mb-1" />
+			<input type="hidden" asp-for="Competences[i].Id" />
+			<input asp-for="Competences[i].Title" placeholder="Kompetens" class="form-control mb-1" />
+@* 			<span asp-validation-for="Competences[i]" class="text-danger"></span>
+ *@			<button type="button" class="btn btn-sm btn-danger" onclick="this.parentElement.remove()">×</button>
 			</div>
 		}
-		else
-		{
+
+		<button type="button" class="btn btn-sm btn-outline-primary" onclick="addCompetence()"> Lägg till kompetens</button>
+		</div>
+		@* Javascript-delen *@
+
+		<script>
+			function addCompetence() {
+			const container = document.getElementById('competences-container');
+			const index = container.querySelectorAll('.border').length;
+			const html =
+			`<div class="border p-2 mb-2">
+			<input name="Competences[${index}].Title" placeholder="Kompetens" class="form-control mb-1" />
+			<button type="button" class="btn btn-sm btn-danger" onclick="this.parentElement.remove()">× Ta bort</button>
+
+			</div>`;
+			container.insertAdjacentHTML('beforeend', html);
+
+			}
+
+		</script>
+
+
+		@* 	För utbildnings-listan *@
+		<div class="mb-3" id="educations-container">
+			<label class="form-label">Utbildningar</label>
+
 			@for (int i = 0; i < Model.Educations.Count; i++)
 			{
 				<div class="border p-2 mb-2">
-					<input asp-for="Educations[i].Name" class="form-control mb-1" />
-					<input asp-for="Educations[i].School" class="form-control mb-1" />
+					<input asp-for="Educations[i].Name" placeholder="Utbildning" class="form-control mb-1" />
+					<input asp-for="Educations[i].School" placeholder="Skola" class="form-control mb-1" />
 					<input asp-for="Educations[i].From" type="date" class="form-control mb-1" />
 					<input asp-for="Educations[i].To" type="date" class="form-control mb-1" />
+					<button type="button" class="btn btn-sm btn-danger align-self-start mt-1" onclick="this.parentElement.remove()">× Ta bort</button>
+
 				</div>
 			}
-		}
-
-		<button type="button" class="btn btn-sm btn-outline-primary" onclick="addEducation()" > Lägg till utbildning</button>
-
-		<ul class="list-inline">
-			@foreach (var education in Model.Educations)
-			{
-				<li class="list-inline-item badge bg-primary me-1">
-					@education.Name
-
-					<form method="post"
-						  asp-action="RemoveEducation"
-						  class="d-inline">
-						<input type="hidden" name="id" value="@education.Id" />
-						<button type="submit" class="btn btn-sm btn-danger ms-1">&times;</button>
-					</form>
-				</li>
-			}
-		</ul>
-
-	</div>
 
 
-	<script>
-		function addEducation() {
-			const container = document.getElementById('educations-container');
-				const index = container.querySelectorAll('.border').length;
-		const html = `
-		<div class="border p-2 mb-2">
-			<input name="Educations[${index}].Name" placeholder="Utbildning" class="form-control mb-1" />
-			<input name="Educations[${index}].School" placeholder="Skola" class="form-control mb-1" />
-			<input type="date" name="Educations[${index}].From" class="form-control mb-1" />
-			<input type="date" name="Educations[${index}].To" class="form-control mb-1" />
-		</div>`;
-		container.insertAdjacentHTML('beforeend', html);
-		}
-	</script>
+			<button type="button" class="btn btn-sm btn-outline-primary" onclick="addEducation()"> Lägg till utbildning</button>
 
-	@* 	För tidigare erfarenhets-listan *@
-	<div class="mb-3" id="earlierexperiences-container">
-		<label class="form-label">Erfarenheter</label>
-		@if (Model.EarlierExperiences.Count == 0)
-		{
+		</div>
+
+
+		<script>
+			function addEducation() {
+				const container = document.getElementById('educations-container');
+					const index = container.querySelectorAll('.border').length;
+			const html = `
 			<div class="border p-2 mb-2">
-				<input name="EarlierExperiences[0].Title" placeholder="Titel" class="form-control mb-1" />
-				<input name="EarlierExperiences[0].Company" placeholder="Företag" class="form-control mb-1" />
-					<input name="EarlierExperiences[0].Description" placeholder="Beskrivning" class="form-control mb-1" />
+				<input name="Educations[${index}].Name" placeholder="Utbildning" class="form-control mb-1" />
+				<input name="Educations[${index}].School" placeholder="Skola" class="form-control mb-1" />
+				<input type="date" name="Educations[${index}].From" class="form-control mb-1" />
+				<input type="date" name="Educations[${index}].To" class="form-control mb-1" />
+			</div>`;
+			container.insertAdjacentHTML('beforeend', html);
+			}
+		</script>
 
-				<input type="date" name="EarlierExperiences[0].From" class="form-control mb-1" />
-				<input type="date" name="EarlierExperiences[0].To" class="form-control mb-1" />
-			</div>
-		}
-		else
-		{
+		@* 	För tidigare erfarenhets-listan *@
+		<div class="mb-3" id="earlierexperiences-container">
+			<label class="form-label">Erfarenheter</label>
+
 			@for (int i = 0; i < Model.EarlierExperiences.Count; i++)
 			{
 				<div class="border p-2 mb-2">
-					<input asp-for="EarlierExperiences[i].Title" class="form-control mb-1" />
-					<input asp-for="EarlierExperiences[i].Company" class="form-control mb-1" />
-						<input asp-for="EarlierExperiences[i].Description" class="form-control mb-1" />
+					<input asp-for="EarlierExperiences[i].Title" placeholder="Titel" class="form-control mb-1" />
+					<input asp-for="EarlierExperiences[i].Company" placeholder="Företag" class="form-control mb-1" />
+					<input asp-for="EarlierExperiences[i].Description" placeholder="Beskrivning" class="form-control mb-1" />
 
 					<input asp-for="EarlierExperiences[i].From" type="date" class="form-control mb-1" />
 					<input asp-for="EarlierExperiences[i].To" type="date" class="form-control mb-1" />
+					<button type="button" class="btn btn-sm btn-danger align-self-start mt-1" onclick="this.parentElement.remove()">× Ta bort</button>
+
 				</div>
 			}
-		}
+			
 
-		<button type="button" class="btn btn-sm btn-outline-primary" onclick="addEarlierExperience()" > Lägg till erfarenhet</button>
+			<button type="button" class="btn btn-sm btn-outline-primary" onclick="addEarlierExperience()"> Lägg till erfarenhet</button>
 
-			<ul class="list-inline">
-				@foreach (var earlierExp in Model.EarlierExperiences)
-				{
-					<li class="list-inline-item badge bg-primary me-1">
-						@earlierExp.Title
+		</div>
 
-						<form method="post"
-							  asp-action="RemoveEducation"
-							  class="d-inline">
-							<input type="hidden" name="id" value="@earlierExp.Id" />
-							<button type="submit" class="btn btn-sm btn-danger ms-1">&times;</button>
-						</form>
-					</li>
-				}
-			</ul>
+		<script>
+			function addEarlierExperience() {
+				const container = document.getElementById('earlierexperiences-container');
+					const index = container.querySelectorAll('.border').length;
+			const html = `
+			<div class="border p-2 mb-2">
+				<input name="EarlierExperiences[${index}].Title" placeholder="Titel" class="form-control mb-1" />
+				<input name="EarlierExperiences[${index}].Company" placeholder="Företag" class="form-control mb-1" />
+								<input name="EarlierExperiences[${index}].Description" placeholder="Beskrivning" class="form-control mb-1" />
 
-	</div>
+				<input type="date" name="EarlierExperiences[${index}].From" class="form-control mb-1" />
+				<input type="date" name="EarlierExperiences[${index}].To" class="form-control mb-1" />
+			</div>`;
+			container.insertAdjacentHTML('beforeend', html);
+			}
+		</script>
 
-	<script>
-		function addEarlierExperience() {
-			const container = document.getElementById('earlierexperiences-container');
-				const index = container.querySelectorAll('.border').length;
-		const html = `
-		<div class="border p-2 mb-2">
-			<input name="EarlierExperiences[${index}].Title" placeholder="Titel" class="form-control mb-1" />
-			<input name="EarlierExperiences[${index}].Company" placeholder="Företag" class="form-control mb-1" />
-							<input name="EarlierExperiences[${index}].Description" placeholder="Beskrivning" class="form-control mb-1" />
+		<button type="submit" class="btn btn-dark btn-sm">Spara</button>
 
-			<input type="date" name="EarlierExperiences[${index}].From" class="form-control mb-1" />
-			<input type="date" name="EarlierExperiences[${index}].To" class="form-control mb-1" />
-		</div>`;
-		container.insertAdjacentHTML('beforeend', html);
-		}
-	</script>
-
-    <button type="submit" class="btn btn-dark btn-sm">Spara</button>
-
-    <a asp-action="Index" class="btn btn-outline-secondary btn-sm ms-2">Tillbaka</a>
+		<a asp-action="Index" class="btn btn-outline-secondary btn-sm ms-2">Tillbaka</a>
 
 </form>
