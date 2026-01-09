@@ -192,6 +192,7 @@ namespace CvAppen.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Edit(CvViewModel model)
         {
            if(!ModelState.IsValid)
@@ -272,7 +273,7 @@ namespace CvAppen.Web.Controllers
             {
                 return NotFound();
             }
-           
+
 
             if (competence.CV.UserId != userId)
             {
