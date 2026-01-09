@@ -2,11 +2,11 @@
 @model SendMessageDto
 
 <a class="nav-link d-flex flex-column align-items-center">
-<form asp-for="add" method="post">
+<form asp-action="add" method="post">
     <input asp-for="ToUserId" type="Hidden" />
     <div>
         <label for="Text"> Meddelande: </label>
-        <textarea asp-for="Text" rows="4" columns = "50""></textarea>
+        <textarea asp-for="Text" rows="4" cols = "50"></textarea>
          </div>
         @if(!User.Identity.IsAuthenticated)
             {

@@ -25,7 +25,15 @@ else
     <div class="profile-cv">
         <h2>CV</h2>
         @await Html.PartialAsync("_CvPartial", Model.CV)
-    </div>       
+    </div>   
+    
+    @if (!Model.CanEditCv)
+    {
+        <a asp-controller="Message" asp-action="Add"
+           asp-route-toUserId="@Model.UserId"
+           class="btn btn-outline-primary ms-2"> Skicka ett meddelande </a>
+    }
+
    
     @if (Model.CanEditCv)
     {

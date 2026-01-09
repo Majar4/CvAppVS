@@ -36,7 +36,7 @@ lägg in User-info som inte är kopplat till CV*@
                         @* Knapp för att skicka meddelande *@
                         <a asp-controller="Message" 
                         asp-action="Add" 
-                        asp-route-receiverId="@Context.Request.RouteValues["id"]" class="btn btn-outline-primary ms-2">
+                        asp-route-toUserId="@Context.Request.RouteValues["id"]" class="btn btn-outline-primary ms-2">
                             Skicka ett meddelande
                         </a>
                     </div>
