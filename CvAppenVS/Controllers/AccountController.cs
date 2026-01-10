@@ -35,27 +35,20 @@ namespace CvAppenVS.Controllers
             {
                 return View(vm);
             }
-            try
-            {
-                var result = await signInManager.PasswordSignInAsync(
-                                vm.UserName,
-                                vm.Password,
-                                vm.RememberMe,
-                                lockoutOnFailure: false);
+            
+            var result = await signInManager.PasswordSignInAsync(
+                            vm.UserName,
+                            vm.Password,
+                            vm.RememberMe,
+                            lockoutOnFailure: false);
 
-                if (!result.Succeeded)
-                {
-                    ModelState.AddModelError(string.Empty, "Fel användarnamn eller lösenord");
-                    return View(vm);
-                }
-                return RedirectToAction("Index", "Home");
-            }
-            catch (Exception ex)
+            if (!result.Succeeded)
             {
-                ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Försök igen";
+                ModelState.AddModelError(string.Empty, "Fel användarnamn eller lösenord");
                 return View(vm);
             }
-
+                
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -115,7 +108,7 @@ namespace CvAppenVS.Controllers
                 TempData["Success"] = "Inställningarna har uppdaterats";
                 return RedirectToAction("Settings");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Det gick inte att spara ändringarna.";
                 return View(vm);
@@ -166,7 +159,7 @@ namespace CvAppenVS.Controllers
                 TempData["Success"] = "Lösenordet har ändrats";
                 return RedirectToAction("Settings");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Lösenordet kunde inte ändras.";
                 return View(vm);
@@ -182,35 +175,35 @@ namespace CvAppenVS.Controllers
                 return View(request);
             }
 
+            string fileName = "default-profile.png";
+
+            if (request.Image != null && request.Image.Length > 0)
+            {
+
+                fileName = Guid.NewGuid() + Path.GetExtension(request.Image.FileName);
+                string imagePath = Path.Combine(
+                environment.WebRootPath,
+                "images",
+                fileName
+                );
+
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    await request.Image.CopyToAsync(stream);
+                }
+            }
+
+            var user = new User
+            {
+                UserName = request.UserName,
+                Email = request.UserName,
+                Name = request.Name,
+                Address = request.Address,
+                Image = fileName
+            };
+
             try
             {
-                string fileName = "default-profile.png";
-
-                if (request.Image != null && request.Image.Length > 0)
-                {
-
-                    fileName = Guid.NewGuid() + Path.GetExtension(request.Image.FileName);
-                    string imagePath = Path.Combine(
-                    environment.WebRootPath,
-                    "images",
-                    fileName
-                    );
-
-                    using (var stream = new FileStream(imagePath, FileMode.Create))
-                    {
-                        await request.Image.CopyToAsync(stream);
-                    }
-                }
-
-                var user = new User
-                {
-                    UserName = request.UserName,
-                    Email = request.UserName,
-                    Name = request.Name,
-                    Address = request.Address,
-                    Image = fileName
-                };
-
                 var result = await userManager.CreateAsync(user, request.Password);
 
                 if (!result.Succeeded)
@@ -222,17 +215,15 @@ namespace CvAppenVS.Controllers
                     }
                     return View(request);
                 }
+                
                 TempData["Success"] = "Registreringen lyckades! Du kan nu logga in.";
                 return RedirectToAction("LogIn");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Försök igen.";
                 return View(request);
             }
         }
-        
-
-
     }   
 }

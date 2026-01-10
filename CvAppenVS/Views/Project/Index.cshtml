@@ -39,8 +39,11 @@
                         <div class="col-7">
                             <h5 class="card-title">@project.Title</h5>
                             <p class="card-text">@project.Description</p>
-                            @*  <p><b>Från:</b>@project.FromDate.Value.ToShortDateString()</p> //säkra upp för ev. nullvärde på datum
-                            <p><b>Till:</b>@project.ToDate.Value.ToShortDateString()</p> *@
+                            <p>
+                                <b>Från:</b> @(project.FromDate?.ToShortDateString() ?? "—") <br />
+                                <b>Till:</b> @(project.ToDate?.ToShortDateString() ?? "Pågående")
+                            </p>
+
 
                             @* Knapp för att redigera. Måste vara inloggad + den som skapade projektet = visar knappen*@
                             @if (User.Identity.IsAuthenticated && project.CreatedByUserId == User.FindFirstValue(ClaimTypes.NameIdentifier))

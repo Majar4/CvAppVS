@@ -54,15 +54,14 @@ namespace CvAppenVS.Controllers
             {
                 Title = model.Title,
                 Description = model.Description,
+                FromDate = model.FromDate,
+                ToDate = model.ToDate,
                 CreatedByUserId = user.Id
-                //TODO : lägg till datum
             };
 
             try
             {
-                //sparar
                 _context.Projects.Add(project);
-                await _context.SaveChangesAsync();
 
                 // Koppling mellan användaren/skaparen och projektet
                 var link = new UserProject
@@ -75,7 +74,7 @@ namespace CvAppenVS.Controllers
                 await _context.SaveChangesAsync();
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Projektet kunde inte skapas.";
                 return View(model);
@@ -110,7 +109,7 @@ namespace CvAppenVS.Controllers
                     _context.UserProjects.Add(userProject);
                     await _context.SaveChangesAsync();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     TempData["Error"] = "Anslutning till databasen misslyckades. Du kunde inte gå med i projektet.";
                 }
@@ -155,12 +154,14 @@ namespace CvAppenVS.Controllers
 
             project.Title = editedProject.Title;
             project.Description = editedProject.Description;
+            project.FromDate = editedProject.FromDate;
+            project.ToDate = editedProject.ToDate;
 
             try
             {
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Projektet kunde inte uppdateras.";
                 return View(project);

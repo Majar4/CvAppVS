@@ -101,7 +101,7 @@ namespace CvAppenVS.Controllers
                 _context.Messages.Add(message);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Meddelandet kunde inte skickas.";
                 return View(dto);
@@ -181,7 +181,7 @@ namespace CvAppenVS.Controllers
                 _context.Messages.Remove(message);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Error"] = "Anslutning till databasen misslyckades. Meddelandet kunde inte tas bort.";
             }
@@ -212,7 +212,7 @@ namespace CvAppenVS.Controllers
                 message.IsRead = true;
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 TempData["Error"] = "Anslutning till databasen misslyckades. Meddelandet kunde inte markeras som läst.";
             }
