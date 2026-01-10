@@ -1,5 +1,11 @@
 ﻿@using CvAppen.Web.DTOs
 @model SendMessageDto
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
 
 <a class="nav-link d-flex flex-column align-items-center">
 <form asp-action="add" method="post">

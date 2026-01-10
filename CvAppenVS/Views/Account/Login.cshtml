@@ -4,6 +4,13 @@
 @{
     ViewData["Title"] = "Logga in";
 }
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
 
 <div class="container mt-5">
     <div class="row justify-content-center">

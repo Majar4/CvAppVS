@@ -35,18 +35,19 @@ namespace CvAppenVS.Controllers
             {
                 return View(vm);
             }
-
+            
             var result = await signInManager.PasswordSignInAsync(
-                vm.UserName,
-                vm.Password,
-                vm.RememberMe,
-                lockoutOnFailure: false);
+                            vm.UserName,
+                            vm.Password,
+                            vm.RememberMe,
+                            lockoutOnFailure: false);
 
             if (!result.Succeeded)
             {
                 ModelState.AddModelError(string.Empty, "Fel användarnamn eller lösenord");
                 return View(vm);
             }
+                
             return RedirectToAction("Index", "Home");
         }
 
@@ -92,18 +93,26 @@ namespace CvAppenVS.Controllers
             user.Address = vm.Address;
             user.IsPrivate = vm.IsPrivate;
 
-            var result = await userManager.UpdateAsync(user);
-
-            if(!result.Succeeded)
+            try
             {
-                foreach(var error in result.Errors)
+                var result = await userManager.UpdateAsync(user);
+
+                if (!result.Succeeded)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View(vm);
                 }
+                TempData["Success"] = "Inställningarna har uppdaterats";
+                return RedirectToAction("Settings");
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Det gick inte att spara ändringarna.";
                 return View(vm);
             }
-            TempData["Success"] = "Inställningarna har uppdaterats";
-            return RedirectToAction("Settings");
         }
 
         [Authorize]
@@ -116,36 +125,45 @@ namespace CvAppenVS.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel vm)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return View(vm); 
-            }
-
-            var user = await userManager.GetUserAsync(User);
-            var result = await userManager.ChangePasswordAsync(
-                user,
-                vm.CurrentPassword,
-                vm.NewPassword);
-
-            if (!result.Succeeded)
-            {
-                foreach (var error in result.Errors)
-
-                    if(error.Code == "PasswordMismatch")
-                    {
-                        ModelState.AddModelError(string.Empty, "Nuvarande lösenord är felaktigt.");
-                    }
-                    else 
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-
                 return View(vm);
             }
 
-            await signInManager.RefreshSignInAsync(user);
-            TempData["Success"] = "Lösenordet har ändrats";
-            return RedirectToAction("Settings");
+            var user = await userManager.GetUserAsync(User);
+
+
+            try 
+            {
+                var result = await userManager.ChangePasswordAsync(
+                    user,
+                    vm.CurrentPassword,
+                    vm.NewPassword);
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+
+                        if (error.Code == "PasswordMismatch")
+                        {
+                            ModelState.AddModelError(string.Empty, "Nuvarande lösenord är felaktigt.");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+
+                    return View(vm);
+                }
+                await signInManager.RefreshSignInAsync(user);
+                TempData["Success"] = "Lösenordet har ändrats";
+                return RedirectToAction("Settings");
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Lösenordet kunde inte ändras.";
+                return View(vm);
+            }
         }
 
 
@@ -156,9 +174,11 @@ namespace CvAppenVS.Controllers
             {
                 return View(request);
             }
+
             string fileName = "default-profile.png";
 
-            if (request.Image != null && request.Image.Length > 0) {
+            if (request.Image != null && request.Image.Length > 0)
+            {
 
                 fileName = Guid.NewGuid() + Path.GetExtension(request.Image.FileName);
                 string imagePath = Path.Combine(
@@ -182,27 +202,28 @@ namespace CvAppenVS.Controllers
                 Image = fileName
             };
 
-            var result = await userManager.CreateAsync(user, request.Password);
-
-            if (!result.Succeeded)
+            try
             {
-                foreach (var error in result.Errors)
+                var result = await userManager.CreateAsync(user, request.Password);
+
+                if (!result.Succeeded)
                 {
-                    ModelState.AddModelError("", error.Description);
-                    Console.WriteLine(error.Description);
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                        Console.WriteLine(error.Description);
+                    }
+                    return View(request);
                 }
+                
+                TempData["Success"] = "Registreringen lyckades! Du kan nu logga in.";
+                return RedirectToAction("LogIn");
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Försök igen.";
                 return View(request);
             }
-
-            
-
-            TempData["Success"] = "Registreringen lyckades! Du kan nu logga in.";
-
-            return RedirectToAction("LogIn");
-
         }
-        
-
-
     }   
 }
