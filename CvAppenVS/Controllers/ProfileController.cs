@@ -130,10 +130,8 @@ namespace CvAppen.Web.Controllers
         {
             if (string.IsNullOrEmpty(id)) return RedirectToAction("Index");
 
-            // Hämta ID på den som är inloggad just nu
             var currentUserId = _userManager.GetUserId(User);
 
-            // OM man klickar på sig själv i sökresultatet -> skicka till Index-vyn istället!
             if (id == currentUserId)
             {
                 return RedirectToAction("Index");

@@ -36,6 +36,21 @@
     }
 </div>
 
+@* Kompetenser *@
+<div class="mt-4">
+    <h4 class="fw-bold pb-2 border-bottom">Kompetenser</h4>
+    @if (Model.Competences.Any())
+    {
+        @foreach (var comp in Model.Competences)
+        {
+            <div class="mb-3">
+                <span class="fw-bold">@comp.Title:</span>
+            </div>
+        }
+        
+    }
+</div>
+
 <div class="mb-4">
     <h4 class="fw-bold pb-2 border-bottom">Kontaktuppgifter</h4>
     <p class="mb-0">@Model.PhoneNumber</p>
