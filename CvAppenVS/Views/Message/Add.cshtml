@@ -7,13 +7,72 @@
     </div>
 }
 
-<a class="nav-link d-flex flex-column align-items-center">
+<div class="container mt-4">
+    <form asp-action="add" method="post" class="shadow p-4 rounded bg-light">
+
+        @if (!string.IsNullOrEmpty(Model.ToUserId))
+        {
+            <input asp-for="ToUserId" type="hidden" />
+            <div class="mb-3">
+                <label class="fw-bold">Till:</label>
+                <input class="form-control bg-light"
+                       value="@(ViewBag.RecipientName ?? "Användare: " + Model.ToUserId)"
+                       readonly />
+            </div>
+        }
+        else
+        {
+            <div class="mb-3">
+                <label class="fw-bold">Till:</label>
+
+                @if (!string.IsNullOrEmpty(Model.ToUserId))
+                {
+                    @* från svara-knapp eller meddelande-knapp på details/annans profil *@
+                    <input type="hidden" asp-for="ToUserId" />
+                    <input class="form-control bg-light" value="@(ViewBag.RecipientName ?? "Laddar namn...")"
+                           readonly />
+                }
+                else
+                {
+                    @* Rullista vid knapp nytt meddelande) *@
+                    <select asp-for="ToUserId" class="form-select"
+                            asp-items="@(new SelectList(ViewBag.Users, "Value", "Text"))">
+                        <option value="">-- Välj en mottagare --</option>
+                    </select>
+                    @* Hint om att välja mottagare *@
+                    <span asp-validation-for="ToUserId" class="text-danger"></span>
+                }
+            </div>
+        }
+
+        <div class="mb-3">
+            <label asp-for="Text" class="form-label fw-bold">Meddelande:</label>
+            <textarea asp-for="Text" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Text" class="text-danger"></span>
+        </div>
+
+
+        @if (!User.Identity.IsAuthenticated)
+        {
+            <div class="mb-3">
+                <label asp-for="SenderName" class="form-label fw-bold">Ditt namn:</label>
+                <input asp-for="SenderName" class="form-control" type="text" />
+                <span asp-validation-for="SenderName" class="text-danger"></span>
+            </div>
+        }
+
+        <button type="submit" class="btn btn-primary rounded-pill px-4">Skicka</button>
+        <a asp-action="Index" class="btn btn-link">Avbryt</a>
+    </form>
+</div>
+
+@* <a class="nav-link d-flex flex-column align-items-center">
 <form asp-action="add" method="post">
     <input asp-for="ToUserId" type="Hidden" />
     <div>
         <label for="Text"> Meddelande: </label>
         <textarea asp-for="Text" rows="4" cols = "50"></textarea>
-        @* lägg in radbrytning här sen *@
+        @* lägg in radbrytning här sen *
             <span asp-validation-for="Text" class="text-danger"></span>
          </div>
         @if(!User.Identity.IsAuthenticated)
@@ -21,11 +80,11 @@
                 <div><label for="SenderName"> Ditt namn: 
                     <input asp-for = "SenderName" type="Text" />
                     <span asp-validation-for="SenderName" class="text-danger"></span>
-                    @* lägg in radbrytning här sen *@
+                    @* lägg in radbrytning här sen *
                 </label></div>
             }
        <button type="submit">Skicka</button>
-    </form>
-    </a>
+    </form>*@
+    @*</a>*@
 
 
