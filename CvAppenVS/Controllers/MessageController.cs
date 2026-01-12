@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-namespace CvAppenVS.Controllers
+namespace CvAppen.Web.Controllers
 {
 
     public class MessageController : Controller
@@ -48,19 +48,25 @@ namespace CvAppenVS.Controllers
         [HttpGet]
         public async Task<IActionResult> Add(string toUserId)
         {
-            var dto = new SendMessageDto
+    
+
+            return View(new SendMessageDto
             {
                 ToUserId = toUserId
-            };
-
-            return View(dto);
+            });
         }
 
         [HttpPost]
         [ActionName("Add")]
         public async Task<IActionResult> SendMessage(SendMessageDto dto)
         {
-            if (!ModelState.IsValid) return View(dto);
+
+            if (!User.Identity.IsAuthenticated && string.IsNullOrWhiteSpace(dto.SenderName))
+            {
+                ModelState.AddModelError(nameof(dto.SenderName), "Du måste ange ett namn.");
+            }
+
+            if (!ModelState.IsValid) return View("Add", dto);
 
             string senderName;
             string userId = null;
@@ -70,13 +76,13 @@ namespace CvAppenVS.Controllers
                 userId = _userManager.GetUserId(User);
                 var user = await _userManager.FindByIdAsync(userId);
                 senderName = user.Name;
+
             }
 
             else
             {
                 senderName = dto.SenderName;
             }
-
 
             if (dto.ToUserId == userId)
             {
@@ -94,6 +100,7 @@ namespace CvAppenVS.Controllers
                 SenderName = senderName,
                 IsRead = false,
                 SentAt = DateTime.Now
+                
             };
 
             try
@@ -107,30 +114,7 @@ namespace CvAppenVS.Controllers
                 return View(dto);
             }
 
-            return RedirectToAction("Index", "Profile", new { id = dto.ToUserId });
-        }
-
-
-        [HttpGet]
-        public async Task<IActionResult> SendTestMessage()
-        {
-
-            
-            var receiver = await _userManager.FindByEmailAsync("Tomten@hotmail.com");
-            var message = new Message
-            {
-                Text = "En kaffe?",
-                FromUserId = null,
-                ToUserId = receiver.Id,
-                SenderName = "Gillis",
-                IsRead = false,
-                SentAt = DateTime.Now
-            };
-
-            _context.Messages.Add(message);
-            await _context.SaveChangesAsync();
-
-            return Ok("Testmeddelande skickat");
+            return RedirectToAction("Details", "Profile", new { id = dto.ToUserId });
         }
 
         [HttpGet]

@@ -9,7 +9,6 @@ using static CvAppen.Web.ViewModels.CvViewModel;
 
 namespace CvAppen.Web.Controllers
 {
-    [Authorize]
     public class ProfileController : Controller
     {
         public readonly CvContext _context;
@@ -20,7 +19,7 @@ namespace CvAppen.Web.Controllers
             _userManager = userManager;
         }
 
-        [AllowAnonymous]
+        
 
         public async Task<IActionResult> Index(string? id)
         {
@@ -33,7 +32,7 @@ namespace CvAppen.Web.Controllers
             {
                 if (currentUser == null)
                 {
-                    return RedirectToAction("Login", "Account");
+                    return RedirectToAction("Index", "Home");
                 }
                 profileUser = currentUser; // 
             }
