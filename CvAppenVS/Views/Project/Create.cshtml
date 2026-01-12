@@ -1,4 +1,10 @@
 ﻿@model CvAppenVS.Web.Models.CreateProjectViewModel
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
 
 <h2 class="mb-4">Nytt Projekt</h2>
 
@@ -15,6 +21,17 @@
         <textarea asp-for="Description" class="form-control" rows="4"></textarea>
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
+
+    <div class="mb-3">
+        <label class="form-label">Från</label>
+        <input asp-for="FromDate" type="date" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Till</label>
+        <input asp-for="ToDate" type="date" class="form-control" />
+    </div>
+
 
     <button type="submit" class="btn btn-dark btn-sm">Skapa</button>
 

@@ -1,4 +1,10 @@
 ﻿@model CvAppen.Data.Project
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
 
 <h2 class="mb-4">Redigera projekt</h2>
 
@@ -9,11 +15,23 @@
     <div class="mb-3">
         <label class="form-label">Titel</label>
         <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label class="form-label">Beskrivning</label>
         <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Från</label>
+        <input asp-for="FromDate" type="date" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Till</label>
+        <input asp-for="ToDate" type="date" class="form-control" />
     </div>
 
     <button type="submit" class="btn btn-dark btn-sm">Spara</button>

@@ -32,12 +32,18 @@ namespace CvAppenVS.Controllers
             {
                 model.FeaturedCvs = _context.Users
                     .Where(u => u.IsPrivate == false)
-                    .Where(u => currentUserId == null|| u.Id != currentUserId)
+                    .Where(u => currentUserId == null || u.Id != currentUserId)
                     .Select(u => new CvSummaryViewModel
                     {
                         UserId = u.Id,
                         Name = u.Name,
-                        Presentation = u.CV != null ? u.CV.Presentation : "Ingen presentation tillgänglig"
+                        Presentation = u.CV != null ? u.CV.Presentation : "Ingen presentation tillgänglig",
+                        ImagePath = !string.IsNullOrWhiteSpace(u.Image)
+                        ? (u.Image.StartsWith("/") ? u.Image : $"/images/{u.Image}")
+                        : "images/default-profile.png"
+
+
+
                         //Om vi ska ha in varje användares senste projekt på startsidan, fixa till och avkommentera nedan
                         //LatestProjectTitle = u.UserProjects != null && u.UserProjects.Any()
                         //? u.UserProjects.OrderByDescending(up => up.ProjectId).First().Project.Title
