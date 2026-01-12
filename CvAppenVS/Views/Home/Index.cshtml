@@ -1,85 +1,80 @@
 ﻿@using CvAppen.Web.ViewModels
 @model HomeIndexViewModel
 @{
-    ViewData["Title"] = "Startsida";
+	ViewData["Title"] = "Startsida";
 }
 
 @* Visa senast upplagda projektet *@
 <div class="container mb-5">
-    <div class="card border-info shadow">
-        <div class="card-header bg-info text-white fw-bold">
-            Senast registrerade projektet
-        </div>
-        <div class="card-body">
-            @if (Model.LatestProject != null)
-            {
-                <h4 class="card-title">@Model.LatestProject.Title</h4>
-                <p class="card-text">@Model.LatestProject.Description</p>
+	<div class="card border-info shadow">
+		<div class="card-header bg-info text-white fw-bold">
+			Senast registrerade projektet
+		</div>
+		<div class="card-body">
+			@if (Model.LatestProject != null)
+			{
+				<h4 class="card-title">@Model.LatestProject.Title</h4>
+				<p class="card-text">@Model.LatestProject.Description</p>
 
-                <a asp-controller="Project" asp-action="Index" class="btn btn-outline-secondary btn-sm ms-2">Se alla projekt</a>
-            }
-            else
-            {
-                <p class="text-muted italic">Inga projekt har laddats upp ännu.</p>
-            }
-        </div>
-    </div>
+				<a asp-controller="Project" asp-action="Index" class="btn btn-outline-secondary btn-sm ms-2">Se alla projekt</a>
+			}
+			else
+			{
+				<p class="text-muted italic">Inga projekt har laddats upp ännu.</p>
+			}
+		</div>
+	</div>
 </div>
 
 <div class="container text-center mb-4">
-    <h2 class="display-6">Utforska CVs...</h2>
+	<h2 class="display-6">Utforska CVs...</h2>
 </div>
 
 @* Visa publika CV:n *@
 <div class="container">
-    <div class="row">
-        @if (Model.FeaturedCvs != null && Model.FeaturedCvs.Any())
-        {
-            @foreach (var cv in Model.FeaturedCvs)
-            {
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 shadow-sm border-0 bg-light">
-                        <div class="card-body text-center p-4">
-                            <h5 class="card-title fw-bold">@cv.Name</h5>
+	<div class="row">
+		@if (Model.FeaturedCvs != null && Model.FeaturedCvs.Any())
+		{
+			@foreach (var cv in Model.FeaturedCvs)
+			{
+				<div class="col-md-4 mb-4">
+					<div class="card h-100 shadow-sm border-0 bg-light">
+						<div class="card-body text-center p-4">
+							<h5 class="card-title fw-bold">@cv.Name</h5>
 
-                            @* Profilbild *@
-                            
-                            
-                            @if (!string.IsNullOrEmpty(cv.ImagePath))
-                            {
-                                
-                                <img src="@Url.Content(cv.ImagePath))
-                                     alt="Profilbild på @cv.Name"
-                                     class="my-3 mx-auto d-block rounded"
-                                     style="width: 150px; height: 200px; object-fit: cover;" />
-                            }
-                            else
-                            {
-                                <div class="my-3 mx-auto d-flex align-items-center justify-content-center"
-                                     style="width: 150px; height: 200px; background-color: #ddd; color: #555;">
-                                    <span class="h3">CV</span>
-                                </div>
-                            }
+							@* Profilbild *@
 
-                            <p class="card-text text-muted small mb-4" style="height: 3em; overflow: hidden;">
-                                @cv.Presentation
-                            </p>
 
-                            @* Knapp för att gå till personens profil *@
-@*                             <a asp-controller="Profile" asp-action="Details" asp-route-id="@cv.UserId"
+							@{
+								var imageFile = string.IsNullOrEmpty(cv.ImagePath) ? "default-profile.png" : cv.ImagePath;
+							}
+
+
+							<img src="@cv.ImagePath"
+								 alt="Profilbild på @cv.Name"
+								 class="my-3 mx-auto d-block rounded"
+								 style="width: 150px; height: 200px; object-fit: cover;" />
+
+
+							<p class="card-text text-muted small mb-4" style="height: 3em; overflow: hidden;">
+								@cv.Presentation
+							</p>
+
+							@* Knapp för att gå till personens profil *@
+							@*                             <a asp-controller="Profile" asp-action="Details" asp-route-id="@cv.UserId"
                                class="btn btn-dark w-100">Visa Profil</a> *@
-                            <a asp-controller="Profile" asp-action="Index" asp-route-id="@cv.UserId"
-                               class="btn btn-dark w-100">Visa Profil</a>
-                        </div>
-                    </div>
-                </div>
-            }
-        }
-        else
-        {
-            <div class="col-12 text-center">
-                <p class="alert alert-warning">Hittade inga publika CV:n att visa.</p>
-            </div>
-        }
-    </div>
+							<a asp-controller="Profile" asp-action="Index" asp-route-id="@cv.UserId"
+							   class="btn btn-dark w-100">Visa Profil</a>
+						</div>
+					</div>
+				</div>
+			}
+		}
+		else
+		{
+			<div class="col-12 text-center">
+				<p class="alert alert-warning">Hittade inga publika CV:n att visa.</p>
+			</div>
+		}
+	</div>
 </div>
