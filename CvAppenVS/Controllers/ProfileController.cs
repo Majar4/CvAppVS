@@ -9,6 +9,9 @@ using static CvAppen.Web.ViewModels.CvViewModel;
 
 namespace CvAppen.Web.Controllers
 {
+    /// Hanterar användarprofiler:
+    /// visa profil, visa CV, lista projekt och söka användare.
+    
     public class ProfileController : Controller
     {
         public readonly CvContext _context;
@@ -19,14 +22,14 @@ namespace CvAppen.Web.Controllers
             _userManager = userManager;
         }
 
-        
 
+        /// Visar profilsidan för inloggad användare eller vald användare.
         public async Task<IActionResult> Index(string? id)
         {
             var currentUser = await _userManager.GetUserAsync(User);
             var currentUserId = currentUser?.Id;
 
-      
+            // Vilken användares profil som visas
             User profileUser;
             if (string.IsNullOrEmpty(id))
             {
@@ -34,7 +37,7 @@ namespace CvAppen.Web.Controllers
                 {
                     return RedirectToAction("Index", "Home");
                 }
-                profileUser = currentUser; // 
+                profileUser = currentUser;  
             }
             else
             {
@@ -45,12 +48,15 @@ namespace CvAppen.Web.Controllers
                 }
             }
 
+            // Hämta CV för vald användare
             var cvEntity = await _context.CVs
                 .Include(c => c.Competences)
                 .Include(c => c.Educations)
                 .Include(c => c.EarlierExperiences)
                 .FirstOrDefaultAsync(c => c.UserId == profileUser.Id);
 
+
+            // Skapar ett ViewModel-objekt för visning i vyn
             CvViewModel? cvViewModel = null;
 
             if (cvEntity != null)
@@ -88,6 +94,7 @@ namespace CvAppen.Web.Controllers
                 };
             }
 
+            // Hämta projekt som användaren deltar i
             var projects = _context.UserProjects
                 .Where(up => up.UserId == profileUser.Id)
                 .Select(up => new ProfileProjectsViewModel
@@ -97,6 +104,7 @@ namespace CvAppen.Web.Controllers
                 })
                 .ToList();
 
+            // Bygg hela profilsidans ViewModel
             var model = new MyProfileViewModel
             {
                 UserId = profileUser.Id,
@@ -115,6 +123,8 @@ namespace CvAppen.Web.Controllers
             return View(model);
         }
 
+        /// Söker efter användare baserat på namn eller e-post.
+        /// Privata profiler visas endast för inloggade användare.
         [AllowAnonymous]
         [HttpGet]
         public IActionResult Search(string searchString)
@@ -132,6 +142,7 @@ namespace CvAppen.Web.Controllers
             return View(result);
         }
 
+        /// Visar sida för en annan användares profil/CV.
         [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
@@ -148,6 +159,7 @@ namespace CvAppen.Web.Controllers
             var profileUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             if (profileUser == null) return NotFound();
 
+            // Hämta CV
             var cvEntity = await _context.CVs
                 .Include(c => c.Competences)
                 .Include(c => c.Educations)
@@ -169,6 +181,7 @@ namespace CvAppen.Web.Controllers
                 };
             }
 
+            //Hämta användarens projekt
             var projects = await _context.UserProjects
                 .Where(up => up.UserId == profileUser.Id)
                 .Select(up => new ProfileProjectsViewModel

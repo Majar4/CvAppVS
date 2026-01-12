@@ -6,6 +6,9 @@ using CvAppen.Web.ViewModels;
 
 namespace CvAppenVS.Controllers
 {
+    /// Hanterar startsidans innehåll, inklusive visning av offentliga CV:n
+    /// samt information om det senast skapade projektet.
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -17,6 +20,7 @@ namespace CvAppenVS.Controllers
             _context = context;
         }
 
+        /// Visar startsidan med urval av användare och senaste projektet.
         public IActionResult Index()
         {
 
@@ -49,6 +53,7 @@ namespace CvAppenVS.Controllers
                     })
                     .Take(6)
                     .ToList();
+                // Hämta senaste skapade projekt
                 var lastProject = _context.Projects
                     .OrderByDescending(p => p.Id)
                     .FirstOrDefault();

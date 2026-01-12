@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace CvAppen.Web.Controllers
 {
+    /// Hanterar meddelanden mellan användare:
+    /// visa inkorg, skicka meddelanden, ta bort, markera som läst och visa skickade meddelanden.
 
     public class MessageController : Controller
     {
@@ -21,6 +23,7 @@ namespace CvAppen.Web.Controllers
             _userManager = userManager;
         }
 
+        /// Visar inloggad användares inkorg.
         [HttpGet]
         [Authorize]
         [ActionName("Index")]
@@ -47,6 +50,7 @@ namespace CvAppen.Web.Controllers
             return View(message);
         }
 
+        /// Visar formulär för att skicka ett nytt meddelande.
         [HttpGet]
         public async Task<IActionResult> Add(string toUserId)
         {
@@ -71,6 +75,7 @@ namespace CvAppen.Web.Controllers
             });
         }
 
+        /// Skickar ett nytt meddelande till vald mottagare.
         [HttpPost]
         [ActionName("Add")]
         public async Task<IActionResult> SendMessage(SendMessageDto dto, int? replyingToId)
@@ -97,6 +102,7 @@ namespace CvAppen.Web.Controllers
                 senderName = dto.SenderName;
             }
 
+            // Förhindrar att användare skickar meddelande till sig själv
             if (dto.ToUserId == userId)
             {
                 return BadRequest();
@@ -135,6 +141,8 @@ namespace CvAppen.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        /// Visar bekräftelsesida för att ta bort meddelande.
         [HttpGet]
         [Authorize]
         public async Task <IActionResult> Remove(int id)
@@ -156,6 +164,8 @@ namespace CvAppen.Web.Controllers
             return View(message);
         }
 
+
+        /// Tar bort meddelande permanent.
         [HttpPost]
         [Authorize]
         public async Task <IActionResult> RemoveConfirmed(int id)
@@ -187,6 +197,7 @@ namespace CvAppen.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /// Markerar valt meddelande som läst.
         [HttpPost]
         public async Task <IActionResult> MarkAsRead (int id)
         {
@@ -216,6 +227,8 @@ namespace CvAppen.Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        /// Visar alla meddelanden som den inloggade användaren har skickat.
         [Authorize]
         public async Task<IActionResult> Sent()
         {

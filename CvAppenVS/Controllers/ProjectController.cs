@@ -11,8 +11,9 @@ using Microsoft.VisualBasic;
 
 namespace CvAppenVS.Controllers
 {
-    /// Ansvarar för funktionalitet kopplad till projekt:
+    /// Hanterar funktionalitet kopplad till projekt:
     /// visa, skapa, redigera och gå med i projekt.
+    
     public class ProjectController : Controller
     {
         private readonly CvContext _context;
@@ -24,7 +25,7 @@ namespace CvAppenVS.Controllers
             _userManager = userManager;
         }
 
-        //Lista alla projekt
+        /// Lista alla projekt.
         public async Task<IActionResult> Index()
         {
             var projects = await _context.Projects
@@ -34,13 +35,14 @@ namespace CvAppenVS.Controllers
             return View(projects);
         }
 
-        // Visar formuläret för att skapa ett nytt projekt
+
+        /// Visar formuläret för att skapa ett nytt projekt.
         public IActionResult Create()
         {
             return View();
         }
 
-        // Tar emot formuläret och skapar ett nytt projekt i databasen
+        /// Tar emot formuläret och skapar ett nytt projekt i databasen.
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateProjectViewModel model)
@@ -67,7 +69,7 @@ namespace CvAppenVS.Controllers
                 _context.Projects.Add(project);
                 await _context.SaveChangesAsync();
 
-                // Koppling mellan användaren/skaparen och projektet
+                // Koppling mellan användaren/skaparen och projektet.
                 var link = new UserProject
                 {
                     UserId = user.Id,
@@ -88,7 +90,7 @@ namespace CvAppenVS.Controllers
 
         }
 
-        //Lägger till den inloggade användaren som deltagare i ett befintligt projekt.
+        /// Lägger till den inloggade användaren som deltagare i ett befintligt projekt.
         [Authorize]
         public async Task<IActionResult> Join(int projectId)
         {
@@ -121,7 +123,7 @@ namespace CvAppenVS.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //Visar redigeringsformulär för projekt. Endast projektets skapare har behörighet. 
+        /// Visar redigeringsformulär för projekt. Endast projektets skapare har behörighet. 
         [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
@@ -139,7 +141,7 @@ namespace CvAppenVS.Controllers
             return View(project);
         }
 
-        //Tar emot ändringar och uppdaterar projektets information i databasen.
+        /// Tar emot ändringar och uppdaterar projektets information i databasen.
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Edit(Project editedProject)
