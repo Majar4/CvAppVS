@@ -103,6 +103,9 @@ namespace CvAppen.Web.Controllers
                 Name = profileUser.Name,
                 MyProjects = projects,
                 CV = cvViewModel,
+                ProfilePictureUrl = string.IsNullOrEmpty(profileUser.Image)
+                        ? "default-profile.png"
+                        : profileUser.Image,
                 CanEditCv = currentUserId != null && currentUserId == profileUser.Id,   
                 UnReadMessagesCount = currentUserId != null
                     ? _context.Messages.Count(m => m.ToUserId == currentUserId && !m.IsRead)
@@ -112,16 +115,21 @@ namespace CvAppen.Web.Controllers
             return View(model);
         }
 
-
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Search(string searchString)
         {
-            var users = _context.Users.AsQueryable();
+            var usersQuery = _context.Users.AsQueryable();
             if (!string.IsNullOrEmpty(searchString))
             {
-                users = users.Where(u => u.Name.Contains(searchString) || u.Email.Contains(searchString));
+                usersQuery = usersQuery.Where(u => u.Name.Contains(searchString) || u.Email.Contains(searchString));
             }
-            return View(users);
+            if (!User.Identity.IsAuthenticated)
+            {
+                usersQuery = usersQuery.Where(u => u.IsPrivate == false);
+            }
+            var result = usersQuery.ToList();
+            return View(result);
         }
 
         [HttpGet]
