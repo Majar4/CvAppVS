@@ -10,6 +10,9 @@ using static CvAppen.Web.ViewModels.CvViewModel;
 
 namespace CvAppen.Web.Controllers
 {
+    /// Hanterar funktionalitet kopplad till användarens CV:
+    /// visa, skapa, redigera och ta bort innehåll i CV.
+    
     public class CvController : Controller
     {
         private readonly CvContext _context;
@@ -22,11 +25,14 @@ namespace CvAppen.Web.Controllers
             _userManager = userManager;
             _webHostEnvironment = webHostEnvironment;
         }
+
+        /// Visar startsidan för CV.
         public IActionResult Index()
         {
             return View();
         }
 
+        /// Visar detaljer för ett specifikt CV.
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
@@ -45,6 +51,7 @@ namespace CvAppen.Web.Controllers
             return View(cv);
         }
 
+        /// Visar formulär för att skapa ett nytt CV.
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -52,6 +59,7 @@ namespace CvAppen.Web.Controllers
             return View(cvViewModel);
         }
 
+        /// Tar emot formuläret och skapar ett nytt CV.
         [HttpPost]
 
         public async Task<IActionResult> Create(CvViewModel cv, IFormFile? imageFile)
@@ -66,7 +74,7 @@ namespace CvAppen.Web.Controllers
             cv.UserId = userId;
             cv.UserName = user.UserName;
 
-
+            // Hanterar uppladdning av profilbild
             if (imageFile != null && imageFile.Length > 0)
             {
                 var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/cv");
@@ -138,6 +146,7 @@ namespace CvAppen.Web.Controllers
             return RedirectToAction("Index", "Profile");
         }
 
+        /// Visar formulär för redigering av befintligt CV.
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -200,6 +209,7 @@ namespace CvAppen.Web.Controllers
             return View(cvt);
         }
 
+        /// Tar emot ändringar och uppdaterar CV.
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Edit(CvViewModel model)
@@ -223,6 +233,7 @@ namespace CvAppen.Web.Controllers
             cv.Presentation = model.Presentation;
             cv.PhoneNumber = model.PhoneNumber;
 
+                // Endast ägaren får redigera
                 var currentUser = await _userManager.GetUserAsync(User);
                 if (cv.UserId != currentUser.Id)
                 {
@@ -275,7 +286,7 @@ namespace CvAppen.Web.Controllers
             }
         }
 
-
+        /// Ta bort kompetens från användarens CV.
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> RemoveCompetence(int id)
@@ -310,6 +321,7 @@ namespace CvAppen.Web.Controllers
             return RedirectToAction("Edit", new { id = competence.CVId });
         }
 
+        /// Ta bort utbildning från användarens CV.
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> RemoveEducation(int id)
@@ -344,6 +356,7 @@ namespace CvAppen.Web.Controllers
             return RedirectToAction("Edit", new { id = education.CVId });
         }
 
+        /// Ta bort tidigare erfarenhet från användarens CV.
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> RemoveEarlierExperience(int id)
@@ -378,6 +391,7 @@ namespace CvAppen.Web.Controllers
             return RedirectToAction("Edit", new { id = earlierExp.CVId });
         }
 
+        /// Visar en presentation av ett CV.
         [HttpGet]
         public async Task<IActionResult> Show(int id)
         {

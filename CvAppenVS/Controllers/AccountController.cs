@@ -8,6 +8,9 @@ using Microsoft.Extensions.Logging;
 
 namespace CvAppenVS.Controllers
 {
+    /// Hanterar användarkonton:
+    /// inloggning, utloggning, registrering och kontoinställningar.
+    
     public class AccountController : Controller
     {
         private UserManager<User> userManager;
@@ -21,6 +24,7 @@ namespace CvAppenVS.Controllers
             this.environment = environment;
         }
 
+        /// Visar inloggningssidan.
         [HttpGet]
         public IActionResult LogIn()
         {
@@ -28,6 +32,7 @@ namespace CvAppenVS.Controllers
             return View(loginViewModel);
         }
 
+        /// Tar emot inloggningsuppgifter och autentiserar användaren.
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel vm)
         {
@@ -51,6 +56,7 @@ namespace CvAppenVS.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        /// Loggar ut den inloggade användaren.
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Logout()
@@ -59,12 +65,14 @@ namespace CvAppenVS.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        /// Visar registreringsformulär.
         [HttpGet]
         public IActionResult Registrera()
         {
             return View();
         }
 
+        /// Visar inställningar för inloggad användare.
         [Authorize]
         public async Task<IActionResult> Settings()
         {
@@ -79,6 +87,7 @@ namespace CvAppenVS.Controllers
             return View(vm);
         }
 
+        /// Sparar ändringar i användarens kontoinställningar.
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Settings(AccountSettingsViewModel vm)
@@ -115,12 +124,14 @@ namespace CvAppenVS.Controllers
             }
         }
 
+        /// Visar formulär för byte av lösenord.
         [Authorize]
         public IActionResult ChangePassword()
         {
             return View(); 
         }
 
+        /// Tar emot och genomför lösenordsbyte.
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel vm)
@@ -166,7 +177,7 @@ namespace CvAppenVS.Controllers
             }
         }
 
-
+        /// Tar emot registreringsuppgifter och skapar nytt konto.
         [HttpPost]
         public async Task<IActionResult> Registrera(RegistreraViewmodel request)
         {
