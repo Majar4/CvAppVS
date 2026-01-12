@@ -127,7 +127,7 @@ namespace CvAppen.Web.Controllers
                     if (originalMessage != null)
                     {
                         originalMessage.IsRead = true;
-                        //originalMessage.HasReplied = true; // för att få symbol för svarat måste tabell läggas till i databasen.
+                        //originalMessage.HasReplied = true; // för att få symbol om svarat måste tabell läggas till i databasen.
                     }
                 }
                 await _context.SaveChangesAsync();
