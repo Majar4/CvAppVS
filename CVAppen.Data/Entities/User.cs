@@ -11,6 +11,8 @@ namespace CvAppen.Data
         public string? Image {  get; set; }
         public bool IsPrivate { get; set; }
 
+        public bool IsActive { get; set; }
+
 
         public ICollection<Message> RecievedMessages { get; set; } = new List<Message>();
 
