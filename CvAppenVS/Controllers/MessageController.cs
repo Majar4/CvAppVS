@@ -35,7 +35,9 @@ namespace CvAppen.Web.Controllers
                     Id = m.Id,
                     Text = m.Text,
                     SenderName = m.SenderName,
+                    FromUserId = m.FromUserId,
                     IsRead = m.IsRead,
+                    //HasReplied = m.HasReplied, måste läggas till i databasen i så fall.
                     SentAt = m.SentAt
                 }).OrderBy(m => m.SentAt)
                 .ToListAsync<MessageDto>();
@@ -48,7 +50,20 @@ namespace CvAppen.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Add(string toUserId)
         {
-    
+            var currentUserId = _userManager.GetUserId(User);
+            ViewBag.Users = await _context.Users
+                    .Where(u => u.Id != currentUserId)
+                    .Select(u => new {
+                        Value = u.Id,
+                        Text = u.Name
+                    })
+                    .ToListAsync();
+
+            if (!string.IsNullOrEmpty(toUserId))
+            {
+                var recipient = await _userManager.FindByIdAsync(toUserId);
+                ViewBag.RecipientName = recipient?.Name;
+            }
 
             return View(new SendMessageDto
             {
@@ -58,7 +73,7 @@ namespace CvAppen.Web.Controllers
 
         [HttpPost]
         [ActionName("Add")]
-        public async Task<IActionResult> SendMessage(SendMessageDto dto)
+        public async Task<IActionResult> SendMessage(SendMessageDto dto, int? replyingToId)
         {
 
             if (!User.Identity.IsAuthenticated && string.IsNullOrWhiteSpace(dto.SenderName))
@@ -106,6 +121,15 @@ namespace CvAppen.Web.Controllers
             try
             {
                 _context.Messages.Add(message);
+                if (replyingToId.HasValue)
+                {
+                    var originalMessage = await _context.Messages.FindAsync(replyingToId.Value);
+                    if (originalMessage != null)
+                    {
+                        originalMessage.IsRead = true;
+                        //originalMessage.HasReplied = true; // för att få symbol för svarat måste tabell läggas till i databasen.
+                    }
+                }
                 await _context.SaveChangesAsync();
             }
             catch (Exception)
@@ -113,8 +137,9 @@ namespace CvAppen.Web.Controllers
                 ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Meddelandet kunde inte skickas.";
                 return View(dto);
             }
+            TempData["ToastMessage"] = "Meddelandet har skickats!";
+            return RedirectToAction(nameof(Index));
 
-            return RedirectToAction("Details", "Profile", new { id = dto.ToUserId });
         }
 
         [HttpGet]
@@ -202,6 +227,27 @@ namespace CvAppen.Web.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+        [Authorize]
+        public async Task<IActionResult> Sent()
+        {
+            var currentUserId = _userManager.GetUserId(User);
+
+            var sentMessages = await _context.Messages
+                .Where(m => m.FromUserId == currentUserId)
+                .OrderByDescending(m => m.SentAt)
+                .Select(m => new MessageDto
+                {
+                    Id = m.Id,
+                    Text = m.Text,
+                    SentAt = m.SentAt,
+                    SenderName = _context.Users.Where(u => u.Id == m.ToUserId).Select(u => u.Name).FirstOrDefault() ?? "Okänd mottagare",
+                    IsRead = m.IsRead
+                })
+                .ToListAsync();
+
+            ViewBag.Message = "Skickade meddelanden";
+            return View(sentMessages);
         }
 
     }

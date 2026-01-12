@@ -45,14 +45,7 @@
 				@message.Text
 			</div>
 			<div class="chat-actions mt-2">
-				@if (!string.IsNullOrEmpty(message.FromUserId))
-				{
-					<a asp-action="Add" asp-route-toUserId="@message.FromUserId"
-					   class="btn btn-sm btn-outline-dark rounded-pill me-2">
-						Svara
-					</a>
-				}
-			
+
 				<form asp-action="Remove"
 					  asp-controller="Message"
 					  asp-route-id="@message.Id"
@@ -60,30 +53,31 @@
 					  style="display:inline;">
 					<button type="submit" class="btn erase"> 🗑 </button>
 				</form>
-			
 
-			@if (!message.IsRead)
-			{
-				<form asp-action="MarkAsRead"
-					  asp-controller="Message"
-					  method="post"
-					  style="display:inline;">
 
-					<input type="hidden" name="id" value="@message.Id" />
+                @*if (!message.IsRead) //Tar bort eftersom den här vyn visar skickade meddelanden.
+				{
+					<form asp-action="MarkAsRead"
+						  asp-controller="Message"
+						  method="post"
+						  style="display:inline;">
 
-					<label>
-						<input type="checkbox"
-							   onchange="this.form.submit()" />
-						Markera som läst
-					</label>
-				</form>
-			}
-			else
-			{
-				<span class="text-muted">Läst</span>
-			}
-		</div>
+						<input type="hidden" name="id" value="@message.Id" />
+
+						<label>
+							<input type="checkbox"
+								   onchange="this.form.submit()" />
+							Markera som läst
+						</label>
+					</form>
+				}
+				else
+				{
+					<span class="text-muted">Läst</span>
+				}*@
+			</div>
 		</div>
 	}
 </div>
+
 
