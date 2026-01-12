@@ -1,4 +1,11 @@
-﻿@using System.Security.Claims @*Behövs för att kunna hämta inloggad användares ID i vyn*@
+﻿@* 
+Visar en lista över projekten i systemet.
+Inloggade användare kan skapa projekt, redigera sina egna projekt
+och gå med i befintliga projekt. 
+*@
+
+
+@using System.Security.Claims
 
 @model List<Project>
 
@@ -20,7 +27,7 @@
         <a asp-action="Create" class="btn btn-secondary">Skapa nytt projekt</a>
     }
 
-    <a asp-controller="Profile" asp-action="Index" class="btn btn-outline-secondary btn-sm ms-2">Tillbaka till Profil</a>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-sm ms-2">Till startsidan</a>
 </div>
 
 
@@ -45,7 +52,7 @@
                             </p>
 
 
-                            @* Knapp för att redigera. Måste vara inloggad + den som skapade projektet = visar knappen*@
+                            @* Knapp för att redigera. Måste vara inloggad och den som skapade projektet, då visas knappen*@
                             @if (User.Identity.IsAuthenticated && project.CreatedByUserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
                             {
                                 <a asp-action="Edit" asp-route-id="@project.Id" class="btn btn-outline-secondary btn-sm mt-2">Redigera</a>
@@ -65,7 +72,7 @@
                                 }
                             </ul>
 
-                            @* Knapp för att gå med i projekt, inloggade användare och om inte redan med *@
+                            @* Knapp för att gå med i projekt, visas för inloggade användare och om inte redan med *@
                             @if (User.Identity.IsAuthenticated && !project.UserProjects.Any(up => up.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)))
                             {
                                 <a asp-action="Join" asp-route-projectId="@project.Id" class="btn btn-outline-secondary btn-sm mt-2">Gå med i Projekt</a>
