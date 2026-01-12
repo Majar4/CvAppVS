@@ -65,6 +65,7 @@ namespace CvAppenVS.Controllers
             try
             {
                 _context.Projects.Add(project);
+                await _context.SaveChangesAsync();
 
                 // Koppling mellan användaren/skaparen och projektet
                 var link = new UserProject
