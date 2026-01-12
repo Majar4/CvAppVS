@@ -115,16 +115,21 @@ namespace CvAppen.Web.Controllers
             return View(model);
         }
 
-
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Search(string searchString)
         {
-            var users = _context.Users.AsQueryable();
+            var usersQuery = _context.Users.AsQueryable();
             if (!string.IsNullOrEmpty(searchString))
             {
-                users = users.Where(u => u.Name.Contains(searchString) || u.Email.Contains(searchString));
+                usersQuery = usersQuery.Where(u => u.Name.Contains(searchString) || u.Email.Contains(searchString));
             }
-            return View(users);
+            if (!User.Identity.IsAuthenticated)
+            {
+                usersQuery = usersQuery.Where(u => u.IsPrivate == false);
+            }
+            var result = usersQuery.ToList();
+            return View(result);
         }
 
         [HttpGet]

@@ -63,18 +63,18 @@
 							@* Knapp för att gå till personens profil *@
 							@*                             <a asp-controller="Profile" asp-action="Details" asp-route-id="@cv.UserId"
                                class="btn btn-dark w-100">Visa Profil</a> *@
-							<a asp-controller="Profile" asp-action="Index" asp-route-id="@cv.UserId"
-							   class="btn btn-dark w-100">Visa Profil</a>
-						</div>
-					</div>
-				</div>
-			}
-		}
-		else
-		{
-			<div class="col-12 text-center">
-				<p class="alert alert-warning">Hittade inga publika CV:n att visa.</p>
-			</div>
-		}
-	</div>
+                            <a asp-controller="Profile" asp-action="Details" asp-route-id="@cv.UserId"
+                               class="btn btn-dark w-100">Visa Profil</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center">
+                <p class="alert alert-warning">Hittade inga publika CV:n att visa.</p>
+            </div>
+        }
+    </div>
 </div>
