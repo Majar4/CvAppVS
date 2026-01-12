@@ -5,15 +5,18 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 
 
 namespace CvAppenVS.Controllers
 {
+    /// Ansvarar för funktionalitet kopplad till projekt:
+    /// visa, skapa, redigera och gå med i projekt.
     public class ProjectController : Controller
     {
         private readonly CvContext _context;
-        private readonly UserManager<User> _userManager; //Hämtar inloggad användare
+        private readonly UserManager<User> _userManager; 
 
         public ProjectController(CvContext context, UserManager<User> userManager)
         {
@@ -37,19 +40,19 @@ namespace CvAppenVS.Controllers
             return View();
         }
 
-        // Tar emot formuläret och sparar projektet i databasen
+        // Tar emot formuläret och skapar ett nytt projekt i databasen
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateProjectViewModel model)
         {
-            // Kontrollerar att formuläret är korrekt ifyllt
+        
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            // Hämta inloggad användare
+        
             var user = await _userManager.GetUserAsync(User);
-            // Skapar ett nytt projektobjekt från formulärets data
+            
             var project = new Project
             {
                 Title = model.Title,
@@ -79,12 +82,12 @@ namespace CvAppenVS.Controllers
                 ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Projektet kunde inte skapas.";
                 return View(model);
             }
-            //skikcas tillbaks till projektlistan
+            
             return RedirectToAction(nameof(Index));
 
         }
 
-        //Gå med i projekt
+        //Lägger till den inloggade användaren som deltagare i ett befintligt projekt.
         [Authorize]
         public async Task<IActionResult> Join(int projectId)
         {
@@ -99,7 +102,6 @@ namespace CvAppenVS.Controllers
                 
                 try
                 {
-                    // Skapar kopplingen mellan användare och projekt
                     var userProject = new UserProject
                     {
                         ProjectId = projectId,
@@ -118,8 +120,7 @@ namespace CvAppenVS.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //Redigera projekt - för den som skapat projektet GET
-
+        //Visar redigeringsformulär för projekt. Endast projektets skapare har behörighet. 
         [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
@@ -137,13 +138,12 @@ namespace CvAppenVS.Controllers
             return View(project);
         }
 
-        //Redigera POST
+        //Tar emot ändringar och uppdaterar projektets information i databasen.
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Edit(Project editedProject)
         {
             var userId = _userManager.GetUserId(User);
-            //Hämtar originalprojekt från DB
             var project = await _context.Projects.FindAsync(editedProject.Id);
 
             if (project == null)
