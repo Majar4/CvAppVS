@@ -36,7 +36,8 @@
                 {
                     @* Rullista vid knapp nytt meddelande) *@
                     <select asp-for="ToUserId" class="form-select"
-                            asp-items="@(new SelectList(ViewBag.Users, "Value", "Text"))">
+                            asp-items="@(new SelectList(ViewBag.Users, "Value", "Text"))"
+                            onchange="$(this).valid()">
                         <option value="">-- Välj en mottagare --</option>
                     </select>
                     @* Hint om att välja mottagare *@
@@ -65,6 +66,13 @@
         <a asp-action="Index" class="btn btn-link">Avbryt</a>
     </form>
 </div>
+
+@section Scripts {
+    @* laddar de nödvändiga skripten för att kontrollera fälten i realtid *@
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
 
 @* <a class="nav-link d-flex flex-column align-items-center">
 <form asp-action="add" method="post">
