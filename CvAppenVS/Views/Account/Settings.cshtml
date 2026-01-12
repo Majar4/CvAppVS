@@ -2,6 +2,13 @@
 @{
     ViewData["Title"] = "Inställningar";
 }
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
 
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -24,7 +31,7 @@
 
                         <div class="form-check mb-3">
                             <input asp-for="IsPrivate" class="form-check-input" />
-                            <label asp-for="IsPrivate" class="form-check-lebel"></label>
+                            <label asp-for="IsPrivate" class="form-check-label"></label>
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100 mb-3">Spara</button>
