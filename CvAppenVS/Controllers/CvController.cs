@@ -93,7 +93,7 @@ namespace CvAppen.Web.Controllers
 
                 Competences = cv.Competences
                     .Where(c => !string.IsNullOrWhiteSpace(c.Title))
-                    .Select(c => new Competence 
+                    .Select(c => new Competence
                     {
                         Id = c.Id,
                         Title = c.Title
@@ -124,9 +124,17 @@ namespace CvAppen.Web.Controllers
                     }).ToList()
             };
 
-            _context.CVs.Add(cvt);
-            await _context.SaveChangesAsync();
-            //return RedirectToAction("Index", "Profile", new { id = cvt.Id });
+            try
+            {
+                _context.CVs.Add(cvt);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. CV:t kunde inte sparas.";
+                return View(cv);
+            }
+
             return RedirectToAction("Index", "Profile");
         }
 
@@ -255,8 +263,119 @@ namespace CvAppen.Web.Controllers
                 });
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Profile");
+            try
+            {
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Profile");
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Ändringarna kunde inte sparas. Försök igen.";
+                return View(model);
+            }
+        }
+
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> RemoveCompetence(int id)
+        {
+
+            var userId = _userManager.GetUserId(User);
+            var competence = await _context.Competences
+                .Include(c => c.CV)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (competence == null)
+            {
+                return NotFound();
+            }
+
+
+            if (competence.CV.UserId != userId)
+            {
+                return Forbid();
+            }
+
+            try
+            {
+                _context.Competences.Remove(competence);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Anslutning till databasen misslyckades. Kompetensen kunde inte tas bort.";
+            }
+
+            return RedirectToAction("Edit", new { id = competence.CVId });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> RemoveEducation(int id)
+        {
+
+            var userId = _userManager.GetUserId(User);
+            var education = await _context.Educations
+                .Include(e => e.CV)
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (education == null)
+            {
+                return NotFound();
+            }
+
+
+            if (education.CV.UserId != userId)
+            {
+                return Forbid();
+            }
+
+            try
+            {
+                _context.Educations.Remove(education);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Anslutning till databasen misslyckades. Utbildningen kunde inte tas bort.";
+            }
+
+            return RedirectToAction("Edit", new { id = education.CVId });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> RemoveEarlierExperience(int id)
+        {
+
+            var userId = _userManager.GetUserId(User);
+            var earlierExp = await _context.EarlierExperiences
+                .Include(e => e.CV)
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (earlierExp == null)
+            {
+                return NotFound();
+            }
+
+
+            if (earlierExp.CV.UserId != userId)
+            {
+                return Forbid();
+            }
+
+            try
+            {
+                _context.EarlierExperiences.Remove(earlierExp);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Anslutning till databasen misslyckades. Erfarenheten kunde inte tas bort.";
+            }
+
+            return RedirectToAction("Edit", new { id = earlierExp.CVId });
         }
 
         [HttpGet]

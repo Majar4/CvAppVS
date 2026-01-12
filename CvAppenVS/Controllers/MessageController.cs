@@ -103,8 +103,16 @@ namespace CvAppen.Web.Controllers
                 
             };
 
-            _context.Messages.Add(message);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Messages.Add(message);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Meddelandet kunde inte skickas.";
+                return View(dto);
+            }
 
             return RedirectToAction("Details", "Profile", new { id = dto.ToUserId });
         }
@@ -152,8 +160,15 @@ namespace CvAppen.Web.Controllers
                 return Forbid();
             }
 
-            _context.Messages.Remove(message);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Messages.Remove(message);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Anslutning till databasen misslyckades. Meddelandet kunde inte tas bort.";
+            }
 
             return RedirectToAction(nameof(Index));
         }
@@ -176,9 +191,15 @@ namespace CvAppen.Web.Controllers
                 return Forbid();
             }
 
-            message.IsRead = true;
-
-            await _context.SaveChangesAsync();
+            try
+            {
+                message.IsRead = true;
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Anslutning till databasen misslyckades. Meddelandet kunde inte markeras som läst.";
+            }
 
             return RedirectToAction(nameof(Index));
         }

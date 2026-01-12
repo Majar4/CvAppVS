@@ -2,6 +2,13 @@
 
 @model CvAppen.Web.ViewModels.CvViewModel
 
+@if (TempData["Error"] != null)
+{
+	<div class="alert alert-danger">
+		@TempData["Error"]
+	</div>
+}
+
 <h2 class="mb-4">Redigera CV</h2>
 
 <form asp-action="Edit" method="post" class="col-md-6">

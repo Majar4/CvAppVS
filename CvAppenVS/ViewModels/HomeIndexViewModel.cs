@@ -11,6 +11,8 @@
         public string UserId { get; set; }
         public string Name { get; set; }
         public string Presentation { get; set; }
+
+        public string? ImagePath { get; set; }
     }
     public class ProjectSummaryViewModel
     {

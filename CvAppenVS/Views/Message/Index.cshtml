@@ -5,6 +5,13 @@
 	ViewBag.Title = "Inkorg";
 }
 
+@if (TempData["Error"] != null)
+{
+	<div class="alert alert-danger">
+		@TempData["Error"]
+	</div>
+}
+
 <h2>@ViewBag.Message</h2>
 
 <div class="chat-container">
