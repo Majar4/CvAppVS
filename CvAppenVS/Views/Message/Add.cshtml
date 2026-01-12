@@ -7,13 +7,19 @@
     <div>
         <label for="Text"> Meddelande: </label>
         <textarea asp-for="Text" rows="4" cols = "50"></textarea>
+        @* lägg in radbrytning här sen *@
+            <span asp-validation-for="Text" class="text-danger"></span>
          </div>
         @if(!User.Identity.IsAuthenticated)
             {
                 <div><label for="SenderName"> Ditt namn: 
                     <input asp-for = "SenderName" type="Text" />
+                    <span asp-validation-for="SenderName" class="text-danger"></span>
+                    @* lägg in radbrytning här sen *@
                 </label></div>
             }
        <button type="submit">Skicka</button>
     </form>
     </a>
+
+

@@ -1,11 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace CvAppen.Web.ViewModels
 {
     public class CvViewModel
     {
         public int Id { get; set; }
+        
         public string Presentation { get; set; }
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+                   ErrorMessage = "Telefonumret är inte i giltigt format.")]
         public string PhoneNumber { get; set; }
         public string? ImagePath { get; set; }
         [HiddenInput]
