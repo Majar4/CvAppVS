@@ -39,7 +39,7 @@ namespace CvAppen.Web.Controllers
                     IsRead = m.IsRead,
                     //HasReplied = m.HasReplied, måste läggas till i databasen i så fall.
                     SentAt = m.SentAt
-                }).OrderBy(m => m.SentAt)
+                }).OrderByDescending(m => m.SentAt)
                 .ToListAsync<MessageDto>();
 
             ViewBag.Message = "Inkorg";
@@ -75,7 +75,6 @@ namespace CvAppen.Web.Controllers
         [ActionName("Add")]
         public async Task<IActionResult> SendMessage(SendMessageDto dto, int? replyingToId)
         {
-
             if (!User.Identity.IsAuthenticated && string.IsNullOrWhiteSpace(dto.SenderName))
             {
                 ModelState.AddModelError(nameof(dto.SenderName), "Du måste ange ett namn.");
@@ -91,7 +90,6 @@ namespace CvAppen.Web.Controllers
                 userId = _userManager.GetUserId(User);
                 var user = await _userManager.FindByIdAsync(userId);
                 senderName = user.Name;
-
             }
 
             else
@@ -104,18 +102,14 @@ namespace CvAppen.Web.Controllers
                 return BadRequest();
             }
 
-
             var message = new Message
             {
-
-
                 Text = dto.Text,
                 FromUserId = userId,
                 ToUserId = dto.ToUserId,
                 SenderName = senderName,
                 IsRead = false,
-                SentAt = DateTime.Now
-                
+                SentAt = DateTime.Now             
             };
 
             try
@@ -139,39 +133,34 @@ namespace CvAppen.Web.Controllers
             }
             TempData["ToastMessage"] = "Meddelandet har skickats!";
             return RedirectToAction(nameof(Index));
-
         }
 
         [HttpGet]
+        [Authorize]
         public async Task <IActionResult> Remove(int id)
         {
             var userId = _userManager.GetUserId(User);
-
             var message = await _context.Messages
-
                .FirstOrDefaultAsync(m => m.Id == id);
+
             if(message == null)
             {
                 return NotFound();
             }
 
-            if (message.ToUserId != userId)
+            if (message.ToUserId != userId && message.FromUserId != userId)
             {
                 return Forbid();
             } 
 
             return View(message);
-
         }
-
 
         [HttpPost]
         [Authorize]
         public async Task <IActionResult> RemoveConfirmed(int id)
         {
-
             var userId = _userManager.GetUserId(User);
-
             var message = await _context.Messages
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -180,7 +169,7 @@ namespace CvAppen.Web.Controllers
                 return NotFound();
             }
 
-            if (message.ToUserId != userId)
+            if (message.ToUserId != userId && message.FromUserId != userId)
             {
                 return Forbid();
             }
@@ -202,7 +191,6 @@ namespace CvAppen.Web.Controllers
         public async Task <IActionResult> MarkAsRead (int id)
         {
             var userId = _userManager.GetUserId(User);
-
             var message = await _context.Messages
                 .FirstOrDefaultAsync(m => m.Id == id);
 
