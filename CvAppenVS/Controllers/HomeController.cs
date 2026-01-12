@@ -39,10 +39,8 @@ namespace CvAppenVS.Controllers
                         Name = u.Name,
                         Presentation = u.CV != null ? u.CV.Presentation : "Ingen presentation tillgänglig",
                         ImagePath = !string.IsNullOrWhiteSpace(u.Image)
-                        ? (u.Image.StartsWith("/") ? u.Image : $"/images/{u.Image}")
-                        : "images/default-profile.png"
-
-
+            ? $"/images/{u.Image}"
+            : "/images/default-profile.png"
 
                         //Om vi ska ha in varje användares senste projekt på startsidan, fixa till och avkommentera nedan
                         //LatestProjectTitle = u.UserProjects != null && u.UserProjects.Any()

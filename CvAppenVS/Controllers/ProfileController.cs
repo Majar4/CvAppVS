@@ -103,6 +103,9 @@ namespace CvAppen.Web.Controllers
                 Name = profileUser.Name,
                 MyProjects = projects,
                 CV = cvViewModel,
+                ProfilePictureUrl = string.IsNullOrEmpty(profileUser.Image)
+                        ? "default-profile.png"
+                        : profileUser.Image,
                 CanEditCv = currentUserId != null && currentUserId == profileUser.Id,   
                 UnReadMessagesCount = currentUserId != null
                     ? _context.Messages.Count(m => m.ToUserId == currentUserId && !m.IsRead)
