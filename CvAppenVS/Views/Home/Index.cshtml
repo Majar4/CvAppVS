@@ -43,10 +43,23 @@
                             <h5 class="card-title fw-bold">@cv.Name</h5>
 
                             @* Profilbild *@
-                            <div class="my-3 mx-auto d-flex align-items-center justify-content-center"
-                                 style="width: 150px; height: 200px; background-color: #ddd; color: #555;">
-                                <span class="h3">CV</span>
-                            </div>
+                            
+                            
+                            @if (!string.IsNullOrEmpty(cv.ImagePath))
+                            {
+                                
+                                <img src="@Url.Content(cv.ImagePath))
+                                     alt="Profilbild på @cv.Name"
+                                     class="my-3 mx-auto d-block rounded"
+                                     style="width: 150px; height: 200px; object-fit: cover;" />
+                            }
+                            else
+                            {
+                                <div class="my-3 mx-auto d-flex align-items-center justify-content-center"
+                                     style="width: 150px; height: 200px; background-color: #ddd; color: #555;">
+                                    <span class="h3">CV</span>
+                                </div>
+                            }
 
                             <p class="card-text text-muted small mb-4" style="height: 3em; overflow: hidden;">
                                 @cv.Presentation
