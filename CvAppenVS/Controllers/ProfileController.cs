@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using static CvAppen.Web.ViewModels.CvViewModel;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CvAppen.Web.Controllers
 {
@@ -130,18 +131,35 @@ namespace CvAppen.Web.Controllers
         /// Privata profiler visas endast för inloggade användare.
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult Search(string searchString)
+        public async Task<IActionResult> Search(string searchName, string searchSkill)
         {
-            var usersQuery = _context.Users.AsQueryable().Where(u => u.IsActive);
-            if (!string.IsNullOrEmpty(searchString))
+            var query = _context.Users
+            .Include(u => u.CV)
+            .ThenInclude(cv => cv.Competences)
+            .Where(u => u.IsActive)
+            .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchName))
             {
-                usersQuery = usersQuery.Where(u => u.Name.Contains(searchString) || u.Email.Contains(searchString));
+                query = query.Where(u => u.Name.Contains(searchName) || u.Email.Contains(searchName));
             }
+
+            if (!string.IsNullOrWhiteSpace(searchSkill))
+            {
+                query = query.Where(u => u.CV != null &&
+                                         u.CV.Competences.Any(c => c.Title.Contains(searchSkill)));
+            }
+
             if (!User.Identity.IsAuthenticated)
             {
-                usersQuery = usersQuery.Where(u => u.IsPrivate == false);
+                query = query.Where(u => u.IsPrivate == false);
             }
-            var result = usersQuery.ToList();
+
+            var result = await query.ToListAsync();
+
+            ViewBag.SearchName = searchName;
+            ViewBag.SearchSkill = searchSkill;
+
             return View(result);
         }
 

@@ -5,31 +5,100 @@
 @{
     ViewData["Title"] = "Sök användare";
 }
+<h2>Sök användare</h2>  
+<form asp-controller="Profile" asp-action="Search" method="get" class="row g-3 mb-4">
+
+    <div class="col-md-4">
+        <input type="text" name="searchName" value="@ViewBag.SearchName"
+               class="form-control" placeholder="Namn eller e-post..." />
+    </div>
+
+    <div class="col-md-4">
+        <input type="text" name="searchSkill" value="@ViewBag.SearchSkill"
+               class="form-control" placeholder="Kompetens (t.ex. C#)..." />
+    </div>
+
+    <div class="col-md-4 d-flex gap-2">
+     
+        <button type="submit" class="btn btn-primary flex-grow-1">Sök</button>
+
+        <a asp-controller="Profile" asp-action="Search" class="btn btn-outline-secondary">
+            Rensa
+        </a>
+    </div>
+
+</form>
+
+<hr />
+
 <h2>Sökresultat</h2>
 
 @if (!Model.Any())
-{
-    <p>
-    Inga användare hittades på "@Context.Request.Query["searchString"]"
-    </p>
-}
-else
-{ 
-    <div class="list-group">
-       @foreach (var user in Model)
+
+    {
+
+        if (string.IsNullOrEmpty(ViewBag.SearchName) && string.IsNullOrEmpty(ViewBag.SearchSkill))
         {
-            <div class="card h-100 shadow-sm">
-                <div class="card-body d-flex align-items-center">
-                   
-                    <div class="flex-grow-1 ms-3">
-                        <h5 class="card-title mb-1">@user.Name</h5>
+            <p class="text-muted">Skriv in något i fälten ovan för att söka.</p>
+        }
+        else
+        {
+
+            <div class="alert alert-warning">
+                Inga användare hittades som matchar:
+                <strong>
+                    @ViewBag.SearchName
+                    @if (!string.IsNullOrEmpty(ViewBag.SearchName) && !string.IsNullOrEmpty(ViewBag.SearchSkill))
+                    {
+                        <text> + </text>
+                    }
+                    @ViewBag.SearchSkill
+                </strong>
+            </div>
+        }
+    }
+else
+    {
+        <div class="list-group">
+            @foreach (var user in Model)
+            {
+                <div class="card h-100 shadow-sm mb-2">
+                    <div class="card-body d-flex align-items-center">
+
+                        @* Lägg gärna till bilden om du vill *@
+                        @if (!string.IsNullOrEmpty(user.Image))
+                        {
+                            <img src="~/images/@user.Image" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;" />
+                        }
+                        else
+                        {
+                            <div class="rounded-circle me-3 bg-secondary d-flex justify-content-center align-items-center text-white" style="width: 50px; height: 50px;">
+                                @user.Name.Substring(0,1)
+                            </div>
+                        }
+
+                        <div class="flex-grow-1">
+                            <h5 class="card-title mb-1">@user.Name</h5>
+                            <p class="text-muted small mb-1">@user.Email</p>
+
+                            @* Visar kompetenser i listan för snabb överblick *@
+                            @if (user.CV != null && user.CV.Competences.Any())
+                            {
+                                <small>
+                                    @foreach (var comp in user.CV.Competences.Take(3))
+                                    {
+                                        <span class="badge bg-light text-dark border me-1">@comp.Title</span>
+                                    }
+                                </small>
+                            }
+
+                        </div>
                         
                         <a asp-controller="Profile" asp-action="Details" asp-route-id="@user.Id" class="btn btn-sm btn-outline-primary">
                             Visa profil
                         </a>
                     </div>
-                </div>
-            </div>
+                </div>         
         }
     </div>
 }
