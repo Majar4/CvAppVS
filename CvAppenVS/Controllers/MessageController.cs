@@ -156,7 +156,7 @@ namespace CvAppen.Web.Controllers
                 return NotFound();
             }
 
-            if (message.ToUserId != userId && message.FromUserId != userId)
+            if (message.ToUserId != userId)
             {
                 return Forbid();
             } 
@@ -179,7 +179,7 @@ namespace CvAppen.Web.Controllers
                 return NotFound();
             }
 
-            if (message.ToUserId != userId && message.FromUserId != userId)
+            if (message.ToUserId != userId)
             {
                 return Forbid();
             }

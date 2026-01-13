@@ -46,35 +46,6 @@
 			</div>
 			<div class="chat-actions mt-2">
 
-				<form asp-action="Remove"
-					  asp-controller="Message"
-					  asp-route-id="@message.Id"
-					  method="get"
-					  style="display:inline;">
-					<button type="submit" class="btn erase"> 🗑 </button>
-				</form>
-
-
-                @*if (!message.IsRead) //Tar bort eftersom den här vyn visar skickade meddelanden.
-				{
-					<form asp-action="MarkAsRead"
-						  asp-controller="Message"
-						  method="post"
-						  style="display:inline;">
-
-						<input type="hidden" name="id" value="@message.Id" />
-
-						<label>
-							<input type="checkbox"
-								   onchange="this.form.submit()" />
-							Markera som läst
-						</label>
-					</form>
-				}
-				else
-				{
-					<span class="text-muted">Läst</span>
-				}*@
 			</div>
 		</div>
 	}
