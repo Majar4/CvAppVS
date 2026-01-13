@@ -40,7 +40,6 @@ namespace CvAppen.Web.Controllers
                     SenderName = m.SenderName,
                     FromUserId = m.FromUserId,
                     IsRead = m.IsRead,
-                    //HasReplied = m.HasReplied, måste läggas till i databasen i så fall.
                     SentAt = m.SentAt
                 }).OrderByDescending(m => m.SentAt)
                 .ToListAsync<MessageDto>();
@@ -127,7 +126,6 @@ namespace CvAppen.Web.Controllers
                     if (originalMessage != null)
                     {
                         originalMessage.IsRead = true;
-                        //originalMessage.HasReplied = true; // för att få symbol om svarat måste tabell läggas till i databasen.
                     }
                 }
                 await _context.SaveChangesAsync();

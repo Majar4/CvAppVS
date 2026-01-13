@@ -7,9 +7,7 @@ namespace CvAppen.Data
 {
     public class CvContext : IdentityDbContext<User>
     {
-        //public CvContext() { }
         public CvContext(DbContextOptions<CvContext> options) : base(options) { }
-        //public DbSet<User> Users { get; set; } //- får varning om denna för den ärvs tydl när man ärver från identity
         public DbSet<Project> Projects { get; set; }
         public DbSet<CV> CVs { get; set; }
         public DbSet<Competence> Competences { get; set; }
@@ -35,9 +33,6 @@ namespace CvAppen.Data
               .HasOne(m => m.ToUser)
               .WithMany(m => m.RecievedMessages)
               .HasForeignKey(u => u.ToUserId).OnDelete(DeleteBehavior.Restrict);
-
-            //behöver kolla på hur vi ska radera User också, fått för mig att kontot inte ska kunna raderas utan endast avaktiveras?
-
         }
 
         private void SeedData(ModelBuilder modelBuilder)
@@ -89,7 +84,6 @@ namespace CvAppen.Data
                 Presentation = "Systemutvecklare med stort intresse för webb och backend.",
                 PhoneNumber = "0701234567",
                 ImagePath = "cv-images/anna.jpg",
-                //User = user1
             });
 
             modelBuilder.Entity<Competence>().HasData(
