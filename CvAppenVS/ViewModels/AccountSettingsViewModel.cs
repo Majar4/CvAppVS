@@ -15,5 +15,6 @@ namespace CvAppen.Web.ViewModels
 
         [Display(Name = "Privat profil")]
         public bool IsPrivate { get; set;  }
+        public bool IsActive { get; set; }
     }
 }
