@@ -45,7 +45,7 @@
 		<label class="form-label">Kompetenser</label>
 		@if (Model.Competences.Count == 0)
 		{
-			<textarea name="Competences[0]" class="form-control mb-1" rows="2"></textarea>
+			<textarea name="Competences[0].Title" class="form-control mb-1" rows="2"></textarea>
 		}
 		@for (int i = 0; i < Model.Competences.Count; i++)
 		{
@@ -61,7 +61,7 @@
 			const container = document.getElementById('competences-container');
 			const index = container.querySelectorAll('textarea').length;
 			const textarea = document.createElement('textarea');
-			textarea.name = `Competences[${index}]`;
+			textarea.name = `Competences[${index}].Title`;
 			textarea.className = 'form-control mb-1';
 			textarea.rows = 2;
 			container.insertBefore(textarea, container.querySelector('button'));
