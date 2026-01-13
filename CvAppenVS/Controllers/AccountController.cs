@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace CvAppenVS.Controllers
 {
@@ -33,6 +34,20 @@ namespace CvAppenVS.Controllers
         {
             if (!ModelState.IsValid)
             {
+                return View(vm);
+            }
+
+            var user = await userManager.FindByNameAsync(vm.UserName);
+
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Fel användarnamn eller lösenord");
+                return View(vm);
+            }
+
+            if (!user.IsActive)
+            {
+                ModelState.AddModelError(string.Empty, "Ditt konto är inaktiverat");
                 return View(vm);
             }
             
@@ -224,6 +239,24 @@ namespace CvAppenVS.Controllers
                 ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. Försök igen.";
                 return View(request);
             }
+        }
+
+        [Authorize]
+        public IActionResult DeactivateAccount()
+        {
+            return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> DeactivateConfirmed()
+        {
+            var user = await userManager.GetUserAsync(User);
+            user.IsActive = false;
+            await userManager.UpdateAsync(user);
+            await signInManager.SignOutAsync();
+            TempData["Success"] = "Ditt konto har inaktiverats.";
+            return RedirectToAction("Login");
         }
     }   
 }
