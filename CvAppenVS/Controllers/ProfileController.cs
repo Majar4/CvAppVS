@@ -218,6 +218,31 @@ namespace CvAppen.Web.Controllers
                 })
                 .ToListAsync();
 
+            var currentSkills = new List<string> ();
+            if(cvEntity != null)
+            {
+                currentSkills = cvEntity.Competences.Select(c => c.Title.Trim()).ToList();
+            }
+
+            List<User> similarUsers = new List<User>();
+
+            bool isAuthenticated = User.Identity.IsAuthenticated;
+
+            if (currentSkills.Any())
+            {
+                similarUsers = await _context.Users
+                        .Include(u => u.CV)
+                        .ThenInclude(cv => cv.Competences)
+                        .Where(u => u.Id != profileUser.Id
+                                    && u.IsActive
+                                    && u.CV != null
+                                    && u.CV.Competences.Any(c => currentSkills.Contains(c.Title)))
+                        .Where(u => isAuthenticated || !u.IsPrivate)
+                        .OrderByDescending(u => u.CV.Competences.Count(c => currentSkills.Contains(c.Title)))
+                        .Take(3)
+                        .ToListAsync();
+            }
+
             var model = new MyProfileViewModel
             {
                 UserId = profileUser.Id,
@@ -225,7 +250,8 @@ namespace CvAppen.Web.Controllers
                 ProfilePictureUrl = profileUser.Image,
                 CV = cvViewModel,
                 MyProjects = projects,
-                CanEditCv = false
+                CanEditCv = false,
+                SimilarProfiles = similarUsers
             };
 
             return View(model);
