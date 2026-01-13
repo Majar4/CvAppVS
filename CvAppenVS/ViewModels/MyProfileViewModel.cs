@@ -11,6 +11,10 @@
         public int UnReadMessagesCount { get; set; }
         public bool CanEditCv { get; set; }
         public bool CanSendMessage { get; set; }
+
+        public int VisitCount { get; set; }
+
+        public bool IsOwner { get; set; }
         public CvViewModel CV { get; set; }
         public List<MessageSummaryViewModel> RecentMessages { get; set; } = new List<MessageSummaryViewModel>();
         public List<ProfileProjectsViewModel> MyProjects { get; set; } = new List<ProfileProjectsViewModel>();
