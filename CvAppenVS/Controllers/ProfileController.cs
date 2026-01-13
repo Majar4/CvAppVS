@@ -7,12 +7,15 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using static CvAppen.Web.ViewModels.CvViewModel;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using CvAppen.Web.ExportModels;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace CvAppen.Web.Controllers
 {
     /// Hanterar användarprofiler:
     /// visa profil, visa CV, lista projekt och söka användare.
-    
+
     public class ProfileController : Controller
     {
         public readonly CvContext _context;
@@ -38,7 +41,7 @@ namespace CvAppen.Web.Controllers
                 {
                     return RedirectToAction("Index", "Home");
                 }
-                profileUser = currentUser;  
+                profileUser = currentUser;
             }
             else
             {
@@ -115,10 +118,10 @@ namespace CvAppen.Web.Controllers
                 ProfilePictureUrl = string.IsNullOrEmpty(profileUser.Image)
                         ? "default-profile.png"
                         : profileUser.Image,
-                CanEditCv = currentUserId != null && currentUserId == profileUser.Id,   
+                CanEditCv = currentUserId != null && currentUserId == profileUser.Id,
                 VisitCount = profileUser.VisitCount,
                 IsOwner = true,
-                
+
                 UnReadMessagesCount = currentUserId != null
                     ? _context.Messages.Count(m => m.ToUserId == currentUserId && !m.IsRead)
                     : 0
@@ -229,6 +232,84 @@ namespace CvAppen.Web.Controllers
             };
 
             return View(model);
+        }
+
+
+        /// Inloggad användares profildata exporteras till en XML-fil.
+        /// Inkluderar användarens profilinfo, CV och projekt.
+        [Authorize]
+        public async Task<IActionResult> ExportProfile()
+        {
+            
+            var user = await _userManager.GetUserAsync(User);
+
+            // Hämtar användarens CV med information
+            var cv = await _context.CVs
+                .Include(cv => cv.Competences)
+                .Include(cv => cv.Educations)
+                .Include(cv => cv.EarlierExperiences)
+                .FirstOrDefaultAsync(cv => cv.UserId == user.Id);
+
+            // Hämtar projekt
+            var projects = await _context.UserProjects
+                .Where(up => up.UserId == user.Id)
+                .Select(up => up.Project)
+                .ToListAsync();
+
+            // Skapar CV-export (om CV finns)
+            CvExportModel cvExport = null;
+
+            if (cv != null)
+            {
+                cvExport = new CvExportModel
+                {
+                    Presentation = cv.Presentation,
+                    PhoneNumber = cv.PhoneNumber,
+                    Competences = cv.Competences.Select(c => c.Title).ToList(),
+                    Educations = cv.Educations.Select(e => new EducationExportModel
+                    {
+                        Name = e.Name,
+                        School = e.School,
+                        From = e.From,
+                        To = e.To
+                    }).ToList(),
+                    Experiences = cv.EarlierExperiences.Select(x => new ExperienceExportModel
+                    {
+                        Title = x.Title,
+                        Company = x.Company,
+                        Description = x.Description
+                    }).ToList()
+                };
+            }
+
+            // Skapar exportobjekt
+            var export = new ProfileExportModel
+            {
+                Name = user.Name,
+                Email = user.Email,
+                Address = user.Address,
+                IsPrivate = user.IsPrivate,
+                CV = cvExport,
+                Projects = projects.Select(p => new ProjectExportModel
+                {
+                    Title = p.Title,
+                    Description = p.Description
+                }).ToList()
+            };
+
+            var temporaryFile = Path.GetTempFileName();
+            // Serialiserar till XML
+            var serializer = new XmlSerializer(typeof(ProfileExportModel));
+
+            using (var fileStream = new FileStream(temporaryFile, FileMode.Create))
+            {
+                serializer.Serialize(fileStream, export);
+            }
+
+            var fileContent = await System.IO.File.ReadAllBytesAsync(temporaryFile);
+            System.IO.File.Delete(temporaryFile);
+            // Skickar filen till webbläsaren
+            return File(fileContent, "application/xml", "MyProfile.xml");
         }
     }
 }
