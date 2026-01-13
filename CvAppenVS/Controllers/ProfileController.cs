@@ -116,6 +116,9 @@ namespace CvAppen.Web.Controllers
                         ? "default-profile.png"
                         : profileUser.Image,
                 CanEditCv = currentUserId != null && currentUserId == profileUser.Id,   
+                VisitCount = profileUser.VisitCount,
+                IsOwner = true,
+                
                 UnReadMessagesCount = currentUserId != null
                     ? _context.Messages.Count(m => m.ToUserId == currentUserId && !m.IsRead)
                     : 0
@@ -176,6 +179,12 @@ namespace CvAppen.Web.Controllers
 
             var profileUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             if (profileUser == null) return NotFound();
+
+            if (currentUserId == null || profileUser.Id != currentUserId)
+            {
+                profileUser.VisitCount++;
+                await _context.SaveChangesAsync();
+            }
 
             // Hämta CV
             var cvEntity = await _context.CVs

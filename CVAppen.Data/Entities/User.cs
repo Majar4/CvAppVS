@@ -13,6 +13,8 @@ namespace CvAppen.Data
 
         public bool IsActive { get; set; } = true;
 
+        public int VisitCount { get; set; }
+
 
         public ICollection<Message> RecievedMessages { get; set; } = new List<Message>();
 
