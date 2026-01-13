@@ -58,9 +58,12 @@
                             <ul class="small list-unstyled mt-2">
                                 @foreach (var up in project.UserProjects)
                                 {
-                                    if (!up.User.IsPrivate || User.Identity.IsAuthenticated)
+                                    if (up.User.IsActive)
                                     {
-                                        <li>@up.User.Name</li>
+                                        if (!up.User.IsPrivate || User.Identity.IsAuthenticated)
+                                        {
+                                            <li>@up.User.Name</li>
+                                        }
                                     }
                                 }
                             </ul>

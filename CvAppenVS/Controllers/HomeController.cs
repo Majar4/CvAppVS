@@ -36,6 +36,7 @@ namespace CvAppenVS.Controllers
             {
                 model.FeaturedCvs = _context.Users
                     .Where(u => u.IsPrivate == false)
+                    .Where(u => u.IsActive)
                     .Where(u => currentUserId == null || u.Id != currentUserId)
                     .Select(u => new CvSummaryViewModel
                     {

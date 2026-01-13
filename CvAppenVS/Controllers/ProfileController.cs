@@ -129,7 +129,7 @@ namespace CvAppen.Web.Controllers
         [HttpGet]
         public IActionResult Search(string searchString)
         {
-            var usersQuery = _context.Users.AsQueryable();
+            var usersQuery = _context.Users.AsQueryable().Where(u => u.IsActive);
             if (!string.IsNullOrEmpty(searchString))
             {
                 usersQuery = usersQuery.Where(u => u.Name.Contains(searchString) || u.Email.Contains(searchString));
