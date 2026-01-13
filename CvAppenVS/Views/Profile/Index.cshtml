@@ -8,6 +8,7 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="display-5 fw-normal">@Model.Name</h1>
+
         @if (Model.CanEditCv)
         {
             @if (Model.CV == null)
@@ -19,6 +20,8 @@
                 <a asp-controller="Cv" asp-action="Edit" asp-route-id="@Model.CV.Id" class="btn btn-outline-dark rounded-pill px-4 shadow-sm">Redigera CV</a>
             }
         }
+        <a asp-controller="Profile" asp-action="ExportProfile"
+        class="btn btn-outline-primary rounded-pill px-4 shadow-sm">Ladda ned min profil</a>
     </div>
 
     @await Html.PartialAsync("_profilePartial", Model)
