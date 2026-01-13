@@ -29,6 +29,12 @@
         class="btn btn-dark rounded-pill px-4 shadow-sm">Meddelande</a>
     }
 </div>
+@if (Model.CanEditCv)
+{
+    <div class="text-muted mb-3">
+        <strong>Antal besök:</strong> @Model.VisitCount
+    </div>
+}
 
 
 
