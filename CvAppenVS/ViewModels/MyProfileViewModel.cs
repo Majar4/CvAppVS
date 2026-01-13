@@ -1,4 +1,6 @@
-﻿namespace CvAppen.Web.ViewModels
+﻿using CvAppen.Data;
+
+namespace CvAppen.Web.ViewModels
 {
     public class MyProfileViewModel
     {
@@ -18,6 +20,7 @@
         public CvViewModel CV { get; set; }
         public List<MessageSummaryViewModel> RecentMessages { get; set; } = new List<MessageSummaryViewModel>();
         public List<ProfileProjectsViewModel> MyProjects { get; set; } = new List<ProfileProjectsViewModel>();
+        public List<User> SimilarProfiles { get; set; } = new List<User>();
     }
     public class MessageSummaryViewModel
     {
