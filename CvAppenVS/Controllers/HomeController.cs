@@ -46,11 +46,6 @@ namespace CvAppenVS.Controllers
                         ImagePath = !string.IsNullOrWhiteSpace(u.Image)
             ? $"/images/{u.Image}"
             : "/images/default-profile.png"
-
-                        //Om vi ska ha in varje användares senste projekt på startsidan, fixa till och avkommentera nedan
-                        //LatestProjectTitle = u.UserProjects != null && u.UserProjects.Any()
-                        //? u.UserProjects.OrderByDescending(up => up.ProjectId).First().Project.Title
-                        //: "Inget projekt än"
                     })
                     .Take(6)
                     .ToList();

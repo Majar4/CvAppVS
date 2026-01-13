@@ -14,7 +14,6 @@ namespace CvAppen.Web.ViewModels
         [Required(ErrorMessage = "Ange adress.")]
         public required string Address { get; set; }
 
-        //[Required(ErrorMessage = "Ladda upp en bild.")]
         public  IFormFile? Image { get; set; }
 
         [Required(ErrorMessage = "Skriv in lösenord.")]
