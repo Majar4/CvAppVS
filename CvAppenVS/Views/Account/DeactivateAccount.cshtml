@@ -1,0 +1,20 @@
+﻿<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card-shadow">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">@ViewData["Title"]</h3>
+
+                    <p>Om du inaktiverar ditt konto kommer du inte längre kunna logga in och din profil blir osynlig.</p>
+                    <form asp-action="DeactivateConfirmed" method="post">
+
+                        <button type="submit" class="btn btn-danger">Ja, inaktivera mitt konto</button>
+
+                        <a asp-action="Settings" class="btn btn-secondary">Avbryt</a>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
