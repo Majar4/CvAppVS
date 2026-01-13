@@ -61,14 +61,27 @@ namespace CvAppen.Web.Controllers
 
         /// Tar emot formuläret och skapar ett nytt CV.
         [HttpPost]
-
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CvViewModel cv, IFormFile? imageFile)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(cv);
-            }
+            cv.Competences = cv.Competences
+            .Where(c => !string.IsNullOrWhiteSpace(c.Title))
+            .ToList();
 
+            cv.Educations = cv.Educations
+            .Where(e => !string.IsNullOrWhiteSpace(e.Name))
+            .ToList();
+
+            cv.EarlierExperiences = cv.EarlierExperiences
+            .Where(e => !string.IsNullOrWhiteSpace(e.Title))
+            .ToList();
+
+            ModelState.Clear();
+
+            TryValidateModel(cv);
+
+            if (ModelState.IsValid)
+            {
             var user = await _userManager.GetUserAsync(User);
             var userId = _userManager.GetUserId(User);
             cv.UserId = userId;
@@ -98,6 +111,7 @@ namespace CvAppen.Web.Controllers
                 Presentation = cv.Presentation,
                 PhoneNumber = cv.PhoneNumber,
                 UserId = cv.UserId,
+                ImagePath = cv.ImagePath,
 
                 Competences = cv.Competences
                     .Where(c => !string.IsNullOrWhiteSpace(c.Title))
@@ -136,14 +150,16 @@ namespace CvAppen.Web.Controllers
             {
                 _context.CVs.Add(cvt);
                 await _context.SaveChangesAsync();
-            }
+                    return RedirectToAction("Index", "Profile");
+                }
             catch (Exception)
             {
                 ViewBag.ErrorMessage = "Anslutning till databasen misslyckades. CV:t kunde inte sparas.";
                 return View(cv);
             }
+            }
 
-            return RedirectToAction("Index", "Profile");
+            return View(cv);
         }
 
         /// Visar formulär för redigering av befintligt CV.
